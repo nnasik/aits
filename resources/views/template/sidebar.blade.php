@@ -22,6 +22,12 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{route('company.index')}}" class="nav-link">
+                  <i class="bi bi-building"></i>
+                  <p>Company</p>
+                </a>
+              </li>
+              <!-- <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-box-seam-fill"></i>
                   <p>
@@ -415,5 +421,5 @@
                   <i class="nav-icon bi bi-circle text-info"></i>
                   <p>Informational</p>
                 </a>
-              </li>
+              </li> -->
             </ul>

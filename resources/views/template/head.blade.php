@@ -21,7 +21,7 @@
 <!--begin::Accessibility Features-->
 <!-- Skip links will be dynamically added by accessibility.js -->
 <meta name="supported-color-schemes" content="light dark" />
-<link rel="preload" href="./css/adminlte.css" as="style" />
+<link rel="preload" href="{{asset('../assets/css/adminlte.css')}}" as="style" />
 <!--end::Accessibility Features-->
 <!--begin::Fonts-->
 <link
@@ -32,6 +32,8 @@
     media="print"
     onload="this.media='all'"
 />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous">
 <!--end::Fonts-->

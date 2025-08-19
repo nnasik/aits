@@ -16,7 +16,9 @@ return new class extends Migration
             $table->foreignId('worker_order_id')->constrained(
                 table: 'work_orders', indexName: 'work_order_row_work_order_id'
             );
-            $table->string('description');
+            $table->foreignId('training_course_id')->constrained(
+                table: 'training_courses', indexName: 'work_order_row_training_course_id'
+            );
             $table->integer('quantity');
             $table->string('remarks')->nullable();
             $table->timestamps();
