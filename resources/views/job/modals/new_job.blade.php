@@ -1,6 +1,6 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <form action="" method="post">
+  <form action="{{route('job.store')}}" method="post">
     @csrf
     <div class="modal-dialog">
       <div class="modal-content">
@@ -36,8 +36,7 @@
 
                 <!-- Dynamic company list from DB -->
                 @foreach($companies as $company)
-                <li><a class="dropdown-item company-item" href="#" data-value="{{ $company->id }}">{{ $company->name
-                    }}</a></li>
+                <li><a class="dropdown-item company-item" href="#" data-value="{{ $company->id }}">{{ $company->name}}</a></li>
                 @endforeach
               </ul>
             </div>
@@ -83,7 +82,6 @@
               </button>
               <ul class="dropdown-menu p-2" aria-labelledby="salesDropdown"
                 style="max-height: 200px; overflow-y:auto; min-width: 100%;">
-
                 <!-- Search box -->
                 <li>
                   <input type="text" class="form-control" id="salesSearch" placeholder="Search...">
@@ -99,6 +97,17 @@
               </ul>
             </div>
             <input type="hidden" name="sales_user_id" id="selectedSalesId">
+          </div>
+
+          <!-- Training Mode Dropdown -->
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Training Mode</span>
+            <select class="form-control" id="trainingMode" name="training_mode">
+              <option selected="" disabled="">Choose...</option>
+              <option value="In-Class">In-Class</option>
+              <option value="Online">Online</option>
+              <option value="On-Site">On-Site</option>
+            </select>
           </div>
 
           <script>

@@ -19,19 +19,18 @@
                     <tr>
                         <td>{{$job->id}}</td>
                         <td>{{$job->company->name}}</td>
-                        <td>sample
-                        </td>
+                        <td>sample</td>
                         <td>{{$job->quantity}}0</td>
                         <td><span class="badge text-bg-danger">{{$job->status}}</span></td>
                         <td>{{$job->date}}</td>
                         <td>
                             <!-- Edit Button -->
-                            <a href="{{ route('job.edit', $job->id) }}" class="btn btn-warning btn-sm" title="Edit">
+                            <a href="{{route('job.edit', $job->id)}}" class="btn btn-warning btn-sm" title="Edit">
                                 <i class="bi bi-pencil"></i> Edit
                             </a>
 
                             <!-- View Button -->
-                            <a href="{{ route('job.edit', $job->id) }}" class="btn btn-primary btn-sm" title="View">
+                            <a href="{{route('job.show', $job->id)}}" class="btn btn-primary btn-sm" title="View">
                                 <i class="bi bi-eye"></i> View
                             </a>
                         </td>
