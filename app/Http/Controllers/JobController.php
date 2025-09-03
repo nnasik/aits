@@ -184,7 +184,7 @@ class JobController extends Controller
             $pdf->Cell(20,11, $counter,1,0,'C',0);
             $pdf->Cell(90,11,$training->course->name,1);
             $pdf->Cell(20,11,$training->quantity,1,0,'C');
-            $pdf->Cell(50,11,$training->scheduled_date,1,1);
+            $pdf->Cell(50,11,$training->scheduled_date,1,1,'C');
             $counter++;
         }
 
@@ -213,7 +213,7 @@ class JobController extends Controller
         $pdf->SetFont('Times','',12);
         $pdf->MultiCell(180,5,"\nHead Office : Abu Dhabi, U.A.E\nTel : +971 55 914 7537\nEmail: sales@trainingsinusa.com | Website: www.trainingsinusa.com\n\nDoc. No QF-03/03 (A)           Rev:03          Date:01-01-2025",1,'C');
 
-        $pdf->Output();
+        //$pdf->Output();
 
         // Download as PDF
         return response($pdf->Output('S'))

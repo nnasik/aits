@@ -32,6 +32,13 @@
               </li>
 
               <li class="nav-item">
+                <a href="{{route('trainee.index')}}" class="nav-link">
+                  <i class="bi bi-person-video"></i>
+                  <p>Trainees</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
                 <a href="{{route('job.index')}}" class="nav-link">
                   <i class="bi bi-suitcase-lg"></i>
                   <p>Jobs</p>

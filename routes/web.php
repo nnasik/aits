@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\TraineeController;
 
 Auth::routes();
 
@@ -21,10 +22,13 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Trainings
     Route::resource('training', TrainingController::class)->only(['index','store','show','edit','destroy']);
+    Route::get('/training/{id}/pdf', [TrainingController::class, 'attendancePDF'])->name('attendance.pdf');
 
 
     // Company
     Route::get('/company', [CompanyController::class, 'index'])->name('company.index');
     Route::post('/company', [CompanyController::class, 'store'])->name('company.store');
 
+    // Trainee
+    Route::resource('trainee', TraineeController::class)->only(['index','store','show','edit']);
 });

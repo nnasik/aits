@@ -25,7 +25,7 @@ return new class extends Migration
             $table->time('scheduled_time')->nullable();
             $table->string('remarks')->nullable();
             $table->longText('training_link')->nullable();
-            $table->string('status')->default('Scheduled');
+            $table->string('status')->default('Created');
             $table->timestamps();
         });
     }

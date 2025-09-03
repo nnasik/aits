@@ -12,8 +12,9 @@
                         <th scope="col">Scheduled Date & Time</th>
                         <th scope="col">Mode</th>
                         <th scope="col">Remarks</th>
-                        <th scope="col" style="width: 20%;">Attendance</th>
+                        <th scope="col">Attendance</th>
                         <th scope="col">Status</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,14 +50,11 @@
                             <a class="btn btn-sm btn-primary disabled">
                                 <i class="bi bi-whatsapp"></i> Link
                             </a>
-
-                            <a href="#" class="btn btn-sm btn-primary" data-bs-toggle="modal">
-                                <i class="bi bi-eye"></i> view
-                            </a>
                         </td>
                         <td>
                             <div class="badge text-bg-warning">{{$training->status}}</div>
-                            
+                        </td>
+                        <td>
                             <button class="btn btn-sm btn-primary"> <i class="bi bi-arrow-repeat"></i></button>
                         </td>
                     </tr>
