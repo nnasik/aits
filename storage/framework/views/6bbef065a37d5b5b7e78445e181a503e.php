@@ -17,30 +17,31 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($job->trainings as $training)
+                    <?php $__currentLoopData = $job->trainings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $training): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td>
-                            <form action="{{route('training.destroy',$training->id)}}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{$training->id}}">
+                            <form action="<?php echo e(route('training.destroy',$training->id)); ?>" method="POST">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                                <input type="hidden" name="id" value="<?php echo e($training->id); ?>">
                                 <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
                             </form>
                         </td>
-                        <td>{{$loop->iteration}}</td>
-                        <td><a href="{{route('training.show',$training->id)}}">{{$training->course->name}}</a></td>
-                        <td>{{$training->quantity}}</td>
-                        <td>{{$training->scheduled_date}} {{$training->scheduled_time}}</td>
-                        <td>{{$training->training_mode}}
+                        <td><?php echo e($loop->iteration); ?></td>
+                        <td><a href="<?php echo e(route('training.show',$training->id)); ?>"><?php echo e($training->course->name); ?></a></td>
+                        <td><?php echo e($training->quantity); ?></td>
+                        <td><?php echo e($training->scheduled_date); ?> <?php echo e($training->scheduled_time); ?></td>
+                        <td><?php echo e($training->training_mode); ?>
+
                             <br>
-                            @if($training->training_mode=='Online' && $training->training_link)
-                                <button class="btn btn-sm btn-primary" onclick="copyZoomLink('{{ $training->training_link }}')">
+                            <?php if($training->training_mode=='Online' && $training->training_link): ?>
+                                <button class="btn btn-sm btn-primary" onclick="copyZoomLink('<?php echo e($training->training_link); ?>')">
                                     <i class="bi bi-link-45deg"></i> Zoom Link
                                 </button>
-                            @endif
+                            <?php endif; ?>
                             <!-- Button -->
                         </td>
-                        <td>{{$training->remarks}}</td>
+                        <td><?php echo e($training->remarks); ?></td>
                         <td>
                             <a class="btn btn-sm btn-primary disabled" data-bs-toggle="modal">
                                 <i class="bi bi-file-earmark-pdf-fill"></i> PDF
@@ -51,15 +52,15 @@
                             </a>
                         </td>
                         <td>
-                            <div class="badge text-bg-warning">{{$training->status}}</div>
+                            <div class="badge text-bg-warning"><?php echo e($training->status); ?></div>
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="3" class="text-center">Total</th>
-                        <th>{{ $job->trainings->sum('quantity') }}</th>
+                        <th><?php echo e($job->trainings->sum('quantity')); ?></th>
                         <th colspan="3"></th>
                     </tr>
                 </tfoot>
@@ -95,4 +96,4 @@ function copyZoomLink(link) {
     }
 }
 </script>
-</div>
+</div><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/view/table.blade.php ENDPATH**/ ?>

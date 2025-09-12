@@ -13,17 +13,21 @@ return new class extends Migration
     {
         Schema::create('trainings', function (Blueprint $table) {
             $table->id();
+            $table->string('hash')->nullable()->unique();
             $table->foreignId('work_order_id')->constrained(
                 table: 'work_orders', indexName: 'trainings_work_order_id'
             );
+            
             $table->foreignId('training_course_id')->constrained(
                 table: 'training_courses', indexName: 'trainings_training_course_id'
             );
+            
             $table->integer('quantity');
             $table->string('training_mode')->nullable();
             $table->date('scheduled_date')->nullable();
             $table->time('scheduled_time')->nullable();
             $table->string('remarks')->nullable();
+            $table->string('attendance')->nullable();
             $table->longText('training_link')->nullable();
             $table->string('status')->default('Created');
             $table->timestamps();

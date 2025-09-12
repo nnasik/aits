@@ -23,4 +23,8 @@ class Trainee extends Model
     public function company(){
         return $this->belongsTo(Company::class,'company_id');
     }
+
+    public function trainings(){
+        return $this->belongsToMany(Training::class, 'training_trainee', 'trainee_id', 'training_id');
+    }
 }

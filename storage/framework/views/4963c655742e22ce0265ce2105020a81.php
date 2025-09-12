@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 <!--begin::App Content Header-->
 <div class="app-content-header">
@@ -15,7 +15,7 @@
         <ol class="breadcrumb float-sm-end">
           <li class="breadcrumb-item"><a href="#">Jobs</a></li>
           <li class="breadcrumb-item">All</li>
-          <li class="breadcrumb-item active" aria-current="page">{{$job->id}}</li>
+          <li class="breadcrumb-item active" aria-current="page"><?php echo e($job->id); ?></li>
         </ol>
       </div>
     </div>
@@ -36,14 +36,14 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Job No</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->id}}" readonly>
+            value="<?php echo e($job->id); ?>" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-6">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Date</span>
           <input type="date" class="form-control" aria-label="Date" aria-describedby="basic-addon1"
-            value="{{$job->date}}">
+            value="<?php echo e($job->date); ?>">
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Client / Company</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->company->name}}" readonly>
+            value="<?php echo e($job->company->name); ?>" readonly>
         </div>
       </div>
     </div>
@@ -65,21 +65,21 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Issued By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->issued->name}}" readonly>
+            value="<?php echo e($job->issued->name); ?>" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Authorized By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->authorized->name}}" readonly>
+            value="<?php echo e($job->authorized->name); ?>" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Sales By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->sales->name}}" readonly>
+            value="<?php echo e($job->sales->name); ?>" readonly>
         </div>
       </div>
     </div>
@@ -104,13 +104,13 @@
     </div>
 
     <!-- Table -->
-    @include('job.view.trainee_table')
+    <?php echo $__env->make('job.view.trainee_table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 
     <!-- ROW-5 -->
     <div class="row">
       <div class="col-sm-12">
-        <a class="btn btn-dark" href="{{route('attendance.pdf',$training->id)}}" target="_blank">
+        <a class="btn btn-dark" href="<?php echo e(route('attendance.pdf',$training->id)); ?>" target="_blank">
           <i class="bi bi-file-earmark-pdf-fill"></i> Attendance Sheet
         </a>
         <a class="btn btn-primary" href="">
@@ -122,6 +122,7 @@
     <!--end::Container-->
   </div>
   <!--end::App Content-->
-  @include('job.modals.add_trainee')
-  @include('trainee.modals.new_trainee')
-  @endsection()
+  <?php echo $__env->make('job.modals.add_trainee', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('trainee.modals.new_trainee', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/view_training.blade.php ENDPATH**/ ?>

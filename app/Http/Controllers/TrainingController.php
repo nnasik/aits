@@ -4,7 +4,25 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Training;
+use App\Models\Trainee;
+use App\Models\Company;
 use App\Services\ZoomService;
+use Illuminate\Support\Str;
+use FPDF;
+
+// Extend FPDF with custom footer
+class PDF extends FPDF
+{
+    function Footer()
+    {
+        // 15 mm from bottom
+        $this->SetY(-15);
+        $this->SetFont('Times', 'I', 10);
+        // Centered text: width = 0 means full width
+        $this->Cell(0, 10, 'Page '.$this->PageNo().' of {nb}', 0, 0, 'C');
+    }
+}
+
 
 class TrainingController extends Controller
 {
@@ -26,9 +44,11 @@ class TrainingController extends Controller
             'training_course_id' => $validated['course_id'],
             'quantity'           => $validated['qty'],
             'scheduled_date'     => $validated['scheduled_date'] ?? null,
-            'training_mode'     => $validated['training_mode'] ?? null,
+            'training_mode'      => $validated['training_mode'] ?? null,
             'scheduled_time'     => $validated['scheduled_time'] ?? null,
             'remarks'            => $validated['remark'] ?? null,
+            'hash'               => Str::uuid()->toString(),
+
         ]);
 
         if($validated['scheduled_date'] && $validated['scheduled_time']){
@@ -63,7 +83,43 @@ class TrainingController extends Controller
     }
 
     public function show($id){
-       
+        $training = Training::findOrFail($id);
+        $data['trainees'] = Trainee::all();
+        $data['companies'] = Company::all();
+        $data['training'] = $training;
+        $data['job'] = $training->job;
+        return view('job.view_training')->with($data);
+    }
+
+    public function addTrainee(Request $request){
+        $request->validate([
+            'training'   => 'required|exists:trainings,id',
+            'trainee_id' => 'required|exists:trainees,id',
+        ]);
+
+        $training = Training::findOrFail($request->training);
+
+        // Attach trainee to training (avoid duplicates)
+        if (!$training->trainees()->where('trainee_id', $request->trainee_id)->exists()) {
+            $training->trainees()->attach($request->trainee_id);
+        }
+
+        return redirect()->back()->with('success', 'Trainee added successfully!');
+    }
+
+
+    public function removeTrainee(Request $request){
+        $request->validate([
+            'training_id' => 'required|exists:trainings,id',
+            'trainee_id'  => 'required|exists:trainees,id',
+        ]);
+
+        $training=Training::findOrFail($request->training_id);
+
+        // Detach the trainee from this training
+        $training->trainees()->detach($request->trainee_id);
+
+        return redirect()->back()->with('success', 'Trainee removed successfully!');
     }
 
     public function attendancePDF($id){
@@ -72,9 +128,12 @@ class TrainingController extends Controller
 
         $training = Training::findOrFail($id);
 
-        $pdf = new FPDF();
+        $pdf = new PDF();
+        $pdf->AliasNbPages();
+        $pdf->SetMargins(20, 10);
+        $pdf->SetAutoPageBreak(true, 30);
+
         $pdf->AddPage();
-        $pdf->SetMargins(20,10);
         // Some space
         $pdf->Ln(0);
         $logo = $pdf->Image(public_path('assets/images/logo.png'), 20, 10, 32);
@@ -88,141 +147,106 @@ class TrainingController extends Controller
         $pdf->Cell(150,-8,'Abu Dhabi, United Arab Emirates',0,1,'C');
 
         // Some space
-        $pdf->Ln(8);
+        $pdf->Ln(12);
 
 
-        $pdf->SetFont('Times','B',16);
-        $pdf->Cell(180,10,strtoupper("Training Attendance Sheet"),1,1,'C');
+        $pdf->SetFont('Times','BU',16);
+        $pdf->Cell(180,10,strtoupper("Training Attendance Sheet"),0,1,'C');
 
-        // Job No & Date
+        // Job No
         $pdf->SetFont('Times','',14);
-        $pdf->SetFillColor(230,230,255);
-        $pdf->Cell(20,10,"Job No:",1,0,'C',1);
-
+        $pdf->Cell(20,10,"Job No : ",0,0,'L');
         $pdf->SetFont('Times','B',14);
-        $pdf->Cell(70,10,"AITS-",1,0,'C');
+        $pdf->Cell(100,10,$training->job->id,0,0,'L');
 
+        // Date
+        $pdf->SetFont('Times','B',12);
+        $pdf->Cell(60,10,"Date : ".$training->scheduled_date,0,1,'R');
+
+        // Some space
+        $pdf->Ln(0);
+        
+        // Course Name
         $pdf->SetFont('Times','',14);
-        $pdf->SetFillColor(230,230,255);
-        $pdf->Cell(20,10,"Date:",1,0,'C',1);
+        $pdf->Cell(30,10,"Course Title : ",0,0,'L');
+        $pdf->SetFont('Times','B',14);
+        $pdf->Cell(150,10,$training->course->name,0,1,'L');
 
-        // Date formating
-        // $date = Carbon::parse($job->date);
-        // $formattedDate = strtoupper($date->format('d F Y')); // 20 AUGUST 2025
-
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->Cell(70,10,$formattedDate,1,1,'C');
-
-        // // Company Name
-        // $pdf->SetFont('Times','',14);
-        // $pdf->SetFillColor(230,230,255);
-        // $pdf->Cell(60,20,"Client / Company Name :",1,0,'C',1);
+        // Company Name
+        $pdf->SetFont('Times','',14);
+        $pdf->Cell(40,10,"Company Name : ",0,0,'L');
+        $pdf->SetFont('Times','B',14);
+        $pdf->Cell(140,10,$training->job->company->name,0,1,'L');
 
         
-        // $height = 20;
-        // if(strlen($job->company->name)>50){
-        //     $height = 10;
-        // }
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->MultiCell(120,$height,$job->company->name,1,'C',0);
-
-        // // Contact Person & Contact No
-        // $pdf->SetFont('Times','',14);
-        // $pdf->SetFillColor(230,230,255);
-        // $pdf->Cell(40,10,"Contact Person:",1,0,'C',1);
-
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->Cell(60,10,$job->company->contact_person,1,0,'C');
-
-        // $pdf->SetFont('Times','',14);
-        // $pdf->SetFillColor(230,230,255);
-        // $pdf->Cell(30,10,"Contact No.:",1,0,'C',1);
-
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->Cell(50,10,$job->company->contact_no,1,1,'C');
-
-
-        // // Contact Person & Contact No
-        // $pdf->SetFont('Times','',14);
-        // $pdf->SetFillColor(230,230,255);
-        // $pdf->Cell(30,10,"Issued By:",1,0,'C',1);
-
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->Cell(60,10,$job->issued->name,1,0,'C');
-
-        // $pdf->SetFont('Times','',14);
-        // $pdf->SetFillColor(230,230,255);
-        // $pdf->Cell(35,10,"Authorization:",1,0,'C',1);
-
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->Cell(55,10,$job->authorized->name,1,1,'C');
-
-        // // Training Mode
-        // $pdf->SetFont('Times','',14);
-        // $pdf->SetFillColor(230,230,255);
-        // $pdf->Cell(35,10,"Training Mode:",1,0,'C',1);
-
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->Cell(145,10,$job->training_mode,1,1,'L');
-
-        // // Space
-        // $pdf->SetFillColor(200,200,200);
-        // $pdf->Cell(180,3,"",1,1,'C',1);
-
-
-        // // Table header
-        // $pdf->SetFillColor(20,20,60);
-        // $pdf->SetTextColor(255,255,255);
-
-        // $pdf->SetFont('Times','B',14);
-        // $pdf->Cell(20,10,'Item No',1,0,'C',1);
-        // $pdf->Cell(90,10,'Training Course',1,0,'C',1);
-        // $pdf->Cell(20,10,'Qty',1,0,'C',1);
-        // $pdf->Cell(50,10,'Scheduled Date',1,1,'C',1);
-
         // Table rows
         $pdf->SetTextColor(0,0,0);
         $counter = 1;
+        $pdf->SetFont('Times','B',14);
+
+        $pdf->Cell(15,10, 'S.No',1,0,'C',0);
+        $pdf->Cell(70,10,'Participant Name',1,0,'C');
+
+        // Save current position
+        $x = $pdf->GetX();
+        $y = $pdf->GetY();
+
+        $pdf->MultiCell(45,5,'Emirates ID / Passport No',1,'C');
+
+        // Reset position to the right of the multicell
+        $pdf->SetXY($x + 45, $y);
+        $pdf->Cell(50,10,'Signature',1,0,'C');
+        
         $pdf->SetFont('Times','',14);
+        $pdf->Ln();
+        foreach($training->trainees as $trainee){
+            $pdf->Cell(15,15, $counter,1,0,'C');
+            $pdf->Cell(70,15,$trainee->name,1);
+            if ($trainee->eid_no) {
+                $pdf->Cell(45,15,$trainee->eid_no,1);
+            }
+            elseif ($trainee->passport) {
+                $pdf->Cell(45,15,$trainee->passport,1);
+            }
+            else{
+                $pdf->Cell(45,15,'',1);
+            }
+            
+            $pdf->Cell(50,15,'',1,0);
 
-        foreach($job->trainings as $training){
-            $pdf->Cell(20,11, $counter,1,0,'C',0);
-            $pdf->Cell(90,11,$training->course->name,1);
-            $pdf->Cell(20,11,$training->quantity,1,0,'C');
-            $pdf->Cell(50,11,$training->scheduled_date,1,1,'C');
-            $counter++;
-        }
+            // Save current position
+            $x = $pdf->GetX();
+            $y = $pdf->GetY();
 
-        while($counter<=10){
-            $pdf->Cell(20,11, $counter,1,0,'C',0);
-            $pdf->Cell(90,11,'',1);
-            $pdf->Cell(20,11,'',1,0,'C');
-            $pdf->Cell(50,11,'',1);
+            if ($trainee->pivot->signature){
+                $pdf->Image(public_path('/storage/'.$trainee->pivot->signature), $x-40, $y, 16);
+            }
             $counter++;
             $pdf->Ln();
         }
 
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(110,10,"Total",1,0,'C',0);
-        $pdf->Cell(20,10,$job->trainings->sum('quantity'),1,0,'C',0);
-        $pdf->Cell(50,10,'',1,1);
+        while($counter<=10){
+            $pdf->Cell(15,15, $counter,1,0,'C',0);
+            $pdf->Cell(70,15,'',1);
+            $pdf->Cell(45,15,'',1,0,'C');
+            $pdf->Cell(50,15,'',1);
+            $counter++;
+            $pdf->Ln();
+        }
 
         // --- Draw footer manually ---
 
         $pdf->SetY(235);
         $pdf->SetFont('Times','',14);
-        $pdf->SetFillColor(230,230,255);
-        $pdf->Cell(40,10,"Sales Person :",1,0,'C',1);
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(140,10,$job->sales->name,1,1,'L');
+        //$pdf->Cell(140,10,$job->sales->name,1,1,'L');
         $pdf->SetFont('Times','',12);
-        $pdf->MultiCell(180,5,"\nHead Office : Abu Dhabi, U.A.E\nTel : +971 55 914 7537\nEmail: sales@trainingsinusa.com | Website: www.trainingsinusa.com\n\nDoc. No QF-03/03 (A)           Rev:03          Date:01-01-2025",1,'C');
+        $pdf->MultiCell(180,5,"\nHead Office : Abu Dhabi, U.A.E\nTel : +971 55 914 7537\nEmail: sales@trainingsinusa.com | Website: www.trainingsinusa.com\n\nDoc. No : QF-01               Rev : 01          Date : 01-01-2025",1,'C');
 
         //$pdf->Output();
 
         // Download as PDF
         return response($pdf->Output('S'))
         ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="workpermit_'.$job->id.'.pdf"');
+        ->header('Content-Disposition', 'inline; filename="training_attendance_'.$training->id.'.pdf"');
     }
 }

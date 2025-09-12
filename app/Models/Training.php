@@ -17,7 +17,8 @@ class Training extends Model
         'scheduled_time',
         'training_mode',
         'training_link',
-        'remarks'
+        'remarks',
+        'hash'
     ];
 
     public function workOrder(){
@@ -28,7 +29,13 @@ class Training extends Model
         return $this->belongsTo(TrainingCourse::class,'training_course_id');
     }
 
-    public function trainees(){
-        return $this->hasMany(Trainings::class);
+     public function trainees(){
+        return $this->belongsToMany(Trainee::class, 'training_trainee','training_id', 'trainee_id')
+                ->withPivot(['id', 'photo', 'signature']) // include extra pivot columns
+                ->withTimestamps();
+    }
+
+    public function job(){
+         return $this->belongsTo(WorkOrder::class,'work_order_id');
     }
 }

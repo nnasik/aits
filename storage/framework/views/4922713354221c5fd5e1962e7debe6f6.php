@@ -25,21 +25,21 @@
               </li>
 
               <li class="nav-item">
-                <a href="{{route('company.index')}}" class="nav-link">
+                <a href="<?php echo e(route('company.index')); ?>" class="nav-link">
                   <i class="bi bi-building"></i>
                   <p>Companies</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="{{route('trainee.index')}}" class="nav-link">
+                <a href="<?php echo e(route('trainee.index')); ?>" class="nav-link">
                   <i class="bi bi-person-video"></i>
                   <p>Trainees</p>
                 </a>
               </li>
 
               <li class="nav-item">
-                <a href="{{route('job.index')}}" class="nav-link">
+                <a href="<?php echo e(route('job.index')); ?>" class="nav-link">
                   <i class="bi bi-suitcase-lg"></i>
                   <p>Jobs</p>
                 </a>
@@ -60,7 +60,7 @@
               </li>
 
               <li class="nav-item">
-                <a href="{{route('certificate.index')}}" class="nav-link">
+                <a href="<?php echo e(route('certificate.index')); ?>" class="nav-link">
                   <i class="bi bi-patch-check"></i>
                   <p>Certificates</p>
                 </a>
@@ -482,4 +482,4 @@
                   <p>Informational</p>
                 </a>
               </li> -->
-            </ul>
+            </ul><?php /**PATH D:\xampp\htdocs\aits\resources\views/template/sidebar.blade.php ENDPATH**/ ?>
