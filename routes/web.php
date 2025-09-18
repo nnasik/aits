@@ -7,6 +7,7 @@ use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\PublicTrainingController;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\JobRequestController;
 
 Auth::routes();
 
@@ -52,4 +53,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Certificate
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
     Route::get('/certficate/{id}/pdf',[CertificateController::class,'certificatePDF'])->name('certificate.pdf');
+
+    // Job Request
+    Route::resource('jobrequest', JobRequestController::class)->only(['index','store','show','edit']);
+    // Training Request
+    Route::resource('trainingrequest', TrainingRequestController::class)->only(['index','store','show','edit']);
 });

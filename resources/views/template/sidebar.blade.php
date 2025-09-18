@@ -1,121 +1,153 @@
-<ul
-              class="nav sidebar-menu flex-column"
-              data-lte-toggle="treeview"
-              role="navigation"
-              aria-label="Main navigation"
-              data-accordion="false"
-              id="navigation"
-            >
-            
-              <li class="nav-item menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="bi bi-speedometer"></i>
-                  <p>
-                    Dashboard
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-              </li>
+<ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation"
+  data-accordion="false" id="navigation">
 
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                 <i class="bi bi-people-fill"></i>
-                  <p>CRM</p>
-                </a>
-              </li>
+  <li class="nav-item">
+    <a href="#" class="nav-link">
+      <i class="bi bi-speedometer"></i>
+      <p>
+        Dashboard
+        <i class="nav-arrow bi bi-chevron-right"></i>
+      </p>
+    </a>
+  </li>
 
-              <li class="nav-item">
-                <a href="{{route('company.index')}}" class="nav-link">
-                  <i class="bi bi-building"></i>
-                  <p>Companies</p>
-                </a>
-              </li>
+  <li class="nav-item  menu-open">
+    <a href="#" class="nav-link">
+      <i class="bi bi-bar-chart"></i>
+      <p>
+        Sales
+        <i class="nav-arrow bi bi-chevron-right"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-people-fill"></i>
+          <p>CRM</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-file-earmark-ruled"></i>
+          <p>RFQs</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{route('company.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-building"></i>
+          <p>Companies</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{route('jobrequest.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-suitcase-lg"></i>
+          <p>Job Requests</p>
+        </a>
+      </li>
+    </ul>
+  </li>
 
-              <li class="nav-item">
-                <a href="{{route('trainee.index')}}" class="nav-link">
-                  <i class="bi bi-person-video"></i>
-                  <p>Trainees</p>
-                </a>
-              </li>
+  <li class="nav-item menu-open">
+    <a href="#" class="nav-link">
+      <i class="bi bi-gear-fill"></i>
+      <p>
+        Operations
+        <i class="nav-arrow bi bi-chevron-right"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="{{route('trainee.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-info-circle"></i>
+          <p>Requests</p>
+        </a>
+      </li>
 
-              <li class="nav-item">
-                <a href="{{route('job.index')}}" class="nav-link">
-                  <i class="bi bi-suitcase-lg"></i>
-                  <p>Jobs</p>
-                </a>
-              </li>
+      <li class="nav-item">
+        <a href="{{route('job.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-suitcase-lg"></i>
+          <p>Jobs</p>
+        </a>
+      </li>
 
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="bi bi-calendar3"></i>
-                  <p>Trainings</p>
-                </a>
-              </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-calendar3"></i>
+          <p>Trainings</p>
+        </a>
+      </li>
 
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="bi bi-book"></i>
-                  <p>Training Courses</p>
-                </a>
-              </li>
+      <li class="nav-item">
+        <a href="{{route('certificate.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-patch-check"></i>
+          <p>Certificates</p>
+        </a>
+      </li>
 
-              <li class="nav-item">
-                <a href="{{route('certificate.index')}}" class="nav-link">
-                  <i class="bi bi-patch-check"></i>
-                  <p>Certificates</p>
-                </a>
-              </li>
+      <li class="nav-item">
+        <a href="{{route('trainee.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-person-video"></i>
+          <p>Trainees</p>
+        </a>
+      </li>
 
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="bi bi-x-octagon"></i>
-                  <p>Issues</p>
-                </a>
-              </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-book"></i>
+          <p>Training Courses</p>
+        </a>
+      </li>
+    </ul>
+  </li>
 
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                 <i class="bi bi-file-earmark-text"></i>
-                  <p>Invoices</p>
-                </a>
-              </li>
 
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="bi bi-person"></i>
-                  <p>Users</p>
-                </a>
-              </li>
-              
-              <!-- <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="nav-icon bi bi-box-seam-fill"></i>
-                  <p>
-                    Widgets
-                    <i class="nav-arrow bi bi-chevron-right"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                    <a href="./widgets/small-box.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Small Box</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./widgets/info-box.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>info Box</p>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a href="./widgets/cards.html" class="nav-link">
-                      <i class="nav-icon bi bi-circle"></i>
-                      <p>Cards</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+  <li class="nav-item menu-open">
+    <a href="#" class="nav-link">
+      <i class="bi bi-cash-coin"></i>
+      <p>
+        Accounts
+        <i class="nav-arrow bi bi-chevron-right"></i>
+      </p>
+    </a>
+    <ul class="nav nav-treeview">
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-file-earmark-text"></i>
+          <p>Invoices</p>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="nav-item">
+    <a href="#" class="nav-link">
+      <i class="bi bi-x-octagon"></i>
+      <p>Issues</p>
+    </a>
+  </li>
+
+
+
+  <li class="nav-item">
+    <a href="#" class="nav-link">
+      <i class="bi bi-person"></i>
+      <p>Users</p>
+    </a>
+  </li>
+
+
+  <!-- 
               <li class="nav-item">
                 <a href="#" class="nav-link">
                   <i class="nav-icon bi bi-clipboard-fill"></i>
@@ -482,4 +514,4 @@
                   <p>Informational</p>
                 </a>
               </li> -->
-            </ul>
+</ul>

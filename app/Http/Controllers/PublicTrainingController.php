@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Training;
+use App\Models\TrainingTrainee;
 use Illuminate\Support\Facades\Storage;
-
-
 
 class PublicTrainingController extends Controller
 {
@@ -27,7 +26,7 @@ class PublicTrainingController extends Controller
     /**
      * Save trainee signature
      */
-   public function saveSignature(Request $request, Training $training, $pivotId)
+    public function saveSignature(Request $request, $trainingId, $pivotId)
     {
         $request->validate([
             'signature' => 'required|string',
@@ -40,19 +39,23 @@ class PublicTrainingController extends Controller
         $imageName = 'signatures/' . uniqid('sig_') . '.png';
         Storage::disk('public')->put($imageName, base64_decode($data));
 
-        // Save path to pivot table
-        $training->trainees()->updateExistingPivot($pivotId, [
-            'signature' => $imageName
+        // Find pivot record & update
+        $pivot = TrainingTrainee::where('training_id', $trainingId)
+            ->where('id', $pivotId)
+            ->firstOrFail();
+
+        $pivot->update([
+            'signature' => $imageName,
         ]);
 
         return redirect()->back()->with('success', 'Signature saved successfully.');
     }
 
-
     /**
      * Upload trainee photo
      */
-    public function uploadPhoto(Request $request, Training $training, $trainee){
+    public function uploadPhoto(Request $request, $trainingId, $traineeId)
+    {
         $request->validate([
             'photo' => 'required|image|max:2048',
         ]);
@@ -60,9 +63,13 @@ class PublicTrainingController extends Controller
         if ($request->hasFile('photo')) {
             $path = $request->file('photo')->store('trainee_photos', 'public');
 
-            // Update pivot table using the trainee ID
-            $training->trainees()->updateExistingPivot($trainee, [
-                'photo' => $path
+            // Find pivot record & update
+            $pivot = TrainingTrainee::where('training_id', $trainingId)
+                ->where('trainee_id', $traineeId)
+                ->firstOrFail();
+
+            $pivot->update([
+                'photo' => $path,
             ]);
 
             return redirect()->back()->with('success', 'Photo uploaded successfully.');
@@ -70,5 +77,4 @@ class PublicTrainingController extends Controller
 
         return redirect()->back()->with('error', 'No photo uploaded.');
     }
-
 }

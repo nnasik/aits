@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('histories', function (Blueprint $table) {
             $table->id();
+            $table->morphs('subject'); // model + id (ex: JobRequest, Training, etc.)
+            $table->foreignId('user_id')->constrained(
+                table: 'users',
+                indexName: 'history_user_id'
+            );        
+            $table->string('event'); // created, updated, deleted
+            $table->json('changes')->nullable(); // what changed
             $table->timestamps();
         });
     }
