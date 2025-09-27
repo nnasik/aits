@@ -34,6 +34,10 @@ class JobRequest extends Model{
     }
 
     public function training_requests(){
-        return $this->hasMany(TrainingRequest::class);
+        return $this->hasMany(TrainingRequest::class, 'job_request_id', 'id');
+    }
+
+    public function histories(){
+        return $this->morphMany(History::class, 'subject');
     }
 }

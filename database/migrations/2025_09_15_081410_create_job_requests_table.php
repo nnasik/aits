@@ -22,8 +22,8 @@ return new class extends Migration
 
             $table->boolean('is_zoom_link_required')->default(false);
             
-            $table->datetime('requested_on');
-            $table->foreignId('request_by')->constrained(
+            $table->datetime('requested_on')->nullable();
+            $table->foreignId('request_by')->nullable()->constrained(
                 table: 'users', indexName: 'job_request_user_id'
             );
 

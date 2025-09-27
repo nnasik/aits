@@ -7,7 +7,6 @@
                     <tr>
                         <th scope="col">Job No</th>
                         <th scope="col">Company Name</th>
-                        <th scope="col">Description</th>
                         <th scope="col">Qty</th>
                         <th scope="col">Status</th>
                         <th scope="col">Date</th>
@@ -19,7 +18,6 @@
                     <tr>
                         <td><?php echo e($job->id); ?></td>
                         <td><?php echo e($job->company->name); ?></td>
-                        <td>sample</td>
                         <td><?php echo e($job->quantity); ?>0</td>
                         <td><span class="badge text-bg-danger"><?php echo e($job->status); ?></span></td>
                         <td><?php echo e($job->date); ?></td>

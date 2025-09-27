@@ -31,8 +31,12 @@
                             <span class="badge text-muted"><?php echo e($request->requested_on); ?></span>
                         <?php elseif($request->request_status=='Created'): ?>
                             <span class="badge bg-secondary"><?php echo e($request->request_status); ?></span>
-                            <span class="badge text-muted"><?php echo e($request->created_at); ?></span>
+                            <span class="badge text-muted"><?php echo e($request->updated_at); ?></span>
+                        <?php elseif($request->request_status=='Cancelled'): ?>
+                            <span class="badge bg-danger"><?php echo e($request->request_status); ?></span>
+                            <span class="badge text-muted"><?php echo e($request->updated_at); ?></span>
                         <?php endif; ?>
+                        <span class="badge text-muted"><?php echo e($request->requester->name); ?></span>
                         </td>
                         <td class="text-center">
                             <?php if($request->request_status=='Requested'): ?>

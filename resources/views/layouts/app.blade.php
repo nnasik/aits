@@ -64,6 +64,7 @@
       <!--end::Footer-->
     </div>
     <!--end::App Wrapper-->
+    @include('template.alerts')
     <!--begin::Script-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
     <script

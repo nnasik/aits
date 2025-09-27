@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\WorkOrder;
+use App\Models\JobRequest;
 use App\Models\Company;
 use App\Models\User;
 use App\Models\TrainingCourse;
@@ -19,6 +20,7 @@ class JobController extends Controller
         $data['jobs'] = WorkOrder::latest()->take(10)->get();
         $data['companies'] = Company::all();
         $data['users'] = User::all();
+        $data['job_requests'] = JobRequest::where('request_status','Requested')->get()->reverse();
         return view('job.index')->with($data);
     }
 

@@ -30,8 +30,12 @@
                             <span class="badge text-muted">{{$request->requested_on}}</span>
                         @elseif($request->request_status=='Created')
                             <span class="badge bg-secondary">{{$request->request_status}}</span>
-                            <span class="badge text-muted">{{$request->created_at}}</span>
+                            <span class="badge text-muted">{{$request->updated_at}}</span>
+                        @elseif($request->request_status=='Cancelled')
+                            <span class="badge bg-danger">{{$request->request_status}}</span>
+                            <span class="badge text-muted">{{$request->updated_at}}</span>
                         @endif
+                        <span class="badge text-muted">{{$request->requester->name}}</span>
                         </td>
                         <td class="text-center">
                             @if($request->request_status=='Requested')

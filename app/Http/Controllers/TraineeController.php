@@ -40,4 +40,6 @@ class TraineeController extends Controller
         return redirect()->back()->with('success', 'Trainee created successfully.');
     }
 
+    
+
 }

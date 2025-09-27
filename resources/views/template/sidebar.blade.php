@@ -132,6 +132,13 @@
 
   <li class="nav-item">
     <a href="#" class="nav-link">
+      <i class="bi bi-exclamation-octagon"></i>
+      <p>Violations</p>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a href="#" class="nav-link">
       <i class="bi bi-x-octagon"></i>
       <p>Issues</p>
     </a>

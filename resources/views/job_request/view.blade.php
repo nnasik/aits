@@ -53,8 +53,8 @@
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Requested Date</span>
-          <input type="date" class="form-control" aria-label="Date" aria-describedby="basic-addon1"
+          <span class="input-group-text" id="basic-addon1">Requested On</span>
+          <input type="text" class="form-control" aria-label="Date" aria-describedby="basic-addon1"
             value="{{$job_request->requested_on}}">
         </div>
       </div>
@@ -62,36 +62,14 @@
 
     <!-- ROW-2 -->
     <div class="row">
-      <div class="col-sm-12 col-md-12">
+      <div class="col-sm-12 col-md-8">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Client / Company</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
             value="{{$job_request->company->name}}" readonly>
         </div>
       </div>
-    </div>
 
-    <!-- ROW-3 -->
-    <div class="row">
-      <div class="col-sm-12 col-md-12">
-        <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Company Name in Job</span>
-          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job_request->company_name_in_work_order}}" readonly>
-        </div>
-      </div>
-    </div>
-
-    <!--begin::Row-->
-    <div class="row">
-      <div class="col-12">
-        <h3 class="text-center">Training Information</h3>
-      </div>
-    </div>
-    <!-- Table -->
-
-    <!-- ROW-6 -->
-    <div class="row">
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Training Mode</span>
@@ -99,18 +77,22 @@
             value="{{$job_request->training_mode}}" readonly>
         </div>
       </div>
-      <div class="col-sm-12 col-md-4">
+    </div>
+
+    <!-- ROW-3 -->
+    <div class="row">
+      <div class="col-sm-12 col-md-8">
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Training Date</span>
-          <input type="date" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job_request->requesting_date}}" readonly>
+          <span class="input-group-text" id="basic-addon1">Company Name in Job</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="{{$job_request->company_name_in_work_order}}" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
-          <span class="input-group-text" id="basic-addon1">Training Time</span>
-          <input type="time" class="form-control" aria-label="Date" aria-describedby="basic-addon1"
-            value="{{$job_request->requesting_time}}">
+          <span class="input-group-text" id="basic-addon1">Request Status</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="{{$job_request->request_status}}" readonly>
         </div>
       </div>
     </div>
@@ -126,16 +108,48 @@
     <!-- ROW-5 -->
     <div class="row">
       <div class="col-sm-12 text-end">
-        <button type="button" class="btn btn-sm btn-success float-end" data-bs-toggle="modal" data-bs-target="#addRow">
+        <button type="button"
+          class="btn btn-sm btn-outline-success float-end mx-1 @if($job_request->request_status!='Created') disabled @endif"
+          data-bs-toggle="modal" data-bs-target="#addRow">
           <i class="bi bi-plus-lg"></i> Training Requests
         </button>
       </div>
     </div>
-    
+
+
     @include('job_request.view.table')
+
+    <!-- ROW-6 -->
+    <div class="row">
+      <div class="col-sm-12 text-end">
+        @if($is_request_submittable==false)
+        <div class="alert alert-warning mx-1 text-start" role="alert">
+          {{$submit_error_message}}
+        </div>
+        @endif
+        <form action="{{ route('job-request.markAsRequested', $job_request->id) }}" method="POST" class="d-inline">
+          @csrf
+          <button type="submit"
+            class="btn btn-sm btn-success float-end mx-1 {{ $is_request_submittable ? '' : 'disabled' }}">
+            <i class="bi bi-arrow-up-circle"></i> Submit Request
+          </button>
+        </form>
+        <button type="button"
+          class="btn btn-sm btn-danger float-end mx-2 @if($job_request->request_status=='Cancelled') disabled @endif"
+          data-bs-toggle="modal" data-bs-target="#cancelRequestModal">
+          <i class="bi bi-x-circle"></i> Cencel Request
+        </button>
+      </div>
+    </div>
+
+    <!-- ROW-7 -->
+    <div class="row mx-1 mt-3">
+      @include('template.history')
+    </div>
 
     <!--end::Container-->
   </div>
   <!--end::App Content-->
-@include('job_request.modals.new_training')
+  @include('job_request.modals.new_training')
+  @include('job_request.modals.cancel_request')
   @endsection()

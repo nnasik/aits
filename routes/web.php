@@ -8,6 +8,8 @@ use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\PublicTrainingController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\JobRequestController;
+use App\Http\Controllers\TrainingRequestController;
+use App\Http\Controllers\TraineeRequestController;
 
 Auth::routes();
 
@@ -56,6 +58,37 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Job Request
     Route::resource('jobrequest', JobRequestController::class)->only(['index','store','show','edit']);
+    Route::post('jobrequest/cancel/{id}',[JobRequestController::class,'cancel'])->name('jobrequest.cencel');
+    Route::post('/job-request/{id}/request', [JobRequestController::class, 'markAsRequested'])
+     ->name('job-request.markAsRequested');
+    
     // Training Request
-    Route::resource('trainingrequest', TrainingRequestController::class)->only(['index','store','show','edit']);
+    Route::resource('trainingrequest', TrainingRequestController::class)->only(['index','store','show','edit','destroy']);
+
+    // Trainee Request
+    Route::post('/trainingrequest/update-eid', [TraineeRequestController::class, 'updateEid'])
+    ->name('trainingrequest.updateEid');
+    Route::post('/training-requests/update-name', [TraineeRequestController::class, 'updateName'])
+    ->name('training-requests.updateName');
+    Route::post('/training-requests/update-dl', [TraineeRequestController::class, 'updateDl'])
+        ->name('training-requests.updateDl');
+    Route::post('/training-requests/upload-eid-back', [TraineeRequestController::class, 'uploadEidBack'])
+    ->name('training-requests.uploadEidBack');
+    Route::post('/training-requests/upload-eid-front', [TraineeRequestController::class, 'uploadEidFront'])
+    ->name('training-requests.uploadEidFront');
+    Route::post('/training-requests/upload-passport', [TraineeRequestController::class, 'uploadPassport'])
+    ->name('training-requests.uploadPassport');
+    Route::post('/trainee-requests/update-profile-pic', [TraineeRequestController::class, 'updateProfilePic'])
+    ->name('trainee-requests.updateProfilePic');
+    Route::post('/trainee-requests/upload-visa', [TraineeRequestController::class, 'uploadVisa'])->name('trainee-requests.uploadVisa');
+    Route::post('/trainee-requests/update-company-name', [TraineeRequestController::class, 'updateCompanyName'])->name('trainee-requests.updateCompanyName');
+    Route::post('/trainee/update-certificate-title', [TraineeRequestController::class, 'updateCertificateTitle'])
+    ->name('trainee.updateCertificateTitle');
+    Route::post('/trainee/update-certificate-date', [TraineeRequestController::class, 'updateCertificateDate'])
+     ->name('trainee.updateCertificateDate');
+    Route::post('/trainee/update-switch', [TraineeRequestController::class, 'updateSwitch'])
+    ->name('trainee.updateSwitch');
+
+
+
 });

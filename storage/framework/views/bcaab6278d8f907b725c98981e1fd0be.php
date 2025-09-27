@@ -28,25 +28,29 @@
   <!--begin::Container-->
   <div class="container-fluid">
 
-    <?php echo $__env->make('job.index.counts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-    <!--begin::Row-->
+    
+    
+
     <div class="row">
       <div class="col-6">
-        <h3 class="mb-0">All Jobs</h3>
+        <h3 class="mb-0">Requests</h3>
       </div>
+    </div>
+
+    <?php echo $__env->make('job.index.table_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
+<!--begin::Row-->
+    <div class="row mx-0">
       <div class="col-6">
+        <h3 class="mb-0">Jobs</h3>
+      </div>
+      <!-- <div class="col-6">
         <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
           <i class="bi bi-plus-lg"></i> Job
         </button>
-      </div>
-    </div>
+      </div> -->
+</div>
 
-    <div class="row">
-      <!-- Button trigger modal -->
-
-
-
-    </div>
 
     <?php echo $__env->make('job.index.table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <!--end::Row-->
