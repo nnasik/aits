@@ -12,8 +12,7 @@ class PublicTrainingController extends Controller
     /**
      * Show training with trainee list (public link, hash protected)
      */
-    public function showTraining($hash)
-    {
+    public function showTraining($hash){
         $training = Training::where('hash', $hash)
             ->with(['trainees' => function($q) {
                 $q->withPivot('id','photo','signature');

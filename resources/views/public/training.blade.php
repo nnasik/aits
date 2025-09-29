@@ -69,7 +69,7 @@
                 @foreach($training->trainees as $index => $trainee)
                 <tr>
                     <td>{{ $index + 1 }}</td>
-                    <td>{{ $trainee->name }}</td>
+                    <td>{{ $trainee->name }} <br>{{$trainee->eid_no}}</td>
 
                     {{-- Photo --}}
                     <td>

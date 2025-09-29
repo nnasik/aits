@@ -10,13 +10,15 @@ use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\JobRequestController;
 use App\Http\Controllers\TrainingRequestController;
 use App\Http\Controllers\TraineeRequestController;
+use App\Http\Controllers\UserController;
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Public training link (hash protected)
-Route::get('/public/training/{hash}', [PublicTrainingController::class, 'showTraining'])->name('public.training.show');
+Route::get('/public/training/{hash}', [PublicTrainingController::class, 'showTraining'])
+    ->name('public.training.show');
 
 // Save signature (pivot ID)
 Route::post('/public/training/signature/{training}/{traineePivotId}', [PublicTrainingController::class, 'saveSignature'])
@@ -90,5 +92,31 @@ Route::group(['middleware' => ['auth']], function () {
     ->name('trainee.updateSwitch');
 
 
+    // User Management Routes (Admin & Developer only)
+    Route::prefix('users')->group(function () {
+        // List all users
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+
+        // View single user
+        Route::get('/{id}', [UserController::class, 'view'])->name('users.view');
+
+        // Reset user password
+        Route::post('/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
+
+        // Update display picture
+        Route::post('/update-dp', [UserController::class, 'updateDP'])->name('users.updateDP');
+
+        // Search users (for select inputs)
+        Route::get('/search', [UserController::class, 'selectSearch'])->name('users.selectSearch');
+
+        // Get all active users
+        Route::get('/active', [UserController::class, 'activeUsersList'])->name('users.activeList');
+
+        Route::post('/add-role', [UserController::class, 'addRole'])->name('user.addRole'); 
+        
+        Route::post('/remove-role', [UserController::class, 'removeRole'])->name('user.removeRole');
+
+        Route::post('/users/update-status', [UserController::class, 'updateStatus']) ->name('users.updateStatus');
+    });
 
 });

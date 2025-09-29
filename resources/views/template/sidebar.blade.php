@@ -10,7 +10,7 @@
       </p>
     </a>
   </li>
-
+  @role('Sales')
   <li class="nav-item  menu-open">
     <a href="#" class="nav-link">
       <i class="bi bi-bar-chart"></i>
@@ -50,7 +50,9 @@
       </li>
     </ul>
   </li>
+  @endrole
 
+  @role('Operations')
   <li class="nav-item menu-open">
     <a href="#" class="nav-link">
       <i class="bi bi-gear-fill"></i>
@@ -60,13 +62,6 @@
       </p>
     </a>
     <ul class="nav nav-treeview">
-      <li class="nav-item">
-        <a href="{{route('trainee.index')}}" class="nav-link">
-          <div>  </div>
-          <i class="nav-icon bi bi-info-circle"></i>
-          <p>Requests</p>
-        </a>
-      </li>
 
       <li class="nav-item">
         <a href="{{route('job.index')}}" class="nav-link">
@@ -109,8 +104,9 @@
       </li>
     </ul>
   </li>
+  @endrole
 
-
+  @role('Accounts')
   <li class="nav-item menu-open">
     <a href="#" class="nav-link">
       <i class="bi bi-cash-coin"></i>
@@ -129,6 +125,7 @@
       </li>
     </ul>
   </li>
+  @endrole
 
   <li class="nav-item">
     <a href="#" class="nav-link">
@@ -145,13 +142,14 @@
   </li>
 
 
-
+  @hasanyrole('Developer|Admin')
   <li class="nav-item">
-    <a href="#" class="nav-link">
+    <a href="{{route('users.index')}}" class="nav-link">
       <i class="bi bi-person"></i>
       <p>Users</p>
     </a>
   </li>
+  @endhasanyrole
 
 
   <!-- 
