@@ -28,8 +28,6 @@ return new class extends Migration
             );
             $table->string('training_mode')->nullable();
             $table->string('status')->default('Open');
-            $table->integer('qunatity')->nullable();
-            $table->longText('notes')->nullable();
             $table->timestamps();
         });
     }

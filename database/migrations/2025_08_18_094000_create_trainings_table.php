@@ -22,13 +22,16 @@ return new class extends Migration
                 table: 'training_courses', indexName: 'trainings_training_course_id'
             );
             
+            $table->string('company_name_in_certificate')->nullable();
+            $table->string('course_title_in_certificate')->nullable();
             $table->integer('quantity');
             $table->string('training_mode')->nullable();
             $table->date('scheduled_date')->nullable();
             $table->time('scheduled_time')->nullable();
             $table->string('remarks')->nullable();
-            $table->string('attendance')->nullable();
-            $table->longText('training_link')->nullable();
+            $table->boolean('is_attendance_done')->default(false);
+            $table->boolean('is_zoom_link_required')->default(false);
+            $table->longText('zoom_link')->nullable();
             $table->string('status')->default('Created');
             $table->timestamps();
         });

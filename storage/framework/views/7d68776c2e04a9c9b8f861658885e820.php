@@ -7,8 +7,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form action="{{route('training-requests.uploadEidFront')}}" method="POST" enctype="multipart/form-data">
-          @csrf
+        <form action="<?php echo e(route('training-requests.uploadEidFront')); ?>" method="POST" enctype="multipart/form-data">
+          <?php echo csrf_field(); ?>
           <input type="hidden" name="trainee_request_id">
 
           <div id="eidFrontDropZone" class="border border-2 border-dashed rounded-3 p-5 text-center bg-light" style="cursor:pointer;">
@@ -57,3 +57,4 @@ function changeEidFront(traineeId) {
     document.querySelector('#uploadEidFrontModal input[name="trainee_request_id"]').value = traineeId;
 }
 </script>
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/training_request/modals/eid_front.blade.php ENDPATH**/ ?>

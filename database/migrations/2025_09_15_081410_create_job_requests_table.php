@@ -26,20 +26,12 @@ return new class extends Migration
             $table->foreignId('request_by')->nullable()->constrained(
                 table: 'users', indexName: 'job_request_user_id'
             );
-
             $table->datetime('accepted_on')->nullable();
             $table->foreignId('accepted_by')->nullable()->constrained(
                 table: 'users', indexName: 'job_accept_user_id'
             );
-
             $table->string('request_status')->default('Requested');
-            $table->string('training_status')->nullable();
-            $table->string('certificate_status')->nullable();
-            $table->string('invoice_status')->nullable();
-            $table->string('delivery_note_status')->nullable();
-
             $table->string('priority')->default('Normal');
-
             $table->timestamps();
         });
     }

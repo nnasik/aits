@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\JobRequest;
 use App\Models\Company;
 use App\Models\TrainingCourse;
+use App\Models\WorkOrder;
+use App\Models\Training;
+use App\Models\Trainee;
+use Str;
 
 class JobRequestController extends Controller{
     //
@@ -179,71 +183,66 @@ public function markAsRequested($id)
     return redirect()->back()->with('success', 'Job request marked as Requested successfully!');
 }
 
-public function acceptJobRequest($id)
-{
-    $jobRequest = JobRequest::with(['training_requests.trainee_requests'])->findOrFail($id);
-
-    // Step 1: Create Work Order
-    $workOrder = WorkOrder::create([
-        'job_request_id'      => $jobRequest->id,
-        'date'                => now(),
-        'company_id'          => $jobRequest->company_id,
-        'issued_by'           => auth()->id(), // can be null if needed
-        'authorized_by'       => null, // set as needed
-        'sales_by'            => $jobRequest->request_by,
-        'training_mode'       => $jobRequest->training_mode,
-        'qunatity'            => null,
-        'notes'               => null,
-        'status'              => 'Open',
-    ]);
-
-    // Step 2: Copy Training Requests to Trainings
-    foreach ($jobRequest->training_requests as $trainingRequest) {
-        $training = Training::create([
-            'work_order_id'      => $workOrder->id,
-            'training_course_id' => $trainingRequest->training_course_id,
-            'hash'               => null,
-            'quantity'           => $trainingRequest->quantity,
-            'training_mode'      => $trainingRequest->training_mode,
-            'scheduled_date'     => $trainingRequest->requesting_date,
-            'scheduled_time'     => $trainingRequest->requesting_time,
-            'remarks'            => $trainingRequest->remarks,
-            'attendance'         => null,
-            'training_link'      => $trainingRequest->zoom_link,
-            'status'             => 'Created',
+    public function acceptJobRequest(Request $request){
+        $request->validate([
+            'authorized_by' =>'required',  
+            'job_request_id' =>'required' 
         ]);
 
-        // Step 3: Copy Trainee Requests to Trainees
-        foreach ($trainingRequest->trainee_requests as $traineeRequest) {
-            Trainee::create([
-                'work_order_id'                  => $workOrder->id, // optional reference if you want
-                'training_id'                    => $training->id,
-                'company_id'                     => $traineeRequest->company_id,
-                'name'                           => $traineeRequest->trainee_name,
-                'eid_no'                         => $traineeRequest->eid_no,
-                'designation'                    => null, // no field mapping from trainee_request
-                'passport_no'                    => null,
-                'dl_no'                          => null,
-                'dob'                            => null,
-                'dl_issued'                      => null,
-                'dl_expiry'                       => null,
-                'photo'                           => $traineeRequest->profile_pic,
-                'live_photo'                       => null,
-                'dl'                               => $traineeRequest->dl_pic,
-                'eid'                              => null,
-                'nationality'                      => null,
+        $jobRequest = JobRequest::findOrFail($request->job_request_id);
+
+        // Step 1: Create Work Order
+        $workOrder = WorkOrder::create([
+            'job_request_id'      => $jobRequest->id,
+            'company_name_in_work_order' => $jobRequest->company_name_in_work_order,
+            'date'                => date('Y-m-d'),
+            'company_id'          => $jobRequest->company_id,
+            'issued_by'           => auth()->id(), // can be null if needed
+            'authorized_by'       => $request->authorized_by, // set as needed
+            'sales_by'            => $jobRequest->request_by,
+            'training_mode'       => $jobRequest->training_mode,
+            'priority'            => $jobRequest->priority,
+            'is_zoom_link_required'=> $jobRequest->is_zoom_link_required,
+            'status'              => 'Open',
+        ]);
+
+        // Step 2: Copy Training Requests to Trainings
+        foreach ($jobRequest->training_requests as $trainingRequest) {
+            $training = $workOrder->trainings()->create([
+                'training_course_id' => $trainingRequest->training_course_id,
+                'course_title_in_certificate' => $trainingRequest->course_title_in_certificate,
+                'company_name_in_certificate' => $trainingRequest->company_name_in_certificate,
+                'hash'               => Str::uuid()->toString(),
+                'quantity'           => $trainingRequest->quantity,
+                'training_mode'      => $trainingRequest->training_mode,
+                'scheduled_date'     => $trainingRequest->requesting_date,
+                'scheduled_time'     => $trainingRequest->requesting_time,
+                'is_zoom_link_required'=> $trainingRequest->is_zoom_link_required,
+                'remarks'            => $trainingRequest->remarks,
+                'status'             => 'Created',
             ]);
+
+            // Step 3: Copy Trainee Requests to Trainees
+            foreach ($trainingRequest->trainee_requests as $traineeRequest) {
+                $training->trainees()->create([
+                    'trainee_request_id'              => $traineeRequest->id,
+                    'candidate_name_in_certificate'   => $traineeRequest->trainee_name,
+                    'company_name_in_certificate'     => $traineeRequest->company_name_in_certificate,
+                    'course_name_in_certificate'      => $traineeRequest->course_title_in_certificate,
+                    'date'                            => $traineeRequest->certificate_date,
+                    'eid_no'                          => $traineeRequest->eid_no,
+                    'live_photo'                      => $traineeRequest->profile_pic,
+                ]);
+            }
         }
-    }
+        
+        // Step 4: Update Job Request Status
+        $jobRequest->update([
+            'request_status' => 'Accepted',
+            'accepted_on'    => now(),
+            'accepted_by'    => auth()->id(),
+        ]);
 
-    // Step 4: Update Job Request Status
-    $jobRequest->update([
-        'request_status' => 'Accepted',
-        'accepted_on'    => now(),
-        'accepted_by'    => auth()->id(),
-    ]);
-
-    return redirect()->back()->with('success', 'Job request accepted and converted to work order successfully!');
-}
-    
+        return redirect()->back()->with('success', 'Job request accepted and converted to work order successfully!');
+    }   
 }

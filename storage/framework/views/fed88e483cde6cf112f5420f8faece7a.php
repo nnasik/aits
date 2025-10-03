@@ -5,7 +5,7 @@
             <table class="table table-striped" role="table">
                 <thead>
                     <tr>
-                        <th scope="col">Job No</th>
+                        <th scope="col">Request No</th>
                         <th scope="col">Company Name</th>
                         <th scope="col">Qty</th>
                         <th scope="col">Status</th>
@@ -27,10 +27,10 @@
                                 <i class="bi bi-eye"></i> View
                             </a>
 
-                            <!-- Accept Button -->
-                            <a href="" class="btn btn-success btn-sm" title="Accept">
+                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#acceptModal" onclick="setJobRequestId(<?php echo e($request->id); ?>)">
                                 <i class="bi bi-check-circle"></i> Accept
-                            </a>
+                            </button>
 
                             <!-- Reject Button -->
                             <a href="" class="btn btn-danger btn-sm" title="Reject">

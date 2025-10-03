@@ -4,27 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Company;
+use App\Models\Training;
+use App\Models\TrainingRequest;
 
 class Trainee extends Model
 {
     //
 
     protected $fillable = [
-        'company_id',
-        'name',
+        'trainee_request_id',
+        'candidate_name_in_certificate',
+        'company_name_in_certificate',
+        'course_name_in_certificate',
+        'date',
         'eid_no',
-        'designation',
-        'passport',
-        'dob',
-        'nationality',
+        'live_photo',
+        'certificate_status',
+        'id_card_status',
+        'training_status'
     ];
 
-
-    public function company(){
-        return $this->belongsTo(Company::class,'company_id');
+    public function training(){
+        return $this->belongsTo(Training::class);
     }
 
-    public function trainings(){
-        return $this->belongsToMany(Training::class, 'training_trainee', 'trainee_id', 'training_id');
+    public function trainingRequest(){
+        return $this->belongsTo(TrainingRequest::class);
     }
 }

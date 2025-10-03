@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('training_requests', function (Blueprint $table) {
             $table->id();
+            
             $table->foreignId('job_request_id')->constrained(
-                table: 'job_requests'
+                table: 'training_requests'
             );
             $table->foreignId('training_course_id')->constrained(
-                table: 'training_courses', indexName: 'trainings_request_training_course_id'
+                table: 'training_courses'
             );
             $table->string('course_title_in_certificate')->nullable();
             $table->string('company_name_in_certificate')->nullable();
@@ -32,9 +33,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained(
                 table: 'users', indexName: 'training_request_user_id'
             );
-
             $table->string('status')->default('Created');
-            
             $table->timestamps();
         });
     }

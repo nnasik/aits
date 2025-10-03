@@ -34,17 +34,35 @@
                         @elseif($request->request_status=='Cancelled')
                             <span class="badge bg-danger">{{$request->request_status}}</span>
                             <span class="badge text-muted">{{$request->updated_at}}</span>
+                        @elseif($request->request_status=='Accepted')
+                            <span class="badge bg-primary">{{$request->request_status}}</span>
+                            <span class="text-muted">by {{$request->accepted->name}} @ {{$request->accepted_on}}</span>
                         @endif
-                        <span class="badge text-muted">{{$request->requester->name}}</span>
+                        <br>
+                        <span class="badge text-muted">Request by : {{$request->requester->name}}</span>
                         </td>
                         <td class="text-center">
                             @if($request->request_status=='Requested')
                                 <span class="badge bg-warning text-dark">Awaiting</span>
+                            @elseif($request->request_status=='Accepted')
+                                @if($request->job->status=='Open')
+                                <span class="badge bg-primary">
+                                    {{$request->job->status}}
+                                </span>
+                                @endif
                             @endif
                         </td>
                         <td class="text-center">
                             @if($request->request_status=='Requested')
                                 <span class="badge bg-warning text-dark">Awaiting</span>
+                            @elseif($request->request_status=='Accepted')
+                                @if($request->job->training_status=='Waiting')
+                                    <span class="badge bg-warning text-dark">{{$request->job->training_status}}</span>
+                                @elseif($request->job->training_status=='Completed')
+                                    <span class="badge bg-success">{{$request->job->training_status}}</span>
+                                @elseif($request->job->training_status=='Cancelled')
+                                    <span class="badge bg-danger">{{$request->job->training_status}}</span>
+                                @endif
                             @endif
                         </td>
                         <td class="text-center">

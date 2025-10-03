@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('jobrequest/cancel/{id}',[JobRequestController::class,'cancel'])->name('jobrequest.cencel');
     Route::post('/job-request/{id}/request', [JobRequestController::class, 'markAsRequested'])
      ->name('job-request.markAsRequested');
+    Route::post('/job-request/accept/', [JobRequestController::class, 'acceptJobRequest'])->name('job-request.accept');
+
     
     // Training Request
     Route::resource('trainingrequest', TrainingRequestController::class)->only(['index','store','show','edit','destroy']);
@@ -118,5 +120,13 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::post('/users/update-status', [UserController::class, 'updateStatus']) ->name('users.updateStatus');
     });
+
+    Route::get('/logout', function () {
+        Auth::logout();                         // Logs out user
+        request()->session()->invalidate();     // Invalidate session
+        request()->session()->regenerateToken();// Regenerate CSRF token
+
+        return redirect('/login');              // Redirect to login
+    })->name('logout');
 
 });

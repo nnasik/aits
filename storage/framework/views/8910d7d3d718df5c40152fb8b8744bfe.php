@@ -35,17 +35,36 @@
                         <?php elseif($request->request_status=='Cancelled'): ?>
                             <span class="badge bg-danger"><?php echo e($request->request_status); ?></span>
                             <span class="badge text-muted"><?php echo e($request->updated_at); ?></span>
+                        <?php elseif($request->request_status=='Accepted'): ?>
+                            <span class="badge bg-primary"><?php echo e($request->request_status); ?></span>
+                            <span class="text-muted">by <?php echo e($request->accepted->name); ?> @ <?php echo e($request->accepted_on); ?></span>
                         <?php endif; ?>
-                        <span class="badge text-muted"><?php echo e($request->requester->name); ?></span>
+                        <br>
+                        <span class="badge text-muted">Request by : <?php echo e($request->requester->name); ?></span>
                         </td>
                         <td class="text-center">
                             <?php if($request->request_status=='Requested'): ?>
                                 <span class="badge bg-warning text-dark">Awaiting</span>
+                            <?php elseif($request->request_status=='Accepted'): ?>
+                                <?php if($request->job->status=='Open'): ?>
+                                <span class="badge bg-primary">
+                                    <?php echo e($request->job->status); ?>
+
+                                </span>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </td>
                         <td class="text-center">
                             <?php if($request->request_status=='Requested'): ?>
                                 <span class="badge bg-warning text-dark">Awaiting</span>
+                            <?php elseif($request->request_status=='Accepted'): ?>
+                                <?php if($request->job->training_status=='Waiting'): ?>
+                                    <span class="badge bg-warning text-dark"><?php echo e($request->job->training_status); ?></span>
+                                <?php elseif($request->job->training_status=='Completed'): ?>
+                                    <span class="badge bg-success"><?php echo e($request->job->training_status); ?></span>
+                                <?php elseif($request->job->training_status=='Cancelled'): ?>
+                                    <span class="badge bg-danger"><?php echo e($request->job->training_status); ?></span>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </td>
                         <td class="text-center">

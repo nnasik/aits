@@ -13,22 +13,21 @@ return new class extends Migration
     {
         Schema::create('trainees', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('company_id')->constrained(
-                table: 'companies', indexName: 'company_company_id'
+            $table->foreignId('training_id')->constrained();
+            $table->foreignId('trainee_request_id')->constrained(
+                table:'trainee_requests',
             )->nullable();
-            $table->string('name');
-            $table->string('eid_no')->unique()->nullable();
-            $table->string('designation')->nullable();
+            $table->string('candidate_name_in_certificate')->nullable();
+            $table->string('company_name_in_certificate')->nullable();
+            $table->string('course_name_in_certificate')->nullable();
+            $table->string('live_photo')->nullable();
+            $table->string('eid_no')->nullable();
+            $table->date('date')->nullable();
             $table->string('passport_no')->nullable();
             $table->string('dl_no')->nullable();
-            $table->date('dob')->nullable();
             $table->date('dl_issued')->nullable();
             $table->date('dl_expiry')->nullable();
-            $table->string('photo')->nullable();
-            $table->string('live_photo')->nullable();
-            $table->string('dl')->nullable();
-            $table->string('eid')->nullable();
-            $table->string('nationality')->nullable();
+            $table->string('signature')->nullable();
             $table->timestamps();
         });
     }

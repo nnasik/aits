@@ -7,8 +7,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <form action="{{route('training-requests.uploadEidBack')}}" method="POST" enctype="multipart/form-data">
-          @csrf
+        <form action="<?php echo e(route('training-requests.uploadEidBack')); ?>" method="POST" enctype="multipart/form-data">
+          <?php echo csrf_field(); ?>
            <input type="hidden" name="trainee_request_id">
           <div id="eidBackDropZone" class="border border-2 border-dashed rounded-3 p-5 text-center bg-light" style="cursor:pointer;">
             <i class="bi bi-cloud-arrow-up fs-1 text-primary"></i>
@@ -60,3 +60,4 @@ eidBackDropZone.addEventListener('drop', e=>{
 
 </script>
 
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/training_request/modals/eid_back.blade.php ENDPATH**/ ?>

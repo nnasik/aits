@@ -58,4 +58,5 @@
   </div>
   <!--end::App Content-->
   @include('job.modals.new_job')
+  @include('job.modals.accept_request')
   @endsection()

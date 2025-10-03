@@ -233,26 +233,26 @@
         <div class="muted-small">Please sign in to continue to the system.</div>
 
         <!-- Laravel alert/status & validation area -->
-        @if (session('status'))
-          <div class="alert alert-success small" role="alert">{{ session('status') }}</div>
-        @endif
+        <?php if(session('status')): ?>
+          <div class="alert alert-success small" role="alert"><?php echo e(session('status')); ?></div>
+        <?php endif; ?>
 
-        @if (session('error'))
-          <div class="alert alert-danger small" role="alert">{{ session('error') }}</div>
-        @endif
+        <?php if(session('error')): ?>
+          <div class="alert alert-danger small" role="alert"><?php echo e(session('error')); ?></div>
+        <?php endif; ?>
 
-        @if ($errors->any())
+        <?php if($errors->any()): ?>
           <div class="alert alert-danger small" role="alert">
             <ul class="mb-0 ps-3">
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
+              <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <li><?php echo e($error); ?></li>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </ul>
           </div>
-        @endif
+        <?php endif; ?>
 
-        <form method="POST" action="{{ route('login') }}" novalidate>
-          @csrf
+        <form method="POST" action="<?php echo e(route('login')); ?>" novalidate>
+          <?php echo csrf_field(); ?>
 
           <!-- Username / Email (Laravel expects 'email' by default) -->
           <div class="mb-3">
@@ -261,15 +261,29 @@
               type="email"
               id="email"
               name="email"
-              value="{{ old('email') }}"
+              value="<?php echo e(old('email')); ?>"
               required
               autofocus
-              class="form-control line-input @error('email') is-invalid @enderror"
+              class="form-control line-input <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
               aria-describedby="emailHelp"
               placeholder="you@example.com">
-            @error('email')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <?php $__errorArgs = ['email'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+              <div class="invalid-feedback"><?php echo e($message); ?></div>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
           </div>
 
           <!-- Password -->
@@ -280,11 +294,25 @@
               id="password"
               name="password"
               required
-              class="form-control line-input @error('password') is-invalid @enderror"
+              class="form-control line-input <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
               placeholder="Enter your password">
-            @error('password')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
+            <?php $__errorArgs = ['password'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+              <div class="invalid-feedback"><?php echo e($message); ?></div>
+            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
           </div>
 
           <!-- Remember Me -->
@@ -293,7 +321,7 @@
                    class="form-check-input"
                    id="remember"
                    name="remember"
-                   value="1" {{ old('remember') ? 'checked' : '' }}>
+                   value="1" <?php echo e(old('remember') ? 'checked' : ''); ?>>
             <label class="form-check-label small" for="remember">Remember me</label>
           </div>
 
@@ -303,9 +331,9 @@
           </div>
 
           <!-- space for potential generic auth error that Laravel might set -->
-          @if (session('login_error'))
-            <div class="text-danger small mt-1">{{ session('login_error') }}</div>
-          @endif
+          <?php if(session('login_error')): ?>
+            <div class="text-danger small mt-1"><?php echo e(session('login_error')); ?></div>
+          <?php endif; ?>
 
         </form>
 
@@ -317,3 +345,4 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/auth/login.blade.php ENDPATH**/ ?>

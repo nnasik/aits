@@ -33,8 +33,16 @@ class JobRequest extends Model{
         return $this->belongsTo(User::class,'request_by');
     }
 
+    public function accepted(){
+        return $this->belongsTo(User::class,'accepted_by');
+    }
+
     public function training_requests(){
         return $this->hasMany(TrainingRequest::class, 'job_request_id', 'id');
+    }
+
+    public function job(){
+        return $this->hasOne(WorkOrder::class,'job_request_id');
     }
 
     public function histories(){

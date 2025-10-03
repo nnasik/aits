@@ -10,15 +10,17 @@ use App\Models\TrainingCourse;
 class Training extends Model
 {
     protected $fillable=[
-        'work_order_id',
         'training_course_id',
+        'course_title_in_certificate',
+        'company_name_in_certificate',
+        'hash',
         'quantity',
+        'training_mode',
         'scheduled_date',
         'scheduled_time',
-        'training_mode',
-        'training_link',
+        'is_zoom_link_required',
         'remarks',
-        'hash'
+        'status'
     ];
 
     public function workOrder(){
@@ -29,10 +31,8 @@ class Training extends Model
         return $this->belongsTo(TrainingCourse::class,'training_course_id');
     }
 
-     public function trainees(){
-        return $this->belongsToMany(Trainee::class, 'training_trainee','training_id', 'trainee_id')
-                ->withPivot(['id', 'photo', 'signature']) // include extra pivot columns
-                ->withTimestamps();
+    public function trainees(){
+        return $this->hasMany(Trainee::class);
     }
 
     public function job(){
