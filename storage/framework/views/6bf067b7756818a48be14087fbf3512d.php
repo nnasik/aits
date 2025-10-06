@@ -37,7 +37,11 @@
                             <?php endif; ?>
 
                             <h3 class="mt-2 mb-0"><?php echo e($user->name); ?></h3>
-                            <p class="text-muted mb-0"><?php echo e($user->roles->first()->name); ?></p>
+                            <?php if($user->roles->isNotEmpty()): ?>
+    <p class="text-muted mb-0"><?php echo e($user->roles->first()->name); ?></p>
+<?php else: ?>
+    <p class="text-muted mb-0">No role assigned</p>
+<?php endif; ?>
 
                             <ul class="list-group mt-3">
                                 <li class="list-group-item text-start"><b>User ID :</b> <?php echo e($user->id); ?></li>

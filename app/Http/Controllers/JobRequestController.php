@@ -150,8 +150,7 @@ class JobRequestController extends Controller{
     return redirect()->back()->with('success', 'Job request cancelled successfully!');
 }
 
-public function markAsRequested($id)
-{
+public function markAsRequested($id){
     $jobRequest = JobRequest::findOrFail($id);
 
     // Only allow if not already requested
@@ -166,6 +165,10 @@ public function markAsRequested($id)
         'request_by'     => auth()->id(),
         'request_status' => 'Requested',
     ]);
+
+    foreach($jobRequest->training_requests as $trainingRequest) {
+        $trainingRequest->status = 'Requested';
+    }
 
     // Add history
     $jobRequest->histories()->create([
@@ -208,6 +211,8 @@ public function markAsRequested($id)
 
         // Step 2: Copy Training Requests to Trainings
         foreach ($jobRequest->training_requests as $trainingRequest) {
+            $trainingRequest->status = 'Job Accepted';
+            $trainingRequest->save();
             $training = $workOrder->trainings()->create([
                 'training_course_id' => $trainingRequest->training_course_id,
                 'course_title_in_certificate' => $trainingRequest->course_title_in_certificate,
@@ -220,6 +225,7 @@ public function markAsRequested($id)
                 'is_zoom_link_required'=> $trainingRequest->is_zoom_link_required,
                 'remarks'            => $trainingRequest->remarks,
                 'status'             => 'Created',
+                'training_request_id' => $trainingRequest->id,
             ]);
 
             // Step 3: Copy Trainee Requests to Trainees

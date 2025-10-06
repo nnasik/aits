@@ -124,4 +124,5 @@
   <!--end::App Content-->
   @include('job.modals.add_trainee')
   @include('trainee.modals.new_trainee')
+  @include('job.modals.edit_trainee')
   @endsection()

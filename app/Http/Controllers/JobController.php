@@ -222,4 +222,20 @@ class JobController extends Controller
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="workpermit_'.$job->id.'.pdf"');
     }
+
+    public function updateStatus(Request $request)
+    {
+        $request->validate([
+            'work_order_id'       => 'required|exists:work_orders,id',
+            'training_status'     => 'required|in:Waiting,On Going,Completed',
+            'certificate_status'  => 'required|in:Waiting,On Going,Completed',
+        ]);
+
+        $workOrder = WorkOrder::findOrFail($request->work_order_id);
+        $workOrder->training_status    = $request->training_status;
+        $workOrder->certificate_status    = $request->certificate_status;
+        $workOrder->save();
+
+        return redirect()->back()->with('success', 'Work order status updated successfully.');
+    }
 }

@@ -201,7 +201,7 @@ class TrainingController extends Controller
         $pdf->Ln();
         foreach($training->trainees as $trainee){
             $pdf->Cell(15,15, $counter,1,0,'C');
-            $pdf->Cell(70,15,$trainee->name,1);
+            $pdf->Cell(70,15,$trainee->candidate_name_in_certificate,1);
             if ($trainee->eid_no) {
                 $pdf->Cell(45,15,$trainee->eid_no,1);
             }
@@ -218,8 +218,8 @@ class TrainingController extends Controller
             $x = $pdf->GetX();
             $y = $pdf->GetY();
 
-            if ($trainee->pivot->signature){
-                $pdf->Image(public_path('/storage/'.$trainee->pivot->signature), $x-40, $y, 16);
+            if ($trainee->signature){
+                $pdf->Image(public_path('/storage/'.$trainee->signature), $x-40, $y, 16);
             }
             $counter++;
             $pdf->Ln();

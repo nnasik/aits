@@ -51,6 +51,24 @@
       </div> -->
 </div>
 
+<script>
+    /**
+     * Opens the Update Work Order Status modal and populates fields
+     * @param {Object} workOrder - The work order object containing id and current statuses
+     */
+    function openUpdateWorkOrderModal(workOrder) {
+        // Set hidden input
+        document.getElementById('work_order_id').value = workOrder.id;
+
+        // Set dropdown values
+        document.getElementById('training_status').value = workOrder.training_status ?? 'Waiting';
+        document.getElementById('certificate_status').value = workOrder.certificate_status ?? 'Waiting';
+
+        // Show modal
+        new bootstrap.Modal(document.getElementById('updateWorkOrderModal')).show();
+    }
+</script>
+
 
     @include('job.index.table')
     <!--end::Row-->
@@ -59,4 +77,5 @@
   <!--end::App Content-->
   @include('job.modals.new_job')
   @include('job.modals.accept_request')
+  @include('job.modals.change_status')
   @endsection()

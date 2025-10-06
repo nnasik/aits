@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Company;
 use App\Models\Training;
 use App\Models\TrainingRequest;
+use App\Models\TraineeRequest;
 
 class Trainee extends Model
 {
@@ -30,5 +31,8 @@ class Trainee extends Model
 
     public function trainingRequest(){
         return $this->belongsTo(TrainingRequest::class);
+    }
+    public function traineeRequest(){
+        return $this->belongsTo(TraineeRequest::class);
     }
 }

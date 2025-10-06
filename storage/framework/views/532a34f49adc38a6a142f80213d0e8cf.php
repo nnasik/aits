@@ -50,9 +50,8 @@
                   <li>
                     <a class="dropdown-item trainee-item" href="#"
                        data-value="<?php echo e($trainee->id); ?>" 
-                       data-company="<?php echo e($trainee->company->name); ?>" 
                        data-eid="<?php echo e($trainee->eid_no); ?>"
-                       data-photo="<?php echo e($trainee->photo ? asset('storage/'.$trainee->photo) : asset('images/placeholder.png')); ?>">
+                       data-photo="<?php echo e($trainee->live_photo ? asset('storage/'.$trainee->live_photo) : asset('images/placeholder.png')); ?>">
                       <?php echo e($trainee->name); ?>
 
                     </a>

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\JobRequest;
 use App\Models\TrainingCourse;
 use App\Models\TraineeRequest;
+use App\Models\Training;
 
 class TrainingRequest extends Model{
     protected $fillable = [
@@ -44,4 +45,7 @@ class TrainingRequest extends Model{
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function training(){
+        return $this->hasOne(Training::class,'training_request_id');
+    }
 }

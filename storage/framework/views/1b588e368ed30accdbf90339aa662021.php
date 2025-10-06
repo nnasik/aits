@@ -19,13 +19,24 @@
                         <td><?php echo e($job->id); ?></td>
                         <td><?php echo e($job->company->name); ?></td>
                         <td><?php echo e($job->quantity); ?>0</td>
-                        <td><span class="badge text-bg-danger"><?php echo e($job->status); ?></span></td>
+                        <td>
+                            Job : <span class="badge text-dark"><?php echo e($job->status); ?></span>
+                            <br>
+                            Training : <span class="badge text-dark"><?php echo e($job->training_status); ?></span>
+                            <br>
+                            Certificate : <span class="badge text-dark"><?php echo e($job->certificate_status); ?></span>
+                        </td>
                         <td><?php echo e($job->date); ?></td>
                         <td>
                             <!-- Edit Button -->
-                            <a href="<?php echo e(route('job.edit', $job->id)); ?>" class="btn btn-warning btn-sm" title="Edit">
-                                <i class="bi bi-pencil"></i> Edit
-                            </a>
+                            <button type="button" 
+        onclick="openUpdateWorkOrderModal({ 
+            id: <?php echo e($job->id); ?>, 
+            training_status: '<?php echo e($job->training_status); ?>', 
+            certificate_status: '<?php echo e($job->certificate_status); ?>' 
+        })" class="btn btn-warning btn-sm" title="Edit">
+                                <i class="bi bi-pencil"></i> Update
+</button>
 
                             <!-- View Button -->
                             <a href="<?php echo e(route('job.show', $job->id)); ?>" class="btn btn-primary btn-sm" title="View">

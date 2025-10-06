@@ -50,9 +50,8 @@
                   <li>
                     <a class="dropdown-item trainee-item" href="#"
                        data-value="{{ $trainee->id }}" 
-                       data-company="{{ $trainee->company->name}}" 
                        data-eid="{{ $trainee->eid_no }}"
-                       data-photo="{{ $trainee->photo ? asset('storage/'.$trainee->photo) : asset('images/placeholder.png') }}">
+                       data-photo="{{ $trainee->live_photo ? asset('storage/'.$trainee->live_photo) : asset('images/placeholder.png') }}">
                       {{ $trainee->name }}
                     </a>
                   </li>

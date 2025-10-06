@@ -37,7 +37,11 @@
                             @endif
 
                             <h3 class="mt-2 mb-0">{{ $user->name }}</h3>
-                            <p class="text-muted mb-0">{{ $user->roles->first()->name }}</p>
+                            @if($user->roles->isNotEmpty())
+    <p class="text-muted mb-0">{{ $user->roles->first()->name }}</p>
+@else
+    <p class="text-muted mb-0">No role assigned</p>
+@endif
 
                             <ul class="list-group mt-3">
                                 <li class="list-group-item text-start"><b>User ID :</b> {{ $user->id }}</li>

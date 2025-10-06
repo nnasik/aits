@@ -25,19 +25,38 @@
                             </form>
                         </td>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$trainee->name}}</td>
-                        <td>{{$trainee->eid_no ?? $trainee->passport}}</td>
-                        <td>
-                            @if($trainee->pivot->signature)
-                            <img src="{{ '/storage/'.$trainee->pivot->signature}}" alt="Signature" height="100">
+                        <td>{{$trainee->candidate_name_in_certificate}}</td>
+                        <td>{{$trainee->eid_no ?? $trainee->passport}}<br>
+                            @if($trainee->traineeRequest->eid_front_pic)
+                            <a href="{{ '/storage/'.$trainee->traineeRequest->eid_front_pic }}" target="_blank">
+                                <span>📄 EID Front Pic</span>
+                            </a>
+                            @else
+                            <span>📄 EID Front Pic</span>
                             @endif
                         </td>
                         <td>
-                            <a href="#" class="btn btn-warning">
+                            @if($trainee->signature)
+                            <img src="{{ '/storage/'.$trainee->signature}}" alt="Signature" height="100">
+                            @endif
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-warning" onclick="openEditTraineeModal({
+                                id: '{{ $trainee->id }}',
+                                candidate_name_in_certificate: '{{ $trainee->candidate_name_in_certificate }}',
+                                company_name_in_certificate: '{{ $trainee->company_name_in_certificate }}',
+                                course_name_in_certificate: '{{ $trainee->course_name_in_certificate }}',
+                                live_photo: '{{ $trainee->live_photo }}',
+                                eid_no: '{{ $trainee->eid_no }}',
+                                date: '{{ $trainee->date }}',
+                                passport_no: '{{ $trainee->passport_no }}',
+                                dl_no: '{{ $trainee->dl_no }}',
+                                dl_issued: '{{ $trainee->dl_issued }}',
+                                dl_expiry: '{{ $trainee->dl_expiry }}'
+                            })">
                                 <i class="bi bi-pencil"></i>
                             </a>
                         </td>
-
                     </tr>
                     @endforeach
                 </tbody>

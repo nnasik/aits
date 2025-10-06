@@ -23,64 +23,96 @@
                         <td class="text-center">{{$request->id}}</td>
                         <td>Job for : {{$request->company->name}}
                             <br>
-                        as : <b>{{$request->company_name_in_work_order}}</b>
+                            as : <b>{{$request->company_name_in_work_order}}</b>
                             <br>
-                        @if($request->request_status=='Requested')
+                            @if($request->request_status=='Requested')
                             <span class="badge bg-warning text-dark">{{$request->request_status}}</span>
                             <span class="badge text-muted">{{$request->requested_on}}</span>
-                        @elseif($request->request_status=='Created')
+                            @elseif($request->request_status=='Created')
                             <span class="badge bg-secondary">{{$request->request_status}}</span>
                             <span class="badge text-muted">{{$request->updated_at}}</span>
-                        @elseif($request->request_status=='Cancelled')
+                            @elseif($request->request_status=='Cancelled')
                             <span class="badge bg-danger">{{$request->request_status}}</span>
                             <span class="badge text-muted">{{$request->updated_at}}</span>
-                        @elseif($request->request_status=='Accepted')
+                            @elseif($request->request_status=='Accepted')
                             <span class="badge bg-primary">{{$request->request_status}}</span>
                             <span class="text-muted">by {{$request->accepted->name}} @ {{$request->accepted_on}}</span>
-                        @endif
-                        <br>
-                        <span class="badge text-muted">Request by : {{$request->requester->name}}</span>
+                            @endif
+                            <br>
+                            <span class="badge text-muted">Request by : {{$request->requester->name}}</span>
                         </td>
                         <td class="text-center">
                             @if($request->request_status=='Requested')
-                                <span class="badge bg-warning text-dark">Awaiting</span>
+                            <span class="badge bg-warning text-dark">Awaiting</span>
                             @elseif($request->request_status=='Accepted')
-                                @if($request->job->status=='Open')
-                                <span class="badge bg-primary">
-                                    {{$request->job->status}}
-                                </span>
-                                @endif
+                            @if($request->job->status=='Open')
+                            <span class="badge bg-primary">
+                                {{$request->job->status}}
+                            </span>
+                            @endif
                             @endif
                         </td>
                         <td class="text-center">
                             @if($request->request_status=='Requested')
-                                <span class="badge bg-warning text-dark">Awaiting</span>
+                            <span class="badge bg-warning text-dark">Awaiting</span>
                             @elseif($request->request_status=='Accepted')
                                 @if($request->job->training_status=='Waiting')
-                                    <span class="badge bg-warning text-dark">{{$request->job->training_status}}</span>
+                                <span class="badge bg-warning text-dark">{{$request->job->training_status}}</span>
                                 @elseif($request->job->training_status=='Completed')
-                                    <span class="badge bg-success">{{$request->job->training_status}}</span>
+                                <span class="badge bg-success">{{$request->job->training_status}}</span>
+                                @elseif($request->job->training_status=='On Going')
+                                <span class="badge bg-primary">{{$request->job->training_status}}</span>
                                 @elseif($request->job->training_status=='Cancelled')
-                                    <span class="badge bg-danger">{{$request->job->training_status}}</span>
+                                <span class="badge bg-danger">{{$request->job->training_status}}</span>
                                 @endif
                             @endif
                         </td>
                         <td class="text-center">
                             @if($request->request_status=='Requested')
-                                <span class="badge bg-warning text-dark">Awaiting</span>
-                            @else
-                                {{$request->certificate_status}}
+                            <span class="badge bg-warning text-dark">Awaiting</span>
+                            @elseif($request->request_status=='Accepted')
+                                @if($request->job->certificate_status=='Waiting')
+                                <span class="badge bg-warning text-dark">{{$request->job->certificate_status}}</span>
+                                @elseif($request->job->certificate_status=='On Going')
+                                <span class="badge bg-primary">{{$request->job->certificate_status}}</span>
+                                @elseif($request->job->certificate_status=='Completed')
+                                <span class="badge bg-success">{{$request->job->certificate_status}}</span>
+                                @elseif($request->job->certificate_status=='Cancelled')
+                                <span class="badge bg-danger">{{$request->job->certificate_status}}</span>
+                                @endif
                             @endif
-                            
+
                         </td>
                         <td>
-                            <span class="badge text-dark">Invoice : </span>{{$request->invoice_status}}
+                            @if($request->request_status=='Requested')
+                            Invoice : <span class="badge bg-warning text-dark">Waiting</span>
                             <br>
-                            <span class="badge text-dark">Delivery Note : </span>{{$request->delivery_note_status}}
+                            Delivery Note : <span class="badge bg-warning text-dark">Waiting</span>
+                            @elseif($request->request_status=='Accepted')
+                            @if($request->job->invoice_status=='Waiting')
+                            Invoice : <span class="badge bg-warning text-dark">{{$request->job->invoice_status}}</span>
+                            <br>
+                            Delivery Note : <span
+                                class="badge bg-warning text-dark">{{$request->job->delivery_note_status}}</span>
+                            @elseif($request->job->invoice_status=='Completed')
+                            Invoice : <span class="badge bg-success">{{$request->job->invoice_status}}</span>
+                            <br>
+                            Delivery Note : <span
+                                class="badge bg-success">{{$request->job->delivery_note_status}}</span>
+                            @elseif($request->job->certificate_status=='Cancelled')
+                            Invoice : <span class="badge bg-danger">{{$request->job->invoice_status}}</span>
+                            <br>
+                            Delivery Note : <span class="badge bg-danger">{{$request->job->delivery_note_status}}</span>
+                            @endif
+                            @endif
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-primary" href="{{route('jobrequest.show',$request->id)}}"><i class="bi bi-eye-fill"></i></a>
+                            <a class="btn btn-primary" href="{{route('jobrequest.show',$request->id)}}"><i
+                                    class="bi bi-eye-fill"></i></a>
                         </td>
+                    </tr>
+                    <tr>
+
                     </tr>
                     @endforeach
                 </tbody>

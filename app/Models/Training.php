@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\WorkOrder;
 use App\Models\Company;
 use App\Models\TrainingCourse;
+use App\Models\TrainingRequest;
 
 class Training extends Model
 {
@@ -20,7 +21,10 @@ class Training extends Model
         'scheduled_time',
         'is_zoom_link_required',
         'remarks',
-        'status'
+        'status',
+        'training_request_id',
+        'signature', // ✅ add this
+
     ];
 
     public function workOrder(){
@@ -37,5 +41,8 @@ class Training extends Model
 
     public function job(){
          return $this->belongsTo(WorkOrder::class,'work_order_id');
+    }
+    public function traningRequest(){
+         return $this->belongsTo(TrainingRequest::class,'training_request_id');
     }
 }

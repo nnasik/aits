@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training: {{ $training->course->name }}</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Training: <?php echo e($training->course->name); ?></title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,9 +29,9 @@
 </head>
 <body>
 <div class="container my-4">
-    <h2 class="mb-4">Training: <b>{{ $training->course->name }}</b></h2>
-    <h2 class="mb-4">Date: <b>{{ $training->scheduled_date }}</b></h2>
-    <h2 class="mb-4">Company Name: <b>{{ $training->job->company->name }}</b></h2>
+    <h2 class="mb-4">Training: <b><?php echo e($training->course->name); ?></b></h2>
+    <h2 class="mb-4">Date: <b><?php echo e($training->scheduled_date); ?></b></h2>
+    <h2 class="mb-4">Company Name: <b><?php echo e($training->job->company->name); ?></b></h2>
 
     <table class="table table-bordered">
         <thead class="table-light">
@@ -46,47 +46,47 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($training->trainees as $index => $trainee)
+            <?php $__currentLoopData = $training->trainees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $trainee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
-                <td>{{ $index + 1 }}</td>
-                <td>{{ $trainee->candidate_name_in_certificate }}<br>{{ $trainee->eid_no }}</td>
+                <td><?php echo e($index + 1); ?></td>
+                <td><?php echo e($trainee->candidate_name_in_certificate); ?><br><?php echo e($trainee->eid_no); ?></td>
 
-                {{-- Photo --}}
+                
                 <td>
-                    @if($trainee->live_photo)
-                        <img src="{{ asset('storage/'.$trainee->live_photo) }}" height="150">
-                    @else
-                        <form action="{{ route('public.trainee.photo') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" name="training_hash" value="{{ $training->hash }}">
-                            <input type="hidden" name="trainee_id" value="{{ $trainee->id }}">
-                            <input type="file" name="photo" onchange="this.form.submit()" style="display:none;" id="photoInput{{ $trainee->id }}">
+                    <?php if($trainee->live_photo): ?>
+                        <img src="<?php echo e(asset('storage/'.$trainee->live_photo)); ?>" height="150">
+                    <?php else: ?>
+                        <form action="<?php echo e(route('public.trainee.photo')); ?>" method="POST" enctype="multipart/form-data">
+                            <?php echo csrf_field(); ?>
+                            <input type="hidden" name="training_hash" value="<?php echo e($training->hash); ?>">
+                            <input type="hidden" name="trainee_id" value="<?php echo e($trainee->id); ?>">
+                            <input type="file" name="photo" onchange="this.form.submit()" style="display:none;" id="photoInput<?php echo e($trainee->id); ?>">
                             <button type="button" class="btn btn-sm btn-primary"
-                                onclick="document.getElementById('photoInput{{ $trainee->id }}').click();">
+                                onclick="document.getElementById('photoInput<?php echo e($trainee->id); ?>').click();">
                                 Add Photo
                             </button>
                         </form>
-                    @endif
+                    <?php endif; ?>
                 </td>
 
-                {{-- Signature --}}
+                
                 <td>
-                    @if($trainee->signature)
-                        <img src="{{ asset('storage/'.$trainee->signature) }}" height="100">
-                    @else
+                    <?php if($trainee->signature): ?>
+                        <img src="<?php echo e(asset('storage/'.$trainee->signature)); ?>" height="100">
+                    <?php else: ?>
                         <button class="btn btn-sm btn-success"
-                                onclick="openSignatureModal('{{ $trainee->id }}','{{ $trainee->candidate_name_in_certificate }}')">
+                                onclick="openSignatureModal('<?php echo e($trainee->id); ?>','<?php echo e($trainee->candidate_name_in_certificate); ?>')">
                             Add Sign
                         </button>
-                    @endif
+                    <?php endif; ?>
                 </td>
             </tr>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </tbody>
     </table>
 </div>
 
-{{-- Signature Modal --}}
+
 <div class="modal fade" id="signatureModal" tabindex="-1" aria-labelledby="signatureModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen-sm-down">
         <div class="modal-content">
@@ -106,12 +106,12 @@
     </div>
 </div>
 
-{{-- Hidden form to submit signature --}}
-<form id="sigForm" method="POST" action="{{ route('public.trainee.signature') }}" style="display:none;">
-    @csrf
+
+<form id="sigForm" method="POST" action="<?php echo e(route('public.trainee.signature')); ?>" style="display:none;">
+    <?php echo csrf_field(); ?>
     <input type="hidden" name="signature" id="signatureInput">
     <input type="hidden" name="trainee_id" id="signatureTraineeId">
-    <input type="hidden" name="training_hash" value="{{ $training->hash }}">
+    <input type="hidden" name="training_hash" value="<?php echo e($training->hash); ?>">
 </form>
 
 <!-- Bootstrap JS -->
@@ -176,3 +176,4 @@ document.getElementById('saveBtn').addEventListener('click', ()=>{
 </script>
 </body>
 </html>
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/public/training.blade.php ENDPATH**/ ?>

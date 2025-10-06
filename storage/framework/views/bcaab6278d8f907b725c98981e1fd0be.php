@@ -51,6 +51,24 @@
       </div> -->
 </div>
 
+<script>
+    /**
+     * Opens the Update Work Order Status modal and populates fields
+     * @param {Object} workOrder - The work order object containing id and current statuses
+     */
+    function openUpdateWorkOrderModal(workOrder) {
+        // Set hidden input
+        document.getElementById('work_order_id').value = workOrder.id;
+
+        // Set dropdown values
+        document.getElementById('training_status').value = workOrder.training_status ?? 'Waiting';
+        document.getElementById('certificate_status').value = workOrder.certificate_status ?? 'Waiting';
+
+        // Show modal
+        new bootstrap.Modal(document.getElementById('updateWorkOrderModal')).show();
+    }
+</script>
+
 
     <?php echo $__env->make('job.index.table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <!--end::Row-->
@@ -59,5 +77,6 @@
   <!--end::App Content-->
   <?php echo $__env->make('job.modals.new_job', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   <?php echo $__env->make('job.modals.accept_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('job.modals.change_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/index.blade.php ENDPATH**/ ?>

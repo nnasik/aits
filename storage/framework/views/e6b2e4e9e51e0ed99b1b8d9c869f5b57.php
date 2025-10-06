@@ -25,19 +25,38 @@
                             </form>
                         </td>
                         <td><?php echo e($loop->iteration); ?></td>
-                        <td><?php echo e($trainee->name); ?></td>
-                        <td><?php echo e($trainee->eid_no ?? $trainee->passport); ?></td>
-                        <td>
-                            <?php if($trainee->pivot->signature): ?>
-                            <img src="<?php echo e('/storage/'.$trainee->pivot->signature); ?>" alt="Signature" height="100">
+                        <td><?php echo e($trainee->candidate_name_in_certificate); ?></td>
+                        <td><?php echo e($trainee->eid_no ?? $trainee->passport); ?><br>
+                            <?php if($trainee->traineeRequest->eid_front_pic): ?>
+                            <a href="<?php echo e('/storage/'.$trainee->traineeRequest->eid_front_pic); ?>" target="_blank">
+                                <span>📄 EID Front Pic</span>
+                            </a>
+                            <?php else: ?>
+                            <span>📄 EID Front Pic</span>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a href="#" class="btn btn-warning">
+                            <?php if($trainee->signature): ?>
+                            <img src="<?php echo e('/storage/'.$trainee->signature); ?>" alt="Signature" height="100">
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-warning" onclick="openEditTraineeModal({
+                                id: '<?php echo e($trainee->id); ?>',
+                                candidate_name_in_certificate: '<?php echo e($trainee->candidate_name_in_certificate); ?>',
+                                company_name_in_certificate: '<?php echo e($trainee->company_name_in_certificate); ?>',
+                                course_name_in_certificate: '<?php echo e($trainee->course_name_in_certificate); ?>',
+                                live_photo: '<?php echo e($trainee->live_photo); ?>',
+                                eid_no: '<?php echo e($trainee->eid_no); ?>',
+                                date: '<?php echo e($trainee->date); ?>',
+                                passport_no: '<?php echo e($trainee->passport_no); ?>',
+                                dl_no: '<?php echo e($trainee->dl_no); ?>',
+                                dl_issued: '<?php echo e($trainee->dl_issued); ?>',
+                                dl_expiry: '<?php echo e($trainee->dl_expiry); ?>'
+                            })">
                                 <i class="bi bi-pencil"></i>
                             </a>
                         </td>
-
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>

@@ -21,12 +21,13 @@ Route::get('/public/training/{hash}', [PublicTrainingController::class, 'showTra
     ->name('public.training.show');
 
 // Save signature (pivot ID)
-Route::post('/public/training/signature/{training}/{traineePivotId}', [PublicTrainingController::class, 'saveSignature'])
-    ->name('training.signature');
+Route::post('/trainee/signature', [PublicTrainingController::class, 'saveSignature'])
+    ->name('public.trainee.signature');
+    
 
 // Upload photo (pivot ID)
-Route::post('training/{training}/trainee/{trainee}/photo', [PublicTrainingController::class, 'uploadPhoto'])
-    ->name('training.trainee.photo');
+Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])
+    ->name('public.trainee.photo');
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -38,6 +39,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Additional Job Routes
     Route::get('/job/training/{id}', [JobController::class, 'training'])->name('job.traning.show');
     Route::get('/job/workpermit/{id}/pdf', [JobController::class, 'workOrderPDF'])->name('job.pdf');
+    Route::post('/job/update-status', [JobController::class, 'updateStatus'])
+    ->name('job.update-status');
 
     // Trainings
     Route::resource('training', TrainingController::class)->only(['index','store','show','edit','destroy']);
@@ -53,6 +56,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Trainee
     Route::resource('trainee', TraineeController::class)->only(['index','store','show','edit']);
+    Route::put('/trainee/update', [TraineeController::class, 'update'])->name('trainee.update');
+
 
     // Certificate
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
