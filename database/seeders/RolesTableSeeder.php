@@ -19,5 +19,12 @@ class RolesTableSeeder extends Seeder
         foreach ($roles as $role) {
             Role::firstOrCreate(['name' => $role, 'guard_name' => 'web']);
         }
+
+        // Get first user and assign admin role
+        $firstUser = User::first();
+        
+        if ($firstUser) {
+            $firstUser->assignRole('Admin');
+        }
     }
 }
