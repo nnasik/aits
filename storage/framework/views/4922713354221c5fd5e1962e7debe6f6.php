@@ -153,20 +153,26 @@
   <?php endif; ?>
 
 
-  <script>
-  (function() {
+<script>
+(function() {
     // Get server time from PHP
     <?php
-      $serverTime = date("Y-M-D H:i:s");
+        $serverTime = date("Y-m-d H:i:s");
     ?>
     const serverTimeStr = "<?php echo e($serverTime); ?>";
     let currentTime = new Date(serverTimeStr);
 
-    // Function to update time
     function updateClock() {
-      currentTime.setSeconds(currentTime.getSeconds() + 1);
-      const formatted = currentTime.toLocaleString();
-      document.getElementById("server-time").textContent = formatted;
+        currentTime.setSeconds(currentTime.getSeconds() + 1);
+
+        const formatted = currentTime.getFullYear() + '-' +
+            String(currentTime.getMonth() + 1).padStart(2, '0') + '-' +
+            String(currentTime.getDate()).padStart(2, '0') + ' ' +
+            String(currentTime.getHours()).padStart(2, '0') + ':' +
+            String(currentTime.getMinutes()).padStart(2, '0') + ':' +
+            String(currentTime.getSeconds()).padStart(2, '0');
+
+        document.getElementById("server-time").textContent = formatted;
     }
 
     // Initial display
@@ -174,8 +180,9 @@
 
     // Update every 1 second
     setInterval(updateClock, 1000);
-  })(); // IIFE for isolation
-  </script>
+})();
+</script>
+
 
   <!-- 
               <li class="nav-item">
