@@ -37,7 +37,7 @@ return new class extends Migration
 
             $table->foreignId('sales_by')->constrained(
                 table: 'users', indexName: 'sales_person_user_id'
-            );
+            )->nullable();
 
             // Settings
             $table->string('status')->default('active');
