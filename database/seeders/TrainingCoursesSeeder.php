@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB; // ✅ Add this line
 
 class TrainingCoursesSeeder extends Seeder
 {
@@ -88,12 +89,14 @@ class TrainingCoursesSeeder extends Seeder
         ];
 
         foreach ($courses as $course) {
-            DB::table('training_courses')->insert([
-                'name' => $course,
-                'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            if (!DB::table('training_courses')->where('name', $course)->exists()) {
+                DB::table('training_courses')->insert([
+                    'name' => $course,
+                    'status' => 'active',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
     }
 }

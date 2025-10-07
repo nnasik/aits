@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB; // ✅ Add this line
+
 
 class CompaniesTableSeeder extends Seeder
 {
@@ -97,13 +99,15 @@ class CompaniesTableSeeder extends Seeder
         ];
 
         foreach ($companies as $company) {
-            DB::table('companies')->insert([
-                'name' => $company,
-                'status' => 'active',
-                'created_at' => now(),
-                'updated_at' => now(),
-                // Optional fields can remain null
-            ]);
+            // Only insert if not already in DB
+            if (!DB::table('companies')->where('name', $company)->exists()) {
+                DB::table('companies')->insert([
+                    'name' => $company,
+                    'status' => 'active',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
     }
 }
