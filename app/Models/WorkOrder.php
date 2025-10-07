@@ -10,9 +10,18 @@ use App\Models\User;
 class WorkOrder extends Model
 {
     protected $fillable=[
-        'job_request_id','company_name_in_work_order','date',
-        'company_id','issued_by','authorized_by','sales_by',
-        'training_mode','priority','is_zoom_link_required','status'
+        'id',
+        'job_request_id',
+        'company_name_in_work_order',
+        'date',
+        'company_id',
+        'issued_by',
+        'authorized_by',
+        'sales_by',
+        'training_mode',
+        'priority',
+        'is_zoom_link_required',
+        'status'
     ];
     
     public function trainings(){

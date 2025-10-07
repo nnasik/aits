@@ -100,14 +100,14 @@
     </div>
     <!-- Table -->
 
-    <div class="row container p-3 m-3">
+    <div class="row p-3 m-3">
     <?php $__currentLoopData = $training_request->trainee_requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trainee_request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       <?php echo $__env->make('training_request.trainee_card', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     <div>
 
     <!-- ROW-7 -->
-    <div class="row mx-1 mt-3">
+    <div class="row mt-3">
       <?php echo $__env->make('training_request.history', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
 

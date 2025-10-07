@@ -10,6 +10,7 @@
       </p>
     </a>
   </li>
+  <div id="server-time" style="font-size:18px;font-family:monospace;color:#fff;text-align:center;"></div>
   <?php if (\Illuminate\Support\Facades\Blade::check('role', 'Sales')): ?>
   <li class="nav-item  menu-open">
     <a href="#" class="nav-link">
@@ -151,6 +152,30 @@
   </li>
   <?php endif; ?>
 
+
+  <script>
+  (function() {
+    // Get server time from PHP
+    <?php
+      $serverTime = date("Y-M-D H:i:s");
+    ?>
+    const serverTimeStr = "<?php echo e($serverTime); ?>";
+    let currentTime = new Date(serverTimeStr);
+
+    // Function to update time
+    function updateClock() {
+      currentTime.setSeconds(currentTime.getSeconds() + 1);
+      const formatted = currentTime.toLocaleString();
+      document.getElementById("server-time").textContent = formatted;
+    }
+
+    // Initial display
+    updateClock();
+
+    // Update every 1 second
+    setInterval(updateClock, 1000);
+  })(); // IIFE for isolation
+  </script>
 
   <!-- 
               <li class="nav-item">

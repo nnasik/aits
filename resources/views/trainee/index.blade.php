@@ -54,7 +54,7 @@
                                     <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span>
                                         {{$trainee->company->name}}</li>
                                     <li class="small mt-2"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span>
-                                        Phone : + 800 - 12 12 23 52</li>
+                                        Phone : </li>
                                 </ul>
                             </div>
                             <div class="col-5 text-center">

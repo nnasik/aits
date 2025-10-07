@@ -19,8 +19,18 @@
             <!-- timeline item -->
             <div>
                 <div>
-                    <img src="" alt="">
-                    hi
+                    @if($history->user->user_dp && 
+                          file_exists(storage_path('app/public/user_dp/' .$history->user->user_dp)))
+                          
+                          <img class=" rounded-circle me-3" 
+                              src="{{asset('storage/user_dp/' . $history->user->user_dp)}}" 
+                              alt="User profile picture" style="width:40px;margin-left:10px">
+
+                      @else
+                          <img src="{{asset('assets/images/user_placeholder.jpg')}}" 
+                              alt="Profile Picture" 
+                              class=" rounded-circle me-3" style="width:40px;margin-left:10px">
+                      @endif
                 </div>
 
                 <div class="timeline-item">

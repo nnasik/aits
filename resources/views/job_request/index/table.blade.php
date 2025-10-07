@@ -41,15 +41,23 @@
                             <br>
                             <span class="badge text-muted">Request by : {{$request->requester->name}}</span>
                         </td>
-                        <td class="text-center">
+                        <td class="text-start">
                             @if($request->request_status=='Requested')
                             <span class="badge bg-warning text-dark">Awaiting</span>
                             @elseif($request->request_status=='Accepted')
-                            @if($request->job->status=='Open')
-                            <span class="badge bg-primary">
-                                {{$request->job->status}}
-                            </span>
-                            @endif
+                                @if($request->job->status=='Open')
+                                <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-primary">
+                                    {{$request->job->status}}
+                                </span>
+                                <br>
+                                <i class="bi bi-file-earmark-ruled-fill text-dark"></i> : <span class="badge bg-dark">
+                                    {{$request->job->id}}
+                                </span>
+                                    <br>
+                                <i class="bi bi-person-fill"></i> : <span class="badge bg-dark">{{$request->job->issued->name}}</span>
+                                    <br>
+                                <i class="bi bi-clock-fill"></i> : <span class="badge bg-dark">{{$request->job->updated_at}}</span>
+                                @endif
                             @endif
                         </td>
                         <td class="text-center">
@@ -89,21 +97,21 @@
                             <br>
                             Delivery Note : <span class="badge bg-warning text-dark">Waiting</span>
                             @elseif($request->request_status=='Accepted')
-                            @if($request->job->invoice_status=='Waiting')
-                            Invoice : <span class="badge bg-warning text-dark">{{$request->job->invoice_status}}</span>
-                            <br>
-                            Delivery Note : <span
-                                class="badge bg-warning text-dark">{{$request->job->delivery_note_status}}</span>
-                            @elseif($request->job->invoice_status=='Completed')
-                            Invoice : <span class="badge bg-success">{{$request->job->invoice_status}}</span>
-                            <br>
-                            Delivery Note : <span
-                                class="badge bg-success">{{$request->job->delivery_note_status}}</span>
-                            @elseif($request->job->certificate_status=='Cancelled')
-                            Invoice : <span class="badge bg-danger">{{$request->job->invoice_status}}</span>
-                            <br>
-                            Delivery Note : <span class="badge bg-danger">{{$request->job->delivery_note_status}}</span>
-                            @endif
+                                @if($request->job->invoice_status=='Waiting')
+                                Invoice : <span class="badge bg-warning text-dark">{{$request->job->invoice_status}}</span>
+                                <br>
+                                Delivery Note : <span
+                                    class="badge bg-warning text-dark">{{$request->job->delivery_note_status}}</span>
+                                @elseif($request->job->invoice_status=='Completed')
+                                Invoice : <span class="badge bg-success">{{$request->job->invoice_status}}</span>
+                                <br>
+                                Delivery Note : <span
+                                    class="badge bg-success">{{$request->job->delivery_note_status}}</span>
+                                @elseif($request->job->certificate_status=='Cancelled')
+                                Invoice : <span class="badge bg-danger">{{$request->job->invoice_status}}</span>
+                                <br>
+                                Delivery Note : <span class="badge bg-danger">{{$request->job->delivery_note_status}}</span>
+                                @endif
                             @endif
                         </td>
                         <td class="text-center">

@@ -42,16 +42,25 @@
                             <br>
                             <span class="badge text-muted">Request by : <?php echo e($request->requester->name); ?></span>
                         </td>
-                        <td class="text-center">
+                        <td class="text-start">
                             <?php if($request->request_status=='Requested'): ?>
                             <span class="badge bg-warning text-dark">Awaiting</span>
                             <?php elseif($request->request_status=='Accepted'): ?>
-                            <?php if($request->job->status=='Open'): ?>
-                            <span class="badge bg-primary">
-                                <?php echo e($request->job->status); ?>
+                                <?php if($request->job->status=='Open'): ?>
+                                <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-primary">
+                                    <?php echo e($request->job->status); ?>
 
-                            </span>
-                            <?php endif; ?>
+                                </span>
+                                <br>
+                                <i class="bi bi-file-earmark-ruled-fill text-dark"></i> : <span class="badge bg-dark">
+                                    <?php echo e($request->job->id); ?>
+
+                                </span>
+                                    <br>
+                                <i class="bi bi-person-fill"></i> : <span class="badge bg-dark"><?php echo e($request->job->issued->name); ?></span>
+                                    <br>
+                                <i class="bi bi-clock-fill"></i> : <span class="badge bg-dark"><?php echo e($request->job->updated_at); ?></span>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </td>
                         <td class="text-center">
@@ -91,21 +100,21 @@
                             <br>
                             Delivery Note : <span class="badge bg-warning text-dark">Waiting</span>
                             <?php elseif($request->request_status=='Accepted'): ?>
-                            <?php if($request->job->invoice_status=='Waiting'): ?>
-                            Invoice : <span class="badge bg-warning text-dark"><?php echo e($request->job->invoice_status); ?></span>
-                            <br>
-                            Delivery Note : <span
-                                class="badge bg-warning text-dark"><?php echo e($request->job->delivery_note_status); ?></span>
-                            <?php elseif($request->job->invoice_status=='Completed'): ?>
-                            Invoice : <span class="badge bg-success"><?php echo e($request->job->invoice_status); ?></span>
-                            <br>
-                            Delivery Note : <span
-                                class="badge bg-success"><?php echo e($request->job->delivery_note_status); ?></span>
-                            <?php elseif($request->job->certificate_status=='Cancelled'): ?>
-                            Invoice : <span class="badge bg-danger"><?php echo e($request->job->invoice_status); ?></span>
-                            <br>
-                            Delivery Note : <span class="badge bg-danger"><?php echo e($request->job->delivery_note_status); ?></span>
-                            <?php endif; ?>
+                                <?php if($request->job->invoice_status=='Waiting'): ?>
+                                Invoice : <span class="badge bg-warning text-dark"><?php echo e($request->job->invoice_status); ?></span>
+                                <br>
+                                Delivery Note : <span
+                                    class="badge bg-warning text-dark"><?php echo e($request->job->delivery_note_status); ?></span>
+                                <?php elseif($request->job->invoice_status=='Completed'): ?>
+                                Invoice : <span class="badge bg-success"><?php echo e($request->job->invoice_status); ?></span>
+                                <br>
+                                Delivery Note : <span
+                                    class="badge bg-success"><?php echo e($request->job->delivery_note_status); ?></span>
+                                <?php elseif($request->job->certificate_status=='Cancelled'): ?>
+                                Invoice : <span class="badge bg-danger"><?php echo e($request->job->invoice_status); ?></span>
+                                <br>
+                                Delivery Note : <span class="badge bg-danger"><?php echo e($request->job->delivery_note_status); ?></span>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </td>
                         <td class="text-center">

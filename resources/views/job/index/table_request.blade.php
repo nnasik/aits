@@ -27,10 +27,14 @@
                                 <i class="bi bi-eye"></i> View
                             </a>
 
-                            <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#acceptModal" onclick="setJobRequestId({{$request->id}})">
+                            <button type="button" class="btn btn-success btn-sm" 
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#acceptModal" 
+                                    onclick="setJobRequestId({{ $request->id }}, {{ $request->work_order_id ?? 'null' }})">
                                 <i class="bi bi-check-circle"></i> Accept
                             </button>
+
+                            
 
                             <!-- Reject Button -->
                             <a href="" class="btn btn-danger btn-sm" title="Reject">

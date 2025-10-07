@@ -10,6 +10,7 @@
       </p>
     </a>
   </li>
+  <div id="server-time" style="font-size:18px;font-family:monospace;color:#fff;text-align:center;"></div>
   @role('Sales')
   <li class="nav-item  menu-open">
     <a href="#" class="nav-link">
@@ -151,6 +152,33 @@
   </li>
   @endhasanyrole
 
+
+  <script>
+  (function() {
+    // Get server time from PHP
+    @php
+      $serverTime = date("Y-M-D H:i:s");
+    @endphp
+    const serverTimeStr = "{{$serverTime}}";
+    let currentTime = new Date(serverTimeStr);
+
+    // Function to update time
+    function updateClock() {
+      currentTime.setSeconds(currentTime.getSeconds() + 1);
+      const formatted = currentTime.getFullYear() + '-' +
+        String(currentTime.getMonth() + 1).padStart(2, '0') + '-' +
+        String(currentTime.getDate()).padStart(2, '0');
+      document.getElementById("server-time").textContent = formatted;
+    }
+
+
+    // Initial display
+    updateClock();
+
+    // Update every 1 second
+    setInterval(updateClock, 1000);
+  })(); // IIFE for isolation
+  </script>
 
   <!-- 
               <li class="nav-item">

@@ -1,5 +1,5 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>AdminLTE v4 | Dashboard</title>
+<title>AITS Infomation System</title>
 <!--begin::Accessibility Meta Tags-->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
 <meta name="color-scheme" content="light dark" />
@@ -22,6 +22,8 @@
 <!-- Skip links will be dynamically added by accessibility.js -->
 <meta name="supported-color-schemes" content="light dark" />
 <link rel="preload" href="<?php echo e(asset('../assets/css/adminlte.css')); ?>" as="style" />
+<link rel="icon" type="image/png" href="<?php echo e(asset('../assets/images/favicon.png')); ?>">
+
 <!--end::Accessibility Features-->
 <!--begin::Fonts-->
 <link

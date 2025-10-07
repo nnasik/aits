@@ -1,5 +1,3 @@
-
-
 <?php $__env->startSection('content'); ?>
 
 <!--begin::App Content Header-->
@@ -92,6 +90,60 @@
     </div>
 
     <!-- ROW-5 -->
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Training Course</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="<?php echo e($training->course->name); ?>" readonly>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Title (Certificate)</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="<?php echo e($training->course_title_in_certificate); ?>" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW-6 -->
+    <div class="row">
+      <div class="col-sm-12 col-md-12">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Company Name</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="<?php echo e($training->company_name_in_certificate); ?>" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW-8 -->
+    <div class="row">
+      <div class="col-sm-12 col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Quantity</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="<?php echo e($training->quantity); ?>" readonly>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Training Mode</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="<?php echo e($training->training_mode); ?>" readonly>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1">Date & Time</span>
+          <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
+            value="<?php echo e($training->scheduled_date); ?> @ <?php echo e($training->scheduled_time); ?>" readonly>
+        </div>
+      </div>
+    </div>
+
+    <!-- ROW-9 -->
     <div class="row">
       <div class="col-sm-6">
         <h3 class="">Trainee Information</h3>

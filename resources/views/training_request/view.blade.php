@@ -100,14 +100,14 @@
     </div>
     <!-- Table -->
 
-    <div class="row container p-3 m-3">
+    <div class="row p-3 m-3">
     @foreach($training_request->trainee_requests as $trainee_request)
       @include('training_request.trainee_card')
     @endforeach
     <div>
 
     <!-- ROW-7 -->
-    <div class="row mx-1 mt-3">
+    <div class="row mt-3">
       @include('training_request.history')
     </div>
 

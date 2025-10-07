@@ -10,6 +10,7 @@ use App\Models\WorkOrder;
 use App\Models\Training;
 use App\Models\Trainee;
 use Str;
+use Illuminate\Support\Facades\DB;
 
 class JobRequestController extends Controller{
     //
@@ -186,33 +187,42 @@ public function markAsRequested($id){
     return redirect()->back()->with('success', 'Job request marked as Requested successfully!');
 }
 
-    public function acceptJobRequest(Request $request){
-        $request->validate([
-            'authorized_by' =>'required',  
-            'job_request_id' =>'required' 
-        ]);
+    public function acceptJobRequest(Request $request)
+{
+    $request->validate([
+        'authorized_by' => 'required',
+        'job_request_id' => 'required',
+        'job_no' => 'nullable|integer|unique:work_orders,id', // ensure uniqueness if given
+    ]);
 
+    return DB::transaction(function () use ($request) {
         $jobRequest = JobRequest::findOrFail($request->job_request_id);
 
         // Step 1: Create Work Order
-        $workOrder = WorkOrder::create([
+        $workOrderData = [
             'job_request_id'      => $jobRequest->id,
             'company_name_in_work_order' => $jobRequest->company_name_in_work_order,
             'date'                => date('Y-m-d'),
             'company_id'          => $jobRequest->company_id,
-            'issued_by'           => auth()->id(), // can be null if needed
-            'authorized_by'       => $request->authorized_by, // set as needed
+            'issued_by'           => auth()->id(),
+            'authorized_by'       => $request->authorized_by,
             'sales_by'            => $jobRequest->request_by,
             'training_mode'       => $jobRequest->training_mode,
             'priority'            => $jobRequest->priority,
             'is_zoom_link_required'=> $jobRequest->is_zoom_link_required,
             'status'              => 'Open',
-        ]);
+        ];
+
+        if ($request->job_no) {
+            $workOrderData['id'] = $request->job_no; // manual PK
+        }
+
+        $workOrder = WorkOrder::create($workOrderData);
 
         // Step 2: Copy Training Requests to Trainings
         foreach ($jobRequest->training_requests as $trainingRequest) {
-            $trainingRequest->status = 'Job Accepted';
-            $trainingRequest->save();
+            $trainingRequest->update(['status' => 'Job Accepted']);
+
             $training = $workOrder->trainings()->create([
                 'training_course_id' => $trainingRequest->training_course_id,
                 'course_title_in_certificate' => $trainingRequest->course_title_in_certificate,
@@ -241,7 +251,7 @@ public function markAsRequested($id){
                 ]);
             }
         }
-        
+
         // Step 4: Update Job Request Status
         $jobRequest->update([
             'request_status' => 'Accepted',
@@ -250,5 +260,6 @@ public function markAsRequested($id){
         ]);
 
         return redirect()->back()->with('success', 'Job request accepted and converted to work order successfully!');
-    }   
+    });
+}
 }
