@@ -35,9 +35,9 @@ return new class extends Migration
             $table->string('registration_no')->nullable();   // Trade license / business reg no
             $table->string('tax_id')->nullable();            // VAT/TIN
 
-            $table->foreignId('sales_by')->constrained(
-                table: 'users', indexName: 'sales_person_user_id'
-            )->nullable();
+            $table->foreignId('sales_by')
+            ->nullable() // make column nullable first
+            ->constrained('users');
 
             // Settings
             $table->string('status')->default('active');
