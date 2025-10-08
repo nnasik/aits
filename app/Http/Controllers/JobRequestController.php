@@ -64,7 +64,7 @@ class JobRequestController extends Controller{
     }
 
     public function show($id){
-        $data['courses'] = TrainingCourse::all();
+        $data['courses'] = TrainingCourse::all()->sortBy('name'); // ascending
         $job_request = JobRequest::findOrFail($id);
         $data['job_request'] = $job_request;
         $data['submit_error_message'] = "";
