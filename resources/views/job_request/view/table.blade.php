@@ -32,7 +32,8 @@
                         <td>
                             <i>{{$training_request->course->name}}</i> as
                             <br>
-                            <b>{{$training_request->course_title_in_certificate}}</b>
+                            <b>{{$training_request->course_title_in_certificate}}</b> -
+                            {{$training_request->training_mode}}
                             <br>
                             @if($training_request->status=='Created')
                             Staus : <span class="badge bg-secondary">{{$training_request->status}}</span>
@@ -51,40 +52,53 @@
                                 onClick="copyToClipboard('{{route('public.training.show',$training_request->training->hash)}}')">
                                 <i class="bi bi-link-45deg"></i>Attendance</button>
                             @endif
-                            <script>
-                                function copyToClipboard(value) {
-                                    // Create a temporary input
-                                    const tempInput = document.createElement("input");
-                                    tempInput.value = value;
-                                    document.body.appendChild(tempInput);
 
-                                    // Select and copy
-                                    tempInput.select();
-                                    document.execCommand("copy");
-
-                                    // Remove the temp input
-                                    document.body.removeChild(tempInput);
-
-                                    // Optional: Show confirmation
-                                    alert("Copied: " + value);
-                                }
-                            </script>
 
                         </td>
                         <td class="text-center">{{$training_request->quantity}}</td>
                         <td class="text-center">{{$training_request->requesting_date}} @
                             {{$training_request->requesting_time}}</td>
-                            
+
                         <td class="text-center">{{$training_request->training_mode}}</td>
                         <td class="text-center">{{$training_request->remarks}}</td>
                         <td class="text-center">
-                            <a class="btn btn-primary" href="{{route('trainingrequest.show',$training_request->id)}}"><i
-                                    class="bi bi-eye-fill"></i></a>
+
+
+                            <!-- Dropdown with three-dot icon -->
+                            <div class="dropdown">
+                                <a class="btn btn-primary"
+                                    href="{{route('trainingrequest.show',$training_request->id)}}"><i
+                                        class="bi bi-eye-fill"></i></a>
+                                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="#">Duplicate Trainees</a></li>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+            <script>
+                function copyToClipboard(value) {
+                    // Create a temporary input
+                    const tempInput = document.createElement("input");
+                    tempInput.value = value;
+                    document.body.appendChild(tempInput);
+
+                    // Select and copy
+                    tempInput.select();
+                    document.execCommand("copy");
+
+                    // Remove the temp input
+                    document.body.removeChild(tempInput);
+
+                    // Optional: Show confirmation
+                    alert("Copied: " + value);
+                }
+            </script>
         </div>
         <!-- /.card-body -->
     </div>

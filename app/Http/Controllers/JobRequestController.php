@@ -72,11 +72,7 @@ class JobRequestController extends Controller{
 
 
         //dd(count($job_request->training_requests));
-        if(count($job_request->training_requests)==0){
-          $data['is_request_submittable'] = false;
-          $data['submit_error_message'] = "The request cannot be sent because no training requests have been added.";
-        }
-
+        
         if ($job_request->request_status=='Created') {
             foreach($job_request->training_requests as $training_request){
                 if($training_request->training_mode=='Certification'){
@@ -95,6 +91,9 @@ class JobRequestController extends Controller{
                         }
                     }
                 }
+                else {
+                    $data['is_request_submittable'] = true;
+                }
             }
         }
         elseif ($job_request->request_status=='Requested') {
@@ -104,6 +103,11 @@ class JobRequestController extends Controller{
         else{
             $data['is_request_submittable'] = false;
             $data['submit_error_message'] = "The requested status is not supported";
+        }
+
+        if(count($job_request->training_requests)==0){
+          $data['is_request_submittable'] = false;
+          $data['submit_error_message'] = "The request cannot be sent because no training requests have been added.";
         }
     
         return view('job_request.view')->with($data);

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('training_course_id')->constrained(
                 table: 'training_courses', indexName: 'trainings_training_course_id'
             );
-            
+            $table->foreignId('training_request_id')->nullable()->constrained('training_requests')->onDelete('set null')->after('id');
             $table->string('company_name_in_certificate')->nullable();
             $table->string('course_title_in_certificate')->nullable();
             $table->integer('quantity');

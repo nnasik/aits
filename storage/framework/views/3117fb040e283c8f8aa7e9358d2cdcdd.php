@@ -32,7 +32,9 @@
                         <td>
                             <i><?php echo e($training_request->course->name); ?></i> as
                             <br>
-                            <b><?php echo e($training_request->course_title_in_certificate); ?></b>
+                            <b><?php echo e($training_request->course_title_in_certificate); ?></b> -
+                            <?php echo e($training_request->training_mode); ?>
+
                             <br>
                             <?php if($training_request->status=='Created'): ?>
                             Staus : <span class="badge bg-secondary"><?php echo e($training_request->status); ?></span>
@@ -51,40 +53,53 @@
                                 onClick="copyToClipboard('<?php echo e(route('public.training.show',$training_request->training->hash)); ?>')">
                                 <i class="bi bi-link-45deg"></i>Attendance</button>
                             <?php endif; ?>
-                            <script>
-                                function copyToClipboard(value) {
-                                    // Create a temporary input
-                                    const tempInput = document.createElement("input");
-                                    tempInput.value = value;
-                                    document.body.appendChild(tempInput);
 
-                                    // Select and copy
-                                    tempInput.select();
-                                    document.execCommand("copy");
-
-                                    // Remove the temp input
-                                    document.body.removeChild(tempInput);
-
-                                    // Optional: Show confirmation
-                                    alert("Copied: " + value);
-                                }
-                            </script>
 
                         </td>
                         <td class="text-center"><?php echo e($training_request->quantity); ?></td>
                         <td class="text-center"><?php echo e($training_request->requesting_date); ?> @
                             <?php echo e($training_request->requesting_time); ?></td>
-                            
+
                         <td class="text-center"><?php echo e($training_request->training_mode); ?></td>
                         <td class="text-center"><?php echo e($training_request->remarks); ?></td>
                         <td class="text-center">
-                            <a class="btn btn-primary" href="<?php echo e(route('trainingrequest.show',$training_request->id)); ?>"><i
-                                    class="bi bi-eye-fill"></i></a>
+
+
+                            <!-- Dropdown with three-dot icon -->
+                            <div class="dropdown">
+                                <a class="btn btn-primary"
+                                    href="<?php echo e(route('trainingrequest.show',$training_request->id)); ?>"><i
+                                        class="bi bi-eye-fill"></i></a>
+                                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="#">Duplicate Trainees</a></li>
+                            </div>
                         </td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
+            <script>
+                function copyToClipboard(value) {
+                    // Create a temporary input
+                    const tempInput = document.createElement("input");
+                    tempInput.value = value;
+                    document.body.appendChild(tempInput);
+
+                    // Select and copy
+                    tempInput.select();
+                    document.execCommand("copy");
+
+                    // Remove the temp input
+                    document.body.removeChild(tempInput);
+
+                    // Optional: Show confirmation
+                    alert("Copied: " + value);
+                }
+            </script>
         </div>
         <!-- /.card-body -->
     </div>
