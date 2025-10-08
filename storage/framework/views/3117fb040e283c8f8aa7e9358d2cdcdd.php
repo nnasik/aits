@@ -74,6 +74,7 @@
                         <td class="text-center"><?php echo e($training_request->quantity); ?></td>
                         <td class="text-center"><?php echo e($training_request->requesting_date); ?> @
                             <?php echo e($training_request->requesting_time); ?></td>
+                            
                         <td class="text-center"><?php echo e($training_request->training_mode); ?></td>
                         <td class="text-center"><?php echo e($training_request->remarks); ?></td>
                         <td class="text-center">

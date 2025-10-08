@@ -114,7 +114,8 @@ class TrainingRequestController extends Controller
     }
 
     public function show($id){
-        $data['training_request'] = TrainingRequest::findOrFail($id);
+        $trainingRequest = TrainingRequest::findOrFail($id);
+        $data['training_request'] = $trainingRequest;
         return view('training_request.view')->with($data);
     }
 

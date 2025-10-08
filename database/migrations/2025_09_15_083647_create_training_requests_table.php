@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             
             $table->foreignId('job_request_id')->constrained(
-                table: 'training_requests'
+                table: 'job_requests'
             );
             $table->foreignId('training_course_id')->constrained(
                 table: 'training_courses'
@@ -31,7 +31,7 @@ return new class extends Migration
 
             $table->string('remarks')->nullable();
             $table->foreignId('user_id')->constrained(
-                table: 'users', indexName: 'training_request_user_id'
+                table: 'users'
             );
             $table->string('status')->default('Created');
             $table->timestamps();

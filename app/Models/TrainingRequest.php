@@ -9,6 +9,7 @@ use App\Models\TraineeRequest;
 use App\Models\Training;
 
 class TrainingRequest extends Model{
+
     protected $fillable = [
         'job_request_id',
         'training_course_id',

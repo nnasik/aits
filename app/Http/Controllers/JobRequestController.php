@@ -79,7 +79,7 @@ class JobRequestController extends Controller{
 
         if ($job_request->request_status=='Created') {
             foreach($job_request->training_requests as $training_request){
-                if($training_request->training_mode='Certification'){
+                if($training_request->training_mode=='Certification'){
                     foreach($training_request->trainee_requests as $trainee_request){
                         if(isset($trainee_request->eid_front_pic) 
                         || isset($trainee_request->eid_back_pic)

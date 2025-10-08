@@ -74,6 +74,7 @@
                         <td class="text-center">{{$training_request->quantity}}</td>
                         <td class="text-center">{{$training_request->requesting_date}} @
                             {{$training_request->requesting_time}}</td>
+                            
                         <td class="text-center">{{$training_request->training_mode}}</td>
                         <td class="text-center">{{$training_request->remarks}}</td>
                         <td class="text-center">

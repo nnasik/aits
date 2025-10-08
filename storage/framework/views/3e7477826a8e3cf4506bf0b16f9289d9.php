@@ -1,1 +1,0 @@
-<?php /**PATH D:\xampp\htdocs\aits\resources\views/job_request/index/counts.blade.php ENDPATH**/ ?>

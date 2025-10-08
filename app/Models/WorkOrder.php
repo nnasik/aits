@@ -9,6 +9,7 @@ use App\Models\User;
 
 class WorkOrder extends Model
 {
+
     protected $fillable=[
         'id',
         'job_request_id',
