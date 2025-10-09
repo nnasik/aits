@@ -63,7 +63,9 @@
                         <td class="text-center"><?php echo e($training_request->training_mode); ?></td>
                         <td class="text-center"><?php echo e($training_request->remarks); ?>
 
+                             <?php if($job_request->status=='Created'): ?>
                             <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-fill"></i></button>
+                            <?php endif; ?>
                         </td>
                         <td class="text-center">
 
@@ -73,7 +75,7 @@
                                 <a class="btn btn-primary"
                                     href="<?php echo e(route('trainingrequest.show',$training_request->id)); ?>"><i
                                         class="bi bi-eye-fill"></i></a>
-                                <?php if($training_request->status=='Created'): ?>
+                                <?php if($job_request->status=='Created'): ?>
                                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots-vertical"></i>

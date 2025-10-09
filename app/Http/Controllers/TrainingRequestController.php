@@ -159,7 +159,7 @@ class TrainingRequestController extends Controller
             ]);
 
             // ✅ Step 4: Duplicate trainee requests
-            foreach ($oldRequest->trainee_requests() as $trainee) {
+            foreach ($oldRequest->trainee_requests as $trainee) {
                 $newTrainingRequest->trainee_requests()->create([
                     'trainee_name'                     => $trainee->trainee_name,
                     'eid_no'                           => $trainee->eid_no,
