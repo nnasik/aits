@@ -33,7 +33,7 @@
 
     <div class="row">
       <div class="col-6">
-        <h3 class="mb-0">New Requests & Cancellation Requests</h3>
+        <h3 class="mb-0">New Requests</h3>
       </div>
     </div>
 

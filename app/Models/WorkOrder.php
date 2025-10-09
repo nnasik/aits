@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Training;
 use App\Models\WorkOrder;
 use App\Models\User;
+use App\Models\JobRequest;
 
-class WorkOrder extends Model
-{
+class WorkOrder extends Model{
 
     protected $fillable=[
         'id',
@@ -43,6 +43,10 @@ class WorkOrder extends Model
 
     public function sales(){
         return $this->belongsTo(User::class,'sales_by');
+    }
+
+    public function request(){
+        return $this->belongsTo(JobRequest::class,'job_request_id');
     }
 
 

@@ -18,8 +18,25 @@
                     <tr>
                         <td>{{$job->id}}</td>
                         <td>{{$job->company->name}}</td>
-                        <td>{{$job->quantity}}0</td>
+
                         <td>
+                            @php
+                                $totalTrainees = $job->trainings->sum(function($training) {
+                                    return $training->trainees->count();
+                                });
+                            @endphp
+                            {{ $totalTrainees }}
+                        </td>
+                        <td>
+                            Request : 
+                            @if($job->request->request_status=='Cancelled')
+                                <span class="badge bg-danger">
+                            @else
+                                <span class="badge text-dark">
+                                
+                            @endif
+                            {{$job->request->request_status}}</span>
+                            <br>
                             Job : <span class="badge text-dark">{{$job->status}}</span>
                             <br>
                             Training : <span class="badge text-dark">{{$job->training_status}}</span>

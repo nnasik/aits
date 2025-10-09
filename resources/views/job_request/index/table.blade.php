@@ -115,8 +115,19 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-primary" href="{{route('jobrequest.show',$request->id)}}"><i
+                            
+
+                            <div class="dropdown">
+                                <a class="btn btn-primary" href="{{route('jobrequest.show',$request->id)}}"><i
                                     class="bi bi-eye-fill"></i></a>
+                                <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-three-dots-vertical"></i>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <li><a class="dropdown-item" href="#" onclick="">Duplicate</a></li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                     <tr>

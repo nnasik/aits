@@ -18,8 +18,26 @@
                     <tr>
                         <td><?php echo e($job->id); ?></td>
                         <td><?php echo e($job->company->name); ?></td>
-                        <td><?php echo e($job->quantity); ?>0</td>
+
                         <td>
+                            <?php
+                                $totalTrainees = $job->trainings->sum(function($training) {
+                                    return $training->trainees->count();
+                                });
+                            ?>
+                            <?php echo e($totalTrainees); ?>
+
+                        </td>
+                        <td>
+                            Request : 
+                            <?php if($job->request->request_status=='Cancelled'): ?>
+                                <span class="badge bg-danger">
+                            <?php else: ?>
+                                <span class="badge text-dark">
+                                
+                            <?php endif; ?>
+                            <?php echo e($job->request->request_status); ?></span>
+                            <br>
                             Job : <span class="badge text-dark"><?php echo e($job->status); ?></span>
                             <br>
                             Training : <span class="badge text-dark"><?php echo e($job->training_status); ?></span>

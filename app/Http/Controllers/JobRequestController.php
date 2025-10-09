@@ -20,8 +20,7 @@ class JobRequestController extends Controller{
         return view('job_request.index')->with($data);
     }
 
-    public function store(Request $request)
-    {
+    public function store(Request $request){
         // Validate request
         $validated = $request->validate([
             'priority'                   => 'required|in:low,normal,urgent',
@@ -59,8 +58,6 @@ class JobRequestController extends Controller{
         ]);
 
         return redirect()->back()->with('success', 'Job request created successfully!');
-
-
     }
 
     public function show($id){
@@ -265,4 +262,56 @@ public function markAsRequested($id){
         return redirect()->back()->with('success', 'Job request accepted and converted to work order successfully!');
     });
 }
+
+public function duplicateJobRequest(Request $request)
+{
+    // ✅ Step 1: Validate request from modal
+    $validated = $request->validate([
+        'priority'       => 'required|in:low,normal,urgent',
+        'company_id'     => 'required|integer|exists:companies,id',
+        'company_name'   => 'required|string|max:255',
+        'training_mode'  => 'required|string|in:Certification,In-Class,Online,On-Site',
+        'job_request_id' => 'required|exists:job_requests,id', // old job request to duplicate children from
+    ]);
+
+    DB::beginTransaction();
+
+    try {
+        // ✅ Step 2: Create new JobRequest from modal data
+        $newJobRequest = JobRequest::create([
+            'priority'                  => ucfirst($validated['priority']),
+            'company_id'                => $validated['company_id'],
+            'company_name_in_work_order'=> $validated['company_name'],
+            'training_mode'             => $validated['training_mode'],
+            'request_by'                => auth()->id(),
+            'request_status'            => 'Created',
+        ]);
+
+        // ✅ Step 3: Get old JobRequest normally
+        $oldJobRequest = JobRequest::findOrFail($validated['job_request_id']);
+
+        // ✅ Step 4: Duplicate TrainingRequests
+        foreach ($oldJobRequest->training_requests as $trainingRequest) {
+            $newTrainingRequest = $trainingRequest->replicate(['job_request_id', 'status']);
+            $newTrainingRequest->job_request_id = $newJobRequest->id;
+            $newTrainingRequest->status = 'Created';
+            $newTrainingRequest->save();
+
+            // ✅ Step 5: Duplicate TraineeRequests
+            foreach ($trainingRequest->trainee_requests as $traineeRequest) {
+                $newTrainee = $traineeRequest->replicate(['training_request_id']);
+                $newTrainee->training_request_id = $newTrainingRequest->id;
+                $newTrainee->save();
+            }
+        }
+
+        DB::commit();
+        return redirect()->back()->with('success', 'Job request duplicated successfully!');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->with('error', 'Failed to duplicate job request: ' . $e->getMessage());
+    }
+}
+
 }
