@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TrainingRequest;
 use App\Models\JobRequest;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class TrainingRequestController extends Controller
 {
@@ -119,5 +120,88 @@ class TrainingRequestController extends Controller
         return view('training_request.view')->with($data);
     }
 
-    
+
+
+    public function duplicate(Request $request){
+        // ✅ Step 1: Validate request
+        $validated = $request->validate([
+            'training_request_id'          => 'required|exists:training_requests,id',
+            'training_mode'                => 'required|string|in:Certification,In-Class,Online,On-Site',
+            'course_title_in_certificate'  => 'required|string|max:255',
+            'course_id'                  => 'required|exists:training_courses,id',
+            'company_name_in_certificate'  => 'required|string|max:255',
+            'remarks'                      => 'nullable|string|max:500',
+            'requesting_date'            => 'nullable|date',
+            'requesting_time'            => 'nullable|date_format:H:i',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            // ✅ Step 2: Find the old training request with relations
+            $oldRequest = TrainingRequest::findOrFail($validated['training_request_id']);
+
+            // ✅ Step 3: Create new duplicated training request
+            $newTrainingRequest = TrainingRequest::create([
+                'job_request_id'             => $oldRequest->job_request_id, // keep same job request
+                'training_course_id'         => $validated['course_id'] ?? $oldRequest->training_course_id,
+                'course_title_in_certificate'=> $validated['course_title_in_certificate'] ?? $oldRequest->course_title_in_certificate,
+                'company_name_in_certificate'=> $validated['company_name_in_certificate'] ?? $oldRequest->company_name_in_certificate,
+                'quantity'                   => $oldRequest->quantity,
+                'training_mode'              => $validated['training_mode'],
+                'requesting_date'            => $oldRequest->requesting_date,
+                'requesting_time'            => $oldRequest->requesting_time,
+                'is_zoom_link_required'      => $oldRequest->is_zoom_link_required,
+                'zoom_link'                  => null,
+                'remarks'                    => $validated['remarks'] ?? null,
+                'user_id'                    => Auth::id(),
+                'status'                     => 'Created',
+            ]);
+
+            // ✅ Step 4: Duplicate trainee requests
+            foreach ($oldRequest->trainee_requests() as $trainee) {
+                $newTrainingRequest->trainee_requests()->create([
+                    'trainee_name'                     => $trainee->trainee_name,
+                    'eid_no'                           => $trainee->eid_no,
+                    'profile_pic'                      => $trainee->profile_pic,
+                    'is_certificate_hard_copy_needed'  => $trainee->is_certificate_hard_copy_needed,
+                    'is_id_card_needed'                => $trainee->is_id_card_needed,
+                    'eid_front_pic'                    => $trainee->eid_front_pic,
+                    'eid_back_pic'                     => $trainee->eid_back_pic,
+                    'visa_pic'                         => $trainee->visa_pic,
+                    'passport_pic'                     => $trainee->passport_pic,
+                    'dl_pic'                           => $trainee->dl_pic,
+                    'company_name_in_certificate'      => $validated['company_name_in_certificate'],
+                    'course_title_in_certificate'      => $validated['course_title_in_certificate'],
+                    'certificate_date'      => $validated['requesting_date'],
+                ]);
+            }
+
+            // ✅ Step 6: Create history for training request
+            $newTrainingRequest->histories()->create([
+                'user_id' => auth()->id(),
+                'event' => 'duplicated from training request ID ' . $oldRequest->id,
+                'changes' => [
+                    'Old Training Request ID'          => $oldRequest->id,
+                    'Training Course'                  => $oldRequest->course->name,
+                    'Course Title in Certificate'      => $newTrainingRequest->course_title_in_certificate,
+                    'Company Name in Certificate'      => $newTrainingRequest->company_name_in_certificate,
+                    'No. of Trainees'                  => $newTrainingRequest->quantity,
+                    'Training Mode'                    => $newTrainingRequest->training_mode,
+                    'Remarks'                          => $newTrainingRequest->remarks ?? null,
+                    'Status'                           => 'Created',
+                ],
+            ]);
+
+            DB::commit();
+
+            // ✅ Step 7: Redirect back with success
+            return redirect()->back()->with('success', 'Training request duplicated successfully.');
+        } 
+        catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to duplicate training request: ' . $e->getMessage());
+        }
+    }
+   
 }

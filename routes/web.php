@@ -73,6 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
     
     // Training Request
     Route::resource('trainingrequest', TrainingRequestController::class)->only(['index','store','show','edit','destroy']);
+    Route::post('/trainingrequests/duplicate', [TrainingRequestController::class, 'duplicate'])->name('trainingrequests.duplicate');
+
 
     // Trainee Request
     Route::post('/trainingrequest/update-eid', [TraineeRequestController::class, 'updateEid'])

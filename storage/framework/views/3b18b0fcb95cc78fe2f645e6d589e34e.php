@@ -53,11 +53,10 @@ eidBackDropZone.addEventListener('drop', e=>{
 </script>
 
 <script>
-  function changeEidBack(traineeId) {
-    console.log("Change EID Back clicked:", id);
-    document.querySelector('#uploadEidBackModal input[name="trainee_request_id"]').value = traineeId;
+function changeEidBack(traineeId) {
+  console.log("Change EID Back clicked:", traineeId);
+  document.querySelector('#uploadEidBackModal input[name="trainee_request_id"]').value = traineeId;
 }
-
 </script>
 
 <?php /**PATH D:\xampp\htdocs\aits\resources\views/training_request/modals/eid_back.blade.php ENDPATH**/ ?>

@@ -152,4 +152,5 @@
   <!--end::App Content-->
   @include('job_request.modals.new_training')
   @include('job_request.modals.cancel_request')
+  @include('job_request.modals.duplicate')
   @endsection()

@@ -191,8 +191,7 @@ public function markAsRequested($id){
     return redirect()->back()->with('success', 'Job request marked as Requested successfully!');
 }
 
-    public function acceptJobRequest(Request $request)
-{
+    public function acceptJobRequest(Request $request){
     $request->validate([
         'authorized_by' => 'required',
         'job_request_id' => 'required',

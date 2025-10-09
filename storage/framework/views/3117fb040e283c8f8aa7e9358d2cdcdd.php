@@ -61,7 +61,10 @@
                             <?php echo e($training_request->requesting_time); ?></td>
 
                         <td class="text-center"><?php echo e($training_request->training_mode); ?></td>
-                        <td class="text-center"><?php echo e($training_request->remarks); ?></td>
+                        <td class="text-center"><?php echo e($training_request->remarks); ?>
+
+                            <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-fill"></i></button>
+                        </td>
                         <td class="text-center">
 
 
@@ -70,12 +73,15 @@
                                 <a class="btn btn-primary"
                                     href="<?php echo e(route('trainingrequest.show',$training_request->id)); ?>"><i
                                         class="bi bi-eye-fill"></i></a>
+                                <?php if($training_request->status=='Created'): ?>
                                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots-vertical"></i>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                    <li><a class="dropdown-item" href="#">Duplicate Trainees</a></li>
+                                    <li><a class="dropdown-item" href="#" onclick="openDuplicateModal(<?php echo e($training_request->id); ?>)">Duplicate</a></li>
+                                </ul>
+                                <?php endif; ?>
                             </div>
                         </td>
                     </tr>
