@@ -6,7 +6,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Request No</th>
-                        <th scope="col">Company Name</th>
+                        <th scope="col">Company Name & Description</th>
                         <th scope="col">Qty</th>
                         <th scope="col">Status</th>
                         <th scope="col">Requested On</th>
@@ -17,17 +17,34 @@
                     <?php $__currentLoopData = $job_requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td><?php echo e($request->id); ?></td>
-                        <td><?php echo e($request->company->name); ?></td>
-                        <td><?php echo e($request->quantity); ?>0</td>
+                        <td><?php echo e($request->company->name); ?>
+
+                            <span class="text-muted">
+                            <?php $__currentLoopData = $request->training_requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $training_request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <br>
+                              - <?php echo e($training_request->course_title_in_certificate); ?>
+
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </span>
+                        </td>
+                        <td>
+                            <?php
+                                $totalTrainees = $request->training_requests->sum(function($training_requests) {
+                                    return $training_requests->trainee_requests->count();
+                                });
+                            ?>
+                            <?php echo e($totalTrainees); ?>
+
+                        </td>
                         <td><span class="badge text-bg-warning"><?php echo e($request->request_status); ?></span></td>
                         <td><?php echo e($request->requested_on); ?></td>
                         <td>
                             <!-- View Button -->
-                            <a href="" class="btn btn-primary btn-sm" title="View">
+                            <a href="" class="btn btn-outline-primary btn-sm" title="View">
                                 <i class="bi bi-eye"></i> View
                             </a>
 
-                            <button type="button" class="btn btn-success btn-sm" 
+                            <button type="button" class="btn btn-outline-success btn-sm" 
                                     data-bs-toggle="modal"
                                     data-bs-target="#acceptModal" 
                                     onclick="setJobRequestId(<?php echo e($request->id); ?>, <?php echo e($request->work_order_id ?? 'null'); ?>)">
@@ -37,7 +54,7 @@
                             
 
                             <!-- Reject Button -->
-                            <a href="" class="btn btn-danger btn-sm" title="Reject">
+                            <a href="" class="btn btn-outline-danger btn-sm" title="Reject">
                                 <i class="bi bi-x-circle"></i> Reject
                             </a>
 

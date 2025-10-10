@@ -6,7 +6,7 @@
                 <thead>
                     <tr>
                         <th scope="col">Job No</th>
-                        <th scope="col">Company Name</th>
+                        <th scope="col">Company Name & Description</th>
                         <th scope="col">Qty</th>
                         <th scope="col">Status</th>
                         <th scope="col">Date</th>
@@ -17,7 +17,14 @@
                     @foreach($jobs as $job)
                     <tr>
                         <td>{{$job->id}}</td>
-                        <td>{{$job->company->name}}</td>
+                        <td>{{$job->company->name}}
+                            @foreach($job->trainings as $training)
+                            <br>
+                            <span class="text-muted">
+                                  - {{$training->course_title_in_certificate}}
+                            </span>
+                            @endforeach
+                        </td>
 
                         <td>
                             @php
@@ -28,20 +35,68 @@
                             {{ $totalTrainees }}
                         </td>
                         <td>
-                            Request : 
-                            @if($job->request->request_status=='Cancelled')
-                                <span class="badge bg-danger">
-                            @else
-                                <span class="badge text-dark">
+                            <table>
+                                <tr>
+                                    <td>Request : </td>
+                                    <td>
+                                        @if($job->request->request_status=='Cancelled')
+                                            <span class="badge bg-danger">
+                                        @elseif($job->request->request_status=='Accepted')
+                                            <span class="badge bg-success">
+                                        @else
+                                            <span class="badge text-dark">
+                                        @endif
+                                        {{$job->request->request_status}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Job : </td>
+                                    <td>
+                                        @if($job->status=='Open')
+                                            <span class="badge bg-primary">
+                                        @elseif($job->status=='Closed')
+                                            <span class="badge bg-success">
+                                        @elseif($job->status=='Cancelled')
+                                            <span class="badge bg-danger">
+                                        @else
+                                            <span class="badge text-dark">
+                                        @endif
+                                            {{$job->status}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Training : </td>
+                                    <td>
+                                        @if($job->training_status=='Waiting')
+                                            <span class="badge bg-warning text-dark">
+                                        @elseif($job->training_status=='On Going')
+                                            <span class="badge bg-primary">
+                                        @elseif($job->training_status=='Completed')
+                                            <span class="badge bg-success">
+                                        @else
+                                            <span class="badge text-dark">
+                                        @endif
+                                        {{$job->training_status}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Certificate : </td>
+                                    <td>
+                                        @if($job->certificate_status=='Waiting')
+                                            <span class="badge bg-warning text-dark">
+                                        @elseif($job->certificate_status=='On Going')
+                                            <span class="badge bg-primary">
+                                        @elseif($job->certificate_status=='Completed')
+                                            <span class="badge bg-success">
+                                        @else
+                                            <span class="badge text-dark">
+                                        @endif
+                                            {{$job->certificate_status}}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            
                                 
-                            @endif
-                            {{$job->request->request_status}}</span>
-                            <br>
-                            Job : <span class="badge text-dark">{{$job->status}}</span>
-                            <br>
-                            Training : <span class="badge text-dark">{{$job->training_status}}</span>
-                            <br>
-                            Certificate : <span class="badge text-dark">{{$job->certificate_status}}</span>
                         </td>
                         <td>{{$job->date}}</td>
                         <td>
@@ -51,12 +106,12 @@
             id: {{$job->id}}, 
             training_status: '{{$job->training_status}}', 
             certificate_status: '{{$job->certificate_status}}' 
-        })" class="btn btn-warning btn-sm" title="Edit">
+        })" class="btn btn-outline-warning btn-sm text-dark" title="Edit">
                                 <i class="bi bi-pencil"></i> Update
 </button>
 
                             <!-- View Button -->
-                            <a href="{{route('job.show', $job->id)}}" class="btn btn-primary btn-sm" title="View">
+                            <a href="{{route('job.show', $job->id)}}" class="btn btn-outline-primary btn-sm" title="View">
                                 <i class="bi bi-eye"></i> View
                             </a>
                         </td>
