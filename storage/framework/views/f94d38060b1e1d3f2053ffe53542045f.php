@@ -14,11 +14,13 @@
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
           <li class="breadcrumb-item active" aria-current="page">Training Request (<?php echo e($training_request->id); ?>)</li>
-          <li class="breadcrumb-item active" aria-current="page"><a href="<?php echo e(route('jobrequest.show',$training_request->job_request->id)); ?>">Job Request (<?php echo e($training_request->job_request->id); ?>)</a></li>
+          <li class="breadcrumb-item active" aria-current="page"><a
+              href="<?php echo e(route('jobrequest.show',$training_request->job_request->id)); ?>">Job Request
+              (<?php echo e($training_request->job_request->id); ?>)</a></li>
           <li class="breadcrumb-item"><a href="<?php echo e(route('jobrequest.index')); ?>">All</a></li>
           <li class="breadcrumb-item">Job Request</li>
-          
-          
+
+
         </ol>
       </div>
     </div>
@@ -103,57 +105,93 @@
     </div>
     <!-- Table -->
 
-    <div class="row p-3 m-3">
-    <?php $__currentLoopData = $training_request->trainee_requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trainee_request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-      <?php echo $__env->make('training_request.trainee_card', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-    <div>
+    <!--begin::Row-->
+    <div class="row px-4">
+      <div class="col-12 text-end">
+        <!-- Bulk Upload Dropdown -->
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+            Bulk Upload
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#"
+                onclick="openBulkUploadModal('Emirates ID Front Page', <?php echo e($training_request->id); ?>, <?php echo e($training_request->quantity); ?>)">Emirates
+                ID Front
+                Page</a></li>
+            <li><a class="dropdown-item" href="#"
+                onclick="openBulkUploadModal('Emirates ID Back Page', <?php echo e($training_request->id); ?>, <?php echo e($training_request->quantity); ?>)">Emirates
+                ID Back
+                Page</a></li>
+            <li><a class="dropdown-item" href="#"
+                onclick="openBulkUploadModal('Visa Document', <?php echo e($training_request->id); ?>, <?php echo e($training_request->quantity); ?>)">Visa
+                Document</a></li>
+            <li><a class="dropdown-item" href="#"
+                onclick="openBulkUploadModal('Passport Pic', <?php echo e($training_request->id); ?>, <?php echo e($training_request->quantity); ?>)">Passport
+                Pic</a></li>
+            <li><a class="dropdown-item" href="#"
+                onclick="openBulkUploadModal('Driving License Pic',<?php echo e($training_request->id); ?>, <?php echo e($training_request->quantity); ?>)">Driving
+                License Pic</a>
+            </li>
 
-    <!-- ROW-7 -->
-    <div class="row mt-3">
-      <?php echo $__env->make('training_request.history', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+          </ul>
+        </div>
+      </div>
     </div>
+    <!-- Table -->
 
-    <?php if($training_request->job_request->request_status=='Created'): ?>
-      <?php echo $__env->make('training_request.modals.change_name', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.change_eid', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.change_company', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.change_date', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.certificate_for', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.eid_front', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.eid_back', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.visa', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.passport', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.driving_license', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-      <?php echo $__env->make('training_request.modals.profile_picture', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-    <?php endif; ?>
-    <!--end::Container-->
-   
-  </div>
-  <!--end::App Content-->
-  <style>
-    <style>
-    .profile-avatar {
-        width: 100px;
-        height: 100px;
-    }
-    .camera-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        height: 100%; /* creates chord effect */
-        background: rgba(0, 0, 0, 0.75);
-        border-radius:100px;
-        opacity: 0;
-        transition: opacity 1s ease;
-        cursor: pointer;
-    }
-    .profile-avatar:hover .camera-overlay {
-        opacity: 1;
-    }
-</style>
-  </style>
-  <?php $__env->stopSection(); ?>
+    <div class="row p-3 m-3">
+      <?php $__currentLoopData = $training_request->trainee_requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trainee_request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+      <?php echo $__env->make('training_request.trainee_card', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+      <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+      <div>
+
+        <!-- ROW-7 -->
+        <div class="row mt-3">
+          <?php echo $__env->make('training_request.history', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        </div>
+
+        <?php if($training_request->job_request->request_status=='Created'): ?>
+        <?php echo $__env->make('training_request.modals.change_name', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.change_eid', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.change_company', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.change_date', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.certificate_for', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.eid_front', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.eid_back', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.visa', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.passport', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.driving_license', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.profile_picture', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php echo $__env->make('training_request.modals.bulk_upload', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+        <?php endif; ?>
+        <!--end::Container-->
+
+      </div>
+      <!--end::App Content-->
+      <style>
+        .profile-avatar {
+          width: 100px;
+          height: 100px;
+        }
+
+        .camera-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100%;
+          height: 100%;
+          /* creates chord effect */
+          background: rgba(0, 0, 0, 0.75);
+          border-radius: 100px;
+          opacity: 0;
+          transition: opacity 1s ease;
+          cursor: pointer;
+        }
+
+        .profile-avatar:hover .camera-overlay {
+          opacity: 1;
+        }
+      </style>
+      <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/training_request/view.blade.php ENDPATH**/ ?>

@@ -203,5 +203,79 @@ class TrainingRequestController extends Controller
             return redirect()->back()->with('error', 'Failed to duplicate training request: ' . $e->getMessage());
         }
     }
+
+    public function bulkUploadDocuments(Request $request){
+    $request->validate([
+        'training_request_id' => 'required|exists:training_requests,id',
+        'document_type'       => 'required|string|in:Emirates ID Front Page,Emirates ID Back Page,Visa Document,Passport Pic,Driving License Pic',
+        'files'               => 'required|array|min:1',
+        'files.*'             => 'file|mimes:jpg,jpeg,png,pdf|max:5120', // max 5MB each
+    ]);
+
+    $trainingRequest = TrainingRequest::findOrFail($request->training_request_id);
+    $limit = $trainingRequest->quantity;
+    $trainees = $trainingRequest->trainee_requests;
+
+    // Validate count
+    $newUploads = count($request->file('files'));
+    if ($newUploads > $limit) {
+        return redirect()->back()->with('error', "You can upload only {$limit} files for this training request.");
+    }
+
+    // Folder mapping
+    $folderMap = [
+        'Emirates ID Front Page'          => 'uploads/eid_front',
+        'Emirates ID Back Page'           => 'uploads/eid_back',
+        'Visa Document'      => 'uploads/visa',
+        'Passport Pic'       => 'uploads/passports',
+        'Driving License Pic'=> 'uploads/license',
+    ];
+
+    $uploadPath = $folderMap[$request->document_type] ?? 'uploads/other';
+    $files = $request->file('files');
+
+    foreach ($files as $index => $file) {
+        // Stop if there are more files than trainees
+        if (!isset($trainees[$index])) break;
+
+        $trainee = $trainees[$index];
+        $path = $file->store($uploadPath, 'public');
+
+        // Assign to appropriate column
+        switch ($request->document_type) {
+            case 'Emirates ID Front Page':
+                $trainee->eid_front_pic = $path;
+                break;
+            case 'Emirates ID Back Page':
+                $trainee->eid_back_pic = $path;
+                break;
+            case 'Visa Document':
+                $trainee->visa_pic = $path;
+                break;
+            case 'Passport Pic':
+                $trainee->passport_pic = $path;
+                break;
+            case 'Driving License Pic':
+                $trainee->dl_pic = $path;
+                break;
+        }
+
+        $trainee->save();
+
+        // Log upload
+        $trainingRequest->histories()->create([
+            'user_id' => auth()->id(),
+            'event'   => "Uploaded {$request->document_type} (Bulk)",
+            'changes' => [
+                'Trainee ID' => $trainee->id,
+                'File Path'  => $path,
+            ],
+        ]);
+    }
+
+    return redirect()->back()->with('success', 'Files uploaded successfully.');
+}
+
+
    
 }
