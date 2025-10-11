@@ -97,6 +97,36 @@
                                             <?php echo e($job->certificate_status); ?></span>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Invoice :</td>
+                                    <td>
+                                        <?php if($job->invoice_status=='Waiting'): ?>
+                                            <span class="badge bg-warning text-dark">
+                                        <?php elseif($job->invoice_status=='On Going'): ?>
+                                            <span class="badge bg-primary">
+                                        <?php elseif($job->invoice_status=='Completed'): ?>
+                                            <span class="badge bg-success">
+                                        <?php else: ?>
+                                            <span class="badge text-dark">
+                                        <?php endif; ?>
+                                            <?php echo e($job->invoice_status); ?></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Note :</td>
+                                    <td>
+                                        <?php if($job->delivery_note_status=='Waiting'): ?>
+                                            <span class="badge bg-warning text-dark">
+                                        <?php elseif($job->delivery_note_status=='On Going'): ?>
+                                            <span class="badge bg-primary">
+                                        <?php elseif($job->delivery_note_status=='Completed'): ?>
+                                            <span class="badge bg-success">
+                                        <?php else: ?>
+                                            <span class="badge text-dark">
+                                        <?php endif; ?>
+                                            <?php echo e($job->delivery_note_status); ?></span>
+                                    </td>
+                                </tr>
                             </table>
                             
                                 

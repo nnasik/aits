@@ -69,8 +69,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/job-request/{id}/request', [JobRequestController::class, 'markAsRequested'])
      ->name('job-request.markAsRequested');
     Route::post('/job-request/accept/', [JobRequestController::class, 'acceptJobRequest'])->name('job-request.accept');
+    Route::post('/job-request/duplicate', [JobRequestController::class, 'duplicateJobRequest'])->name('job-request.duplicate');
 
-    
     // Training Request
     Route::resource('trainingrequest', TrainingRequestController::class)->only(['index','store','show','edit','destroy']);
     Route::post('/trainingrequests/duplicate', [TrainingRequestController::class, 'duplicate'])->name('trainingrequests.duplicate');

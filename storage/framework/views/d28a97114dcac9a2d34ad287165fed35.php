@@ -13,8 +13,8 @@
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
-          <li class="breadcrumb-item"><a href="#">Job Request</a></li>
           <li class="breadcrumb-item active" aria-current="page">All</li>
+          <li class="breadcrumb-item">Job Request</li>
         </ol>
       </div>
     </div>
@@ -52,5 +52,6 @@
   </div>
   <!--end::App Content-->
   <?php echo $__env->make('job_request.modals.new_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('job_request.modals.duplicate_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/job_request/index.blade.php ENDPATH**/ ?>

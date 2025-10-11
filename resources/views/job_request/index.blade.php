@@ -13,8 +13,8 @@
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
-          <li class="breadcrumb-item"><a href="#">Job Request</a></li>
           <li class="breadcrumb-item active" aria-current="page">All</li>
+          <li class="breadcrumb-item">Job Request</li>
         </ol>
       </div>
     </div>
@@ -52,4 +52,5 @@
   </div>
   <!--end::App Content-->
   @include('job_request.modals.new_request')
+  @include('job_request.modals.duplicate_request')
   @endsection()

@@ -94,6 +94,36 @@
                                             {{$job->certificate_status}}</span>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>Invoice :</td>
+                                    <td>
+                                        @if($job->invoice_status=='Waiting')
+                                            <span class="badge bg-warning text-dark">
+                                        @elseif($job->invoice_status=='On Going')
+                                            <span class="badge bg-primary">
+                                        @elseif($job->invoice_status=='Completed')
+                                            <span class="badge bg-success">
+                                        @else
+                                            <span class="badge text-dark">
+                                        @endif
+                                            {{$job->invoice_status}}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Delivery Note :</td>
+                                    <td>
+                                        @if($job->delivery_note_status=='Waiting')
+                                            <span class="badge bg-warning text-dark">
+                                        @elseif($job->delivery_note_status=='On Going')
+                                            <span class="badge bg-primary">
+                                        @elseif($job->delivery_note_status=='Completed')
+                                            <span class="badge bg-success">
+                                        @else
+                                            <span class="badge text-dark">
+                                        @endif
+                                            {{$job->delivery_note_status}}</span>
+                                    </td>
+                                </tr>
                             </table>
                             
                                 

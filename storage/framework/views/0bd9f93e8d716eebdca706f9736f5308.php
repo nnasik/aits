@@ -97,4 +97,5 @@
     modal.show();
   }
 </script>
+
 <?php /**PATH D:\xampp\htdocs\aits\resources\views/job_request/modals/duplicate.blade.php ENDPATH**/ ?>

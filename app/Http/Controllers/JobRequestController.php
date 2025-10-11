@@ -263,8 +263,7 @@ public function markAsRequested($id){
     });
 }
 
-public function duplicateJobRequest(Request $request)
-{
+public function duplicateJobRequest(Request $request){
     // ✅ Step 1: Validate request from modal
     $validated = $request->validate([
         'priority'       => 'required|in:low,normal,urgent',
@@ -291,24 +290,45 @@ public function duplicateJobRequest(Request $request)
         $oldJobRequest = JobRequest::findOrFail($validated['job_request_id']);
 
         // ✅ Step 4: Duplicate TrainingRequests
-        foreach ($oldJobRequest->training_requests as $trainingRequest) {
-            $newTrainingRequest = $trainingRequest->replicate(['job_request_id', 'status']);
-            $newTrainingRequest->job_request_id = $newJobRequest->id;
-            $newTrainingRequest->status = 'Created';
-            $newTrainingRequest->save();
+        foreach ($oldJobRequest->training_requests as $oldTrainingRequest) {
+            $newTrainingRequest = $newJobRequest->training_requests()->create([
+                'training_course_id' => $oldTrainingRequest->training_course_id,
+                'course_title_in_certificate' => $oldTrainingRequest->course_title_in_certificate,
+                'company_name_in_certificate' => $newJobRequest->company_name_in_work_order,
+                'quantity' => $oldTrainingRequest->quantity,
+                'training_mode' => $oldTrainingRequest->training_mode,
+                'requesting_date' => $oldTrainingRequest->requesting_date,
+                'requesting_time' => $oldTrainingRequest->requesting_time,
+                'is_zoom_link_required'=> $oldTrainingRequest->is_zoom_link_required,
+                'zoom_link' => $oldTrainingRequest->zoom_link,
+                'remarks' => $oldTrainingRequest->remarks,
+                'user_id' => auth()->user()->id,
+                'status' => 'Created'
+            ]);
 
             // ✅ Step 5: Duplicate TraineeRequests
-            foreach ($trainingRequest->trainee_requests as $traineeRequest) {
-                $newTrainee = $traineeRequest->replicate(['training_request_id']);
-                $newTrainee->training_request_id = $newTrainingRequest->id;
-                $newTrainee->save();
+            foreach ($oldTrainingRequest->trainee_requests as $oldTraineeRequest) {
+                $newTrainingRequest->trainee_requests()->create([
+                    'trainee_name'=>$oldTraineeRequest->trainee_name,
+                    'eid_no'=>$oldTraineeRequest->eid_no,
+                    'profile_pic'=>$oldTraineeRequest->profile_pic,
+                    'company_name_in_certificate'=>$oldTraineeRequest->company_name_in_certificate,
+                    'course_title_in_certificate'=>$oldTraineeRequest->course_title_in_certificate,
+                    'is_certificate_hard_copy_needed'=>$oldTraineeRequest->is_certificate_hard_copy_needed,
+                    'is_id_card_needed'=>$oldTraineeRequest->is_id_card_needed,
+                    'certificate_date'=>$oldTraineeRequest->certificate_date,
+                    'eid_front_pic'=>$oldTraineeRequest->eid_front_pic,
+                    'eid_back_pic'=>$oldTraineeRequest->eid_back_pic,
+                    'visa_pic'=>$oldTraineeRequest->visa_pic,
+                    'passport_pic'=>$oldTraineeRequest->passport_pic,
+                    'dl_pic'=>$oldTraineeRequest->dl_pic
+                ]);
             }
         }
-
         DB::commit();
         return redirect()->back()->with('success', 'Job request duplicated successfully!');
-
-    } catch (\Exception $e) {
+    } 
+    catch (\Exception $e) {
         DB::rollBack();
         return redirect()->back()->with('error', 'Failed to duplicate job request: ' . $e->getMessage());
     }

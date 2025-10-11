@@ -13,9 +13,12 @@
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
-          <li class="breadcrumb-item"><a href="#">Job Request</a></li>
-          <li class="breadcrumb-item">All</li>
-          <li class="breadcrumb-item active" aria-current="page">000</li>
+          <li class="breadcrumb-item active" aria-current="page">Training Request ({{$training_request->id}})</li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="{{route('jobrequest.show',$training_request->job_request->id)}}">Job Request ({{$training_request->job_request->id}})</a></li>
+          <li class="breadcrumb-item"><a href="{{route('jobrequest.index')}}">All</a></li>
+          <li class="breadcrumb-item">Job Request</li>
+          
+          
         </ol>
       </div>
     </div>

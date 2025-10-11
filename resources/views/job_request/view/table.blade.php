@@ -61,19 +61,18 @@
 
                         <td class="text-center">{{$training_request->training_mode}}</td>
                         <td class="text-center">{{$training_request->remarks}}
-                             @if($job_request->status=='Created')
+                             @if($job_request->request_status=='Created')
                             <button class="btn btn-sm btn-warning"><i class="bi bi-pencil-fill"></i></button>
                             @endif
                         </td>
                         <td class="text-center">
-
 
                             <!-- Dropdown with three-dot icon -->
                             <div class="dropdown">
                                 <a class="btn btn-primary"
                                     href="{{route('trainingrequest.show',$training_request->id)}}"><i
                                         class="bi bi-eye-fill"></i></a>
-                                @if($job_request->status=='Created')
+                                @if($job_request->request_status=='Created')
                                 <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-three-dots-vertical"></i>
