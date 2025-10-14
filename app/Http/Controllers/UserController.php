@@ -7,6 +7,7 @@ use App\Models\User;
 use Auth;
 use Validator;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash; // ✅ Add this line
 
 class UserController extends Controller
 {
