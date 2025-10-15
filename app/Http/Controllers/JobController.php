@@ -17,7 +17,7 @@ use Redirect;
 class JobController extends Controller
 {
     public function index(){
-        $data['jobs'] = WorkOrder::latest()->take(10)->get();
+        $data['jobs'] = WorkOrder::orderBy('id','desc')->paginate(10);
         $data['companies'] = Company::all();
         $data['users'] = User::all();
         $data['job_requests'] = JobRequest::where('request_status','Requested')->get()->reverse();
@@ -223,8 +223,7 @@ class JobController extends Controller
         ->header('Content-Disposition', 'inline; filename="workpermit_'.$job->id.'.pdf"');
     }
 
-    public function updateStatus(Request $request)
-    {
+    public function updateStatus(Request $request){
         $request->validate([
             'work_order_id'       => 'required|exists:work_orders,id',
             'training_status'     => 'required|in:Waiting,On Going,Completed',
@@ -237,5 +236,10 @@ class JobController extends Controller
         $workOrder->save();
 
         return redirect()->back()->with('success', 'Work order status updated successfully.');
+    }
+
+    public function index_acc(){
+        $data['jobs']=WorkOrder::all();
+        return view('job_acc.index')->with($data);
     }
 }

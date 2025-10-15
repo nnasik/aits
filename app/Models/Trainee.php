@@ -35,4 +35,7 @@ class Trainee extends Model
     public function traineeRequest(){
         return $this->belongsTo(TraineeRequest::class);
     }
+    public function files(){
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

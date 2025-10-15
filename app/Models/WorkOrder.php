@@ -49,5 +49,9 @@ class WorkOrder extends Model{
         return $this->belongsTo(JobRequest::class,'job_request_id');
     }
 
+    public function files(){
+        return $this->morphMany(File::class, 'fileable');
+    }
+
 
 }

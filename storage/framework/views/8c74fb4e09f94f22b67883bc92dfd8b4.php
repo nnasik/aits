@@ -14,145 +14,139 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($jobs as $job)
+                    <?php $__currentLoopData = $jobs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $job): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td>{{$job->id}}</td>
-                        <td>{{$job->company->name}}
-                            @foreach($job->trainings as $training)
+                        <td><?php echo e($job->id); ?></td>
+                        <td><?php echo e($job->company->name); ?>
+
+                            <?php $__currentLoopData = $job->trainings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $training): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <br>
                             <span class="text-muted">
-                                  - {{$training->course_title_in_certificate}}
+                                  - <?php echo e($training->course_title_in_certificate); ?>
+
                             </span>
-                            @endforeach
+                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                         </td>
 
                         <td>
-                            @php
+                            <?php
                                 $totalTrainees = $job->trainings->sum(function($training) {
                                     return $training->trainees->count();
                                 });
-                            @endphp
-                            {{ $totalTrainees }}
+                            ?>
+                            <?php echo e($totalTrainees); ?>
+
                         </td>
                         <td>
                             <table>
                                 <tr>
                                     <td>Request : </td>
                                     <td>
-                                        @if($job->request->request_status=='Cancelled')
+                                        <?php if($job->request->request_status=='Cancelled'): ?>
                                             <span class="badge bg-danger">
-                                        @elseif($job->request->request_status=='Accepted')
+                                        <?php elseif($job->request->request_status=='Accepted'): ?>
                                             <span class="badge bg-success">
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge text-dark">
-                                        @endif
-                                        {{$job->request->request_status}}</span>
+                                        <?php endif; ?>
+                                        <?php echo e($job->request->request_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Job : </td>
                                     <td>
-                                        @if($job->status=='Open')
+                                        <?php if($job->status=='Open'): ?>
                                             <span class="badge bg-primary">
-                                        @elseif($job->status=='Closed')
+                                        <?php elseif($job->status=='Closed'): ?>
                                             <span class="badge bg-success">
-                                        @elseif($job->status=='Cancelled')
+                                        <?php elseif($job->status=='Cancelled'): ?>
                                             <span class="badge bg-danger">
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge text-dark">
-                                        @endif
-                                            {{$job->status}}</span>
+                                        <?php endif; ?>
+                                            <?php echo e($job->status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Training : </td>
                                     <td>
-                                        @if($job->training_status=='Waiting')
+                                        <?php if($job->training_status=='Waiting'): ?>
                                             <span class="badge bg-warning text-dark">
-                                        @elseif($job->training_status=='On Going')
+                                        <?php elseif($job->training_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        @elseif($job->training_status=='Completed')
+                                        <?php elseif($job->training_status=='Completed'): ?>
                                             <span class="badge bg-success">
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge text-dark">
-                                        @endif
-                                        {{$job->training_status}}</span>
+                                        <?php endif; ?>
+                                        <?php echo e($job->training_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Certificate : </td>
                                     <td>
-                                        @if($job->certificate_status=='Waiting')
+                                        <?php if($job->certificate_status=='Waiting'): ?>
                                             <span class="badge bg-warning text-dark">
-                                        @elseif($job->certificate_status=='On Going')
+                                        <?php elseif($job->certificate_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        @elseif($job->certificate_status=='Completed')
+                                        <?php elseif($job->certificate_status=='Completed'): ?>
                                             <span class="badge bg-success">
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge text-dark">
-                                        @endif
-                                            {{$job->certificate_status}}</span>
+                                        <?php endif; ?>
+                                            <?php echo e($job->certificate_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Invoice :</td>
                                     <td>
-                                        @if($job->invoice_status=='Waiting')
+                                        <?php if($job->invoice_status=='Waiting'): ?>
                                             <span class="badge bg-warning text-dark">
-                                        @elseif($job->invoice_status=='On Going')
+                                        <?php elseif($job->invoice_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        @elseif($job->invoice_status=='Completed')
+                                        <?php elseif($job->invoice_status=='Completed'): ?>
                                             <span class="badge bg-success">
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge text-dark">
-                                        @endif
-                                            {{$job->invoice_status}}</span>
+                                        <?php endif; ?>
+                                            <?php echo e($job->invoice_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Delivery Note :</td>
                                     <td>
-                                        @if($job->delivery_note_status=='Waiting')
+                                        <?php if($job->delivery_note_status=='Waiting'): ?>
                                             <span class="badge bg-warning text-dark">
-                                        @elseif($job->delivery_note_status=='On Going')
+                                        <?php elseif($job->delivery_note_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        @elseif($job->delivery_note_status=='Completed')
+                                        <?php elseif($job->delivery_note_status=='Completed'): ?>
                                             <span class="badge bg-success">
-                                        @else
+                                        <?php else: ?>
                                             <span class="badge text-dark">
-                                        @endif
-                                            {{$job->delivery_note_status}}</span>
+                                        <?php endif; ?>
+                                            <?php echo e($job->delivery_note_status); ?></span>
                                     </td>
                                 </tr>
                             </table>
                             
                                 
                         </td>
-                        <td>{{$job->date}}</td>
+                        <td><?php echo e($job->date); ?></td>
                         <td>
                             <!-- Edit Button -->
-                            <button type="button" 
-        onclick="openUpdateWorkOrderModal({ 
-            id: {{$job->id}}, 
-            training_status: '{{$job->training_status}}', 
-            certificate_status: '{{$job->certificate_status}}' 
-        })" class="btn btn-outline-warning btn-sm text-dark" title="Edit">
-                                <i class="bi bi-pencil"></i> Update
-</button>
+                            <button type="button" class="btn btn-sm btn-outline-warning text-dark"><i class="bi bi-pencil"></i> Update</button>
 
                             <!-- View Button -->
-                            <a href="{{route('job.show', $job->id)}}" class="btn btn-outline-primary btn-sm" title="View">
+                            <a href="<?php echo e(route('job.show', $job->id)); ?>" class="btn btn-outline-primary btn-sm" title="View">
                                 <i class="bi bi-eye"></i> View
                             </a>
+                            
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
-            <div class="d-flex justify-content-center mt-3">
-    {{ $jobs->links() }}
-</div>
         </div>
         <!-- /.card-body -->
     </div>
-</div>
+</div><?php /**PATH D:\xampp\htdocs\aits\resources\views/job_acc/index/table.blade.php ENDPATH**/ ?>

@@ -42,7 +42,12 @@ class Training extends Model
     public function job(){
          return $this->belongsTo(WorkOrder::class,'work_order_id');
     }
+    
     public function traningRequest(){
          return $this->belongsTo(TrainingRequest::class,'training_request_id');
+    }
+    
+    public function files(){
+        return $this->morphMany(File::class, 'fileable');
     }
 }

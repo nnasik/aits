@@ -118,13 +118,22 @@
     </a>
     <ul class="nav nav-treeview">
       <li class="nav-item">
+        <a href="{{route('job-acc.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-suitcase-lg"></i>
+          <p>Jobs</p>
+        </a>
+      </li>
+    </ul>
+    <!-- <ul class="nav nav-treeview">
+      <li class="nav-item">
         <a href="#" class="nav-link">
           <div>  </div>
           <i class="nav-icon bi bi-file-earmark-text"></i>
           <p>Invoices</p>
         </a>
       </li>
-    </ul>
+    </ul> -->
   </li>
   @endrole
 

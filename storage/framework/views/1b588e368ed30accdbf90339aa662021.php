@@ -152,6 +152,10 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center mt-3">
+    <?php echo e($jobs->links()); ?>
+
+</div>
         </div>
         <!-- /.card-body -->
     </div>

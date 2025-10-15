@@ -131,27 +131,18 @@
                         <td>{{$job->date}}</td>
                         <td>
                             <!-- Edit Button -->
-                            <button type="button" 
-        onclick="openUpdateWorkOrderModal({ 
-            id: {{$job->id}}, 
-            training_status: '{{$job->training_status}}', 
-            certificate_status: '{{$job->certificate_status}}' 
-        })" class="btn btn-outline-warning btn-sm text-dark" title="Edit">
-                                <i class="bi bi-pencil"></i> Update
-</button>
+                            <button type="button" class="btn btn-sm btn-outline-warning text-dark"><i class="bi bi-pencil"></i> Update</button>
 
                             <!-- View Button -->
                             <a href="{{route('job.show', $job->id)}}" class="btn btn-outline-primary btn-sm" title="View">
                                 <i class="bi bi-eye"></i> View
                             </a>
+                            
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
-            <div class="d-flex justify-content-center mt-3">
-    {{ $jobs->links() }}
-</div>
         </div>
         <!-- /.card-body -->
     </div>

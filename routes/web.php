@@ -41,6 +41,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/job/workpermit/{id}/pdf', [JobController::class, 'workOrderPDF'])->name('job.pdf');
     Route::post('/job/update-status', [JobController::class, 'updateStatus'])
     ->name('job.update-status');
+    Route::get('/job-acc', [JobController::class, 'index_acc'])->name('job-acc.index');
 
     // Trainings
     Route::resource('training', TrainingController::class)->only(['index','store','show','edit','destroy']);
