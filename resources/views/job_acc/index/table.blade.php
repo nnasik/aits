@@ -220,7 +220,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $requests->links() }}
+            {{ $jobs->links()}}
         </div>
         <!-- /.card-body -->
     </div>

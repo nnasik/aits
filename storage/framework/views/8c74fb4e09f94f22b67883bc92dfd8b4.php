@@ -226,6 +226,8 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
+            <?php echo e($jobs->links()); ?>
+
         </div>
         <!-- /.card-body -->
     </div>
