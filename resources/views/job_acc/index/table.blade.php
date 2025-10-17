@@ -110,20 +110,8 @@
                         <td>
                             <table>
                                 <tr>
-                                    <td>Invoice :</td>
-                                    <td>
-                                        @if($job->invoice_date)
-                                            #{{$job->invoice_no}}
-                                        @endif
-                                         <br>
-                                        @if($job->invoice_date)
-                                            <i class="bi bi-calendar3"></i> {{$job->invoice_date}}
-                                        @endif
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Invoice Status:</td>
-                                    <td>
+                                    <td>Invoice :
+                                        <br>
                                         @if($job->invoice_status=='Waiting')
                                             <span class="badge bg-warning text-dark">
                                         @elseif($job->invoice_status=='On Going')
@@ -137,10 +125,22 @@
                                         @endif
                                             {{$job->invoice_status}}</span>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>Delivery Note :</td>
                                     <td>
+                                        @if($job->invoice_date)
+                                            <i class="bi bi-hash"></i> {{$job->invoice_no}}
+                                        @endif
+                                         <br>
+                                        @if($job->invoice_date)
+                                            <i class="bi bi-calendar3"></i> {{$job->invoice_date}}
+                                        @endif
+                                        <br>
+                                        <i class="bi bi-receipt"></i> Invoice
+                                    </td>
+                                </tr>
+                                
+                                <tr class="border-top">
+                                    <td>Delivery Note :
+                                        <br>
                                         @if($job->delivery_note_status=='Waiting')
                                             <span class="badge bg-warning text-dark">
                                         @elseif($job->delivery_note_status=='On Going')
@@ -154,26 +154,46 @@
                                         @endif
                                             {{$job->delivery_note_status}}</span>
                                     </td>
+                                    <td>
+                                        
+                                        
+                                        <br>
+                                        @if($job->delivery_note_no)
+                                            <i class="bi bi-hash"></i> {{$job->delivery_note_no}}
+                                        @endif
+                                        <br>
+                                        @if($job->delivery_note_no)
+                                            <i class="bi bi-file-earmark-text"></i> Delivery Note
+                                        @endif
+                                    </td>
                                 </tr>
                             </table>
                         </td>
                         <td>
                             <table>
                                 <tr>
-                                    <td>Invoiced On :</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
                                     <td>Due On :</td>
                                     <td>{{$job->invoice_date}}</td>
                                 </tr>
                                 <tr>
                                     <td>Due On :</td>
-                                    <td>{{$job->invoice_date}}</td>
+                                    <td>{{$job->invoice_due_date}}</td>
                                 </tr>
                                 <tr>
                                     <td>Payment Status :</td>
-                                    <td></td>
+                                    <td>
+                                        @if($job->payment_status=='Unpaid')
+                                            <span class="badge bg-danger">
+                                        @elseif($job->payment_status=='Paid')
+                                            <span class="badge bg-success">
+                                        @elseif($job->payment_statuss=='partial')
+                                            <span class="badge bg-warning text-dark">
+                                        @else
+                                            <span class="badge text-dark">
+                                        @endif
+                                        {{$job->payment_status}}
+                                            </span>
+                                    </td>
                                 </tr>
                             </table>
                         </td>

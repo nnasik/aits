@@ -112,22 +112,8 @@
                         <td>
                             <table>
                                 <tr>
-                                    <td>Invoice :</td>
-                                    <td>
-                                        <?php if($job->invoice_date): ?>
-                                            #<?php echo e($job->invoice_no); ?>
-
-                                        <?php endif; ?>
-                                         <br>
-                                        <?php if($job->invoice_date): ?>
-                                            <i class="bi bi-calendar3"></i> : <?php echo e($job->invoice_date); ?>
-
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Invoice Status:</td>
-                                    <td>
+                                    <td>Invoice :
+                                        <br>
                                         <?php if($job->invoice_status=='Waiting'): ?>
                                             <span class="badge bg-warning text-dark">
                                         <?php elseif($job->invoice_status=='On Going'): ?>
@@ -141,10 +127,24 @@
                                         <?php endif; ?>
                                             <?php echo e($job->invoice_status); ?></span>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>Delivery Note :</td>
                                     <td>
+                                        <?php if($job->invoice_date): ?>
+                                            <i class="bi bi-hash"></i> <?php echo e($job->invoice_no); ?>
+
+                                        <?php endif; ?>
+                                         <br>
+                                        <?php if($job->invoice_date): ?>
+                                            <i class="bi bi-calendar3"></i> <?php echo e($job->invoice_date); ?>
+
+                                        <?php endif; ?>
+                                        <br>
+                                        <i class="bi bi-receipt"></i> Invoice
+                                    </td>
+                                </tr>
+                                
+                                <tr class="border-top">
+                                    <td>Delivery Note :
+                                        <br>
                                         <?php if($job->delivery_note_status=='Waiting'): ?>
                                             <span class="badge bg-warning text-dark">
                                         <?php elseif($job->delivery_note_status=='On Going'): ?>
@@ -158,26 +158,48 @@
                                         <?php endif; ?>
                                             <?php echo e($job->delivery_note_status); ?></span>
                                     </td>
+                                    <td>
+                                        
+                                        
+                                        <br>
+                                        <?php if($job->delivery_note_no): ?>
+                                            <i class="bi bi-hash"></i> <?php echo e($job->delivery_note_no); ?>
+
+                                        <?php endif; ?>
+                                        <br>
+                                        <?php if($job->delivery_note_no): ?>
+                                            <i class="bi bi-file-earmark-text"></i> Delivery Note
+                                        <?php endif; ?>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
                         <td>
                             <table>
                                 <tr>
-                                    <td>Invoiced On :</td>
-                                    <td></td>
-                                </tr>
-                                <tr>
                                     <td>Due On :</td>
                                     <td><?php echo e($job->invoice_date); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Due On :</td>
-                                    <td><?php echo e($job->invoice_date); ?></td>
+                                    <td><?php echo e($job->invoice_due_date); ?></td>
                                 </tr>
                                 <tr>
                                     <td>Payment Status :</td>
-                                    <td></td>
+                                    <td>
+                                        <?php if($job->payment_status=='Unpaid'): ?>
+                                            <span class="badge bg-danger">
+                                        <?php elseif($job->payment_status=='Paid'): ?>
+                                            <span class="badge bg-success">
+                                        <?php elseif($job->payment_statuss=='partial'): ?>
+                                            <span class="badge bg-warning text-dark">
+                                        <?php else: ?>
+                                            <span class="badge text-dark">
+                                        <?php endif; ?>
+                                        <?php echo e($job->payment_status); ?>
+
+                                            </span>
+                                    </td>
                                 </tr>
                             </table>
                         </td>
