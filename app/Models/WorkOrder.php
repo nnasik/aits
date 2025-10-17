@@ -22,7 +22,15 @@ class WorkOrder extends Model{
         'training_mode',
         'priority',
         'is_zoom_link_required',
-        'status'
+        'status',
+        'invoice_status',
+        'delivery_note_status',
+        'invoice_amount',
+        'invoice_no',
+        'payment_status',
+        'delivery_note_no',
+        'invoice_date',
+        'invoice_due_date',
     ];
     
     public function trainings(){

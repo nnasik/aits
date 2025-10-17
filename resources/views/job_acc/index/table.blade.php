@@ -6,10 +6,12 @@
                 <thead>
                     <tr>
                         <th scope="col">Job No</th>
+                        <th scope="col">Job Date</th>
                         <th scope="col">Company Name & Description</th>
                         <th scope="col">Qty</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Date</th>
+                        <th scope="col">Ops Status</th>
+                        <th scope="col">Acc Status</th>
+                        <th scope="col">Payment Status</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -17,11 +19,12 @@
                     @foreach($jobs as $job)
                     <tr>
                         <td>{{$job->id}}</td>
+                        <td>{{$job->date}}</td>
                         <td>{{$job->company->name}}
                             @foreach($job->trainings as $training)
                             <br>
                             <span class="text-muted">
-                                  - {{$training->course_title_in_certificate}}
+                                  - {{$training->course_title_in_certificate}} ({{$training->quantity}})
                             </span>
                             @endforeach
                         </td>
@@ -38,6 +41,7 @@
                             <table>
                                 <tr>
                                     <td>Request : </td>
+                                    
                                     <td>
                                         @if($job->request->request_status=='Cancelled')
                                             <span class="badge bg-danger">
@@ -73,6 +77,8 @@
                                             <span class="badge bg-primary">
                                         @elseif($job->training_status=='Completed')
                                             <span class="badge bg-success">
+                                        @elseif($job->training_status=='Cancelled')
+                                            <span class="badge bg-danger">
                                         @else
                                             <span class="badge text-dark">
                                         @endif
@@ -88,14 +94,35 @@
                                             <span class="badge bg-primary">
                                         @elseif($job->certificate_status=='Completed')
                                             <span class="badge bg-success">
+                                        @elseif($job->certificate_status=='Cancelled')
+                                            <span class="badge bg-danger">
                                         @else
                                             <span class="badge text-dark">
                                         @endif
                                             {{$job->certificate_status}}</span>
                                     </td>
                                 </tr>
+                            </table>
+                            
+                                
+                        </td>
+
+                        <td>
+                            <table>
                                 <tr>
                                     <td>Invoice :</td>
+                                    <td>
+                                        @if($job->invoice_date)
+                                            #{{$job->invoice_no}}
+                                        @endif
+                                         <br>
+                                        @if($job->invoice_date)
+                                            <i class="bi bi-calendar3"></i> {{$job->invoice_date}}
+                                        @endif
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Invoice Status:</td>
                                     <td>
                                         @if($job->invoice_status=='Waiting')
                                             <span class="badge bg-warning text-dark">
@@ -103,6 +130,8 @@
                                             <span class="badge bg-primary">
                                         @elseif($job->invoice_status=='Completed')
                                             <span class="badge bg-success">
+                                        @elseif($job->invoice_status=='Cancelled')
+                                            <span class="badge bg-danger">
                                         @else
                                             <span class="badge text-dark">
                                         @endif
@@ -118,6 +147,8 @@
                                             <span class="badge bg-primary">
                                         @elseif($job->delivery_note_status=='Completed')
                                             <span class="badge bg-success">
+                                        @elseif($job->delivery_note_status=='Cancelled')
+                                            <span class="badge bg-danger">
                                         @else
                                             <span class="badge text-dark">
                                         @endif
@@ -125,19 +156,45 @@
                                     </td>
                                 </tr>
                             </table>
-                            
-                                
                         </td>
-                        <td>{{$job->date}}</td>
                         <td>
-                            <!-- Edit Button -->
-                            <button type="button" class="btn btn-sm btn-outline-warning text-dark"><i class="bi bi-pencil"></i> Update</button>
-
-                            <!-- View Button -->
-                            <a href="{{route('job.show', $job->id)}}" class="btn btn-outline-primary btn-sm" title="View">
-                                <i class="bi bi-eye"></i> View
-                            </a>
-                            
+                            <table>
+                                <tr>
+                                    <td>Invoiced On :</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Due On :</td>
+                                    <td>{{$job->invoice_date}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Due On :</td>
+                                    <td>{{$job->invoice_date}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Payment Status :</td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </td>
+                        
+                        <td>
+                            <button class="btn btn-sm btn-outline-warning text-dark"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#changeStatusModal"
+                                    onclick="openChangeStatusModal(
+                                        {{ $job->id }},
+                                        '{{ $job->invoice_status }}',
+                                        '{{ $job->delivery_note_status }}',
+                                        '{{ $job->invoice_no }}',
+                                        '{{ $job->invoice_date }}',
+                                        '{{ $job->invoice_amount }}',
+                                        '{{ $job->invoice_due_date }}',
+                                        '{{ $job->payment_status }}',
+                                        '{{ $job->delivery_note_no }}'
+                                    )">
+                                <i class="bi bi-pencil"></i> Update Status
+                            </button>
                         </td>
                     </tr>
                     @endforeach

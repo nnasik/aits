@@ -32,5 +32,6 @@
     <!--end::Container-->
   </div>
   <!--end::App Content-->
+  @include('job_acc.modal.change_status')
+  </div>
   @endsection()
-</div>

@@ -40,8 +40,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/job/training/{id}', [JobController::class, 'training'])->name('job.traning.show');
     Route::get('/job/workpermit/{id}/pdf', [JobController::class, 'workOrderPDF'])->name('job.pdf');
     Route::post('/job/update-status', [JobController::class, 'updateStatus'])
-    ->name('job.update-status');
+    ->name('job.update-status');                     
     Route::get('/job-acc', [JobController::class, 'index_acc'])->name('job-acc.index');
+    Route::post('/job-acc/change-status',[JobController::class, 'change_status_acc'])
+    ->name('job.change_status_acc');
 
     // Trainings
     Route::resource('training', TrainingController::class)->only(['index','store','show','edit','destroy']);

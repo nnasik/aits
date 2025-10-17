@@ -242,4 +242,36 @@ class JobController extends Controller
         $data['jobs']=WorkOrder::all();
         return view('job_acc.index')->with($data);
     }
+
+    public function change_status_acc(Request $request){
+        $request->validate([
+            'work_order_id'        => 'required|exists:work_orders,id',
+            'invoice_status'       => 'required|string',
+            'delivery_note_status' => 'required|string',
+            'invoice_no'           => 'nullable|string|max:255',
+            'invoice_date'         => 'nullable|date',
+            'invoice_amount'       => 'nullable|numeric',
+            'invoice_due_date'     => 'nullable|date',
+            'payment_status'       => 'required|string',
+            'delivery_note_no'     => 'nullable|string|max:255',
+        ]);
+
+        $workOrder = WorkOrder::findOrFail($request->work_order_id);
+
+        $workOrder->update([
+            'invoice_status'       => $request->invoice_status,
+            'delivery_note_status' => $request->delivery_note_status,
+            'invoice_no'           => $request->invoice_no,
+            'invoice_date'         => $request->invoice_date,
+            'invoice_amount'       => $request->invoice_amount,
+            'invoice_due_date'     => $request->invoice_due_date,
+            'payment_status'       => $request->payment_status,
+            'delivery_note_no'     => $request->delivery_note_no,
+        ]);
+
+        return redirect()->back()->with('success', 'Work order status updated successfully.');
+    }
+
+    
+
 }

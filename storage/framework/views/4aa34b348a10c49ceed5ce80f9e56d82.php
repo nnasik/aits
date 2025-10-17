@@ -30,6 +30,8 @@
     <!--end::Container-->
   </div>
   <!--end::App Content-->
+  <?php echo $__env->make('job_acc.modal.change_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  </div>
   <?php $__env->stopSection(); ?>
-</div>
+
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/job_acc/index.blade.php ENDPATH**/ ?>
