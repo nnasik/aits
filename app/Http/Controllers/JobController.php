@@ -239,7 +239,7 @@ class JobController extends Controller
     }
 
     public function index_acc(){
-        $data['jobs']=WorkOrder::all();
+        $data['jobs']=WorkOrder::orderBy('id','DESC')->paginate(10);
         return view('job_acc.index')->with($data);
     }
 
@@ -272,6 +272,6 @@ class JobController extends Controller
         return redirect()->back()->with('success', 'Work order status updated successfully.');
     }
 
-    
+
 
 }
