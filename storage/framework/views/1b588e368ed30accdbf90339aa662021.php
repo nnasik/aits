@@ -30,9 +30,9 @@
 
                         <td>
                             <?php
-                                $totalTrainees = $job->trainings->sum(function($training) {
-                                    return $training->trainees->count();
-                                });
+                            $totalTrainees = $job->trainings->sum(function($training) {
+                            return $training->trainees->count();
+                            });
                             ?>
                             <?php echo e($totalTrainees); ?>
 
@@ -43,119 +43,136 @@
                                     <td>Request : </td>
                                     <td>
                                         <?php if($job->request->request_status=='Cancelled'): ?>
-                                            <span class="badge bg-danger">
-                                        <?php elseif($job->request->request_status=='Accepted'): ?>
+                                        <span class="badge bg-danger">
+                                            <?php elseif($job->request->request_status=='Accepted'): ?>
                                             <span class="badge bg-success">
-                                        <?php else: ?>
-                                            <span class="badge text-dark">
-                                        <?php endif; ?>
-                                        <?php echo e($job->request->request_status); ?></span>
+                                                <?php else: ?>
+                                                <span class="badge text-dark">
+                                                    <?php endif; ?>
+                                                    <?php echo e($job->request->request_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Job : </td>
                                     <td>
                                         <?php if($job->status=='Open'): ?>
-                                            <span class="badge bg-primary">
-                                        <?php elseif($job->status=='Closed'): ?>
+                                        <span class="badge bg-primary">
+                                            <?php elseif($job->status=='Closed'): ?>
                                             <span class="badge bg-success">
-                                        <?php elseif($job->status=='Cancelled'): ?>
-                                            <span class="badge bg-danger">
-                                        <?php else: ?>
-                                            <span class="badge text-dark">
-                                        <?php endif; ?>
-                                            <?php echo e($job->status); ?></span>
+                                                <?php elseif($job->status=='Cancelled'): ?>
+                                                <span class="badge bg-danger">
+                                                    <?php else: ?>
+                                                    <span class="badge text-dark">
+                                                        <?php endif; ?>
+                                                        <?php echo e($job->status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Training : </td>
                                     <td>
                                         <?php if($job->training_status=='Waiting'): ?>
-                                            <span class="badge bg-warning text-dark">
-                                        <?php elseif($job->training_status=='On Going'): ?>
+                                        <span class="badge bg-warning text-dark">
+                                            <?php elseif($job->training_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        <?php elseif($job->training_status=='Completed'): ?>
-                                            <span class="badge bg-success">
-                                        <?php else: ?>
-                                            <span class="badge text-dark">
-                                        <?php endif; ?>
-                                        <?php echo e($job->training_status); ?></span>
+                                                <?php elseif($job->training_status=='Completed'): ?>
+                                                <span class="badge bg-success">
+                                                    <?php else: ?>
+                                                    <span class="badge text-dark">
+                                                        <?php endif; ?>
+                                                        <?php echo e($job->training_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Certificate : </td>
                                     <td>
                                         <?php if($job->certificate_status=='Waiting'): ?>
-                                            <span class="badge bg-warning text-dark">
-                                        <?php elseif($job->certificate_status=='On Going'): ?>
+                                        <span class="badge bg-warning text-dark">
+                                            <?php elseif($job->certificate_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        <?php elseif($job->certificate_status=='Completed'): ?>
-                                            <span class="badge bg-success">
-                                        <?php else: ?>
-                                            <span class="badge text-dark">
-                                        <?php endif; ?>
-                                            <?php echo e($job->certificate_status); ?></span>
+                                                <?php elseif($job->certificate_status=='Completed'): ?>
+                                                <span class="badge bg-success">
+                                                    <?php else: ?>
+                                                    <span class="badge text-dark">
+                                                        <?php endif; ?>
+                                                        <?php echo e($job->certificate_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Invoice :</td>
                                     <td>
                                         <?php if($job->invoice_status=='Waiting'): ?>
-                                            <span class="badge bg-warning text-dark">
-                                        <?php elseif($job->invoice_status=='On Going'): ?>
+                                        <span class="badge bg-warning text-dark">
+                                            <?php elseif($job->invoice_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        <?php elseif($job->invoice_status=='Completed'): ?>
-                                            <span class="badge bg-success">
-                                        <?php else: ?>
-                                            <span class="badge text-dark">
-                                        <?php endif; ?>
-                                            <?php echo e($job->invoice_status); ?></span>
+                                                <?php elseif($job->invoice_status=='Completed'): ?>
+                                                <span class="badge bg-success">
+                                                    <?php else: ?>
+                                                    <span class="badge text-dark">
+                                                        <?php endif; ?>
+                                                        <?php echo e($job->invoice_status); ?></span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>Delivery Note :</td>
                                     <td>
                                         <?php if($job->delivery_note_status=='Waiting'): ?>
-                                            <span class="badge bg-warning text-dark">
-                                        <?php elseif($job->delivery_note_status=='On Going'): ?>
+                                        <span class="badge bg-warning text-dark">
+                                            <?php elseif($job->delivery_note_status=='On Going'): ?>
                                             <span class="badge bg-primary">
-                                        <?php elseif($job->delivery_note_status=='Completed'): ?>
-                                            <span class="badge bg-success">
-                                        <?php else: ?>
-                                            <span class="badge text-dark">
-                                        <?php endif; ?>
-                                            <?php echo e($job->delivery_note_status); ?></span>
+                                                <?php elseif($job->delivery_note_status=='Completed'): ?>
+                                                <span class="badge bg-success">
+                                                    <?php else: ?>
+                                                    <span class="badge text-dark">
+                                                        <?php endif; ?>
+                                                        <?php echo e($job->delivery_note_status); ?></span>
                                     </td>
                                 </tr>
                             </table>
-                            
-                                
+
+
                         </td>
                         <td><?php echo e($job->date); ?></td>
                         <td>
-                            <!-- Edit Button -->
-                            <button type="button" 
-        onclick="openUpdateWorkOrderModal({ 
-            id: <?php echo e($job->id); ?>, 
-            training_status: '<?php echo e($job->training_status); ?>', 
-            certificate_status: '<?php echo e($job->certificate_status); ?>' 
-        })" class="btn btn-outline-warning btn-sm text-dark" title="Edit">
-                                <i class="bi bi-pencil"></i> Update
-</button>
-
-                            <!-- View Button -->
-                            <a href="<?php echo e(route('job.show', $job->id)); ?>" class="btn btn-outline-primary btn-sm" title="View">
-                                <i class="bi bi-eye"></i> View
-                            </a>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    Actions
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="<?php echo e(route('job.show', $job->id)); ?>">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="openUpdateWorkOrderModal({ 
+                                                id: <?php echo e($job->id); ?>, 
+                                                training_status: '<?php echo e($job->training_status); ?>', 
+                                                certificate_status: '<?php echo e($job->certificate_status); ?>' 
+                                            })">
+                                            <i class="bi bi-pencil"></i> Update Status
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="javascript:void(0);" onclick="openJobStatusModal({ 
+                                                 id: <?php echo e($job->id); ?>, 
+                                                 status: '<?php echo e($job->status); ?>' 
+                                               })">
+                                            <i class="bi bi-pencil-square"></i> Job Update
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
+
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
             <div class="d-flex justify-content-center mt-3">
-    <?php echo e($jobs->links()); ?>
+                <?php echo e($jobs->links()); ?>
 
-</div>
+            </div>
         </div>
         <!-- /.card-body -->
     </div>

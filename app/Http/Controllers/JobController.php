@@ -272,6 +272,20 @@ class JobController extends Controller
         return redirect()->back()->with('success', 'Work order status updated successfully.');
     }
 
+    public function updateJobStatus(Request $request){
+        $request->validate([
+            'job_id' => 'required|exists:work_orders,id',
+            'status' => 'required|in:Open,Closed,Cancelled,On Hold',
+        ]);
+
+        $job = WorkOrder::findOrFail($request->job_id);
+        $job->status = $request->status;
+        $job->save();
+
+        return redirect()->back()->with('success', 'Job status updated successfully.');
+    }
+
+
 
 
 }

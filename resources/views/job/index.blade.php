@@ -78,4 +78,5 @@
   @include('job.modals.new_job')
   @include('job.modals.accept_request')
   @include('job.modals.change_status')
+  @include('job.modals.change_job_status')
   @endsection()

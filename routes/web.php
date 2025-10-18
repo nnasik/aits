@@ -44,6 +44,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/job-acc', [JobController::class, 'index_acc'])->name('job-acc.index');
     Route::post('/job-acc/change-status',[JobController::class, 'change_status_acc'])
     ->name('job.change_status_acc');
+    Route::post('/jobs/update-job-status', [App\Http\Controllers\JobController::class, 'updateJobStatus'])->name('job.updateJobStatus');
+
 
     // Trainings
     Route::resource('training', TrainingController::class)->only(['index','store','show','edit','destroy']);
