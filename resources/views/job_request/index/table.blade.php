@@ -44,27 +44,33 @@
                         <td class="text-start">
                             @if($request->request_status=='Requested')
                                 <span class="badge bg-warning text-dark">Awaiting</span>
-                            @elseif($request->request_status=='Accepted')
-                                @if($request->job->status=='Open')
-                                <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-primary">
-                                    {{$request->job->status}}
-                                </span>
-                                @elseif($request->job->status=='Closed')
-                                <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-success">
-                                    {{$request->job->status}}
-                                </span>
+                            @elseif($request->request_status=='Accepted' || $request->request_status=='Cancelled')
+                                @if($request->job)
+                                    @if($request->job->status=='Open')
+                                    <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-primary">
+                                        {{$request->job->status}}
+                                    </span>
+                                    @elseif($request->job->status=='Closed')
+                                    <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-success">
+                                        {{$request->job->status}}
+                                    </span>
+                                    @elseif($request->job->status=='Cancelled')
+                                    <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-danger">
+                                        {{$request->job->status}}
+                                    </span>
+                                    @endif
+                                    <br>
+                                    <i class="bi bi-file-earmark-ruled-fill text-dark"></i> : <span class="badge bg-dark">
+                                        {{$request->job->id}}
+                                    </span>
+                                    <br>
+                                    <i class="bi bi-person-fill"></i> : <span
+                                        class="badge bg-dark">{{$request->job->issued->name}}</span>
+                                    <br>
+                                    <i class="bi bi-clock-fill"></i> : <span
+                                        class="badge bg-dark">{{$request->job->updated_at}}</span>
+                                    @endif
                                 @endif
-                                <br>
-                                <i class="bi bi-file-earmark-ruled-fill text-dark"></i> : <span class="badge bg-dark">
-                                    {{$request->job->id}}
-                                </span>
-                                <br>
-                                <i class="bi bi-person-fill"></i> : <span
-                                    class="badge bg-dark">{{$request->job->issued->name}}</span>
-                                <br>
-                                <i class="bi bi-clock-fill"></i> : <span
-                                    class="badge bg-dark">{{$request->job->updated_at}}</span>
-                            @endif
                         </td>
                         <td class="text-center">
                             @if($request->request_status=='Requested')
