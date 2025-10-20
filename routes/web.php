@@ -11,6 +11,7 @@ use App\Http\Controllers\JobRequestController;
 use App\Http\Controllers\TrainingRequestController;
 use App\Http\Controllers\TraineeRequestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DashboardController;
 
 Auth::routes();
 
@@ -33,6 +34,8 @@ Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    // Dashboard
+    Route::get('/dashbaord', [DashboardController::class, 'index'])->name('dashbaord.index');
 
     // Job
     Route::resource('job', JobController::class)->only(['index','store','show','edit']);

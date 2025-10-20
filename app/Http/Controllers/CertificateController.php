@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Certificate;
-use App\Models\TrainingTrainee;
+use App\Models\Trainee;
 use FPDF;
 
 class CertificateController extends Controller
 {
     public function index(){
-        $data['records'] = TrainingTrainee::all();
-        //$data['certificates'] = Certificate::all();
+        $data['trainees'] = Trainee::all();
+        $data['certificates'] = Certificate::all();
         return view('certificate.index')->with($data);
     }
 
@@ -22,7 +22,7 @@ class CertificateController extends Controller
     }
 
     public function certificatePDF($id){
-        $record = TrainingTrainee::findOrFail($id);
+        $record = Trainee::findOrFail($id);
 
         // Import FPDF (absolute path from vendor)
         require_once base_path('vendor/setasign/fpdf/fpdf.php');

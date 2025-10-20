@@ -19,24 +19,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($records as $record)
+                    <?php $__currentLoopData = $trainees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trainee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td>{{$record->certificate_no}}</td>
-                        <td>{{$record->training->job->id}}</td>
-                        <td><a href="{{route('certificate.pdf',$record->id)}}" target="_blank">{{$record->trainee->name}}</a></td>
-                        <td>{{$record->training->course->name}}</td>
-                        <td>{{$record->training_status}}</td>
-                        <td>{{$record->certificate_status}}</td>
-                        <td>{{$record->id_card_status}}</td>
+                        <td></td>
+                        <td></td>
+                        <td><a href="<?php echo e(route('certificate.pdf',$trainee->id)); ?>" target="_blank"><?php echo e($trainee->name); ?></a></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
                         <td>
                            <button class="btn btn-outline-primary"><i class="bi bi-magic"></i> Certificate</button>
                            <button class="btn btn-outline-primary"><i class="bi bi-magic"></i> Card</button>
                         </td>
                     </tr>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
         </div>
         <!-- /.card-body -->
     </div>
-</div>
+</div><?php /**PATH D:\xampp\htdocs\aits\resources\views/certificate/index/table.blade.php ENDPATH**/ ?>

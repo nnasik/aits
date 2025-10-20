@@ -1,8 +1,8 @@
 <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation"
   data-accordion="false" id="navigation">
-
+  @role('Manager')
   <li class="nav-item">
-    <a href="#" class="nav-link">
+    <a href="{{route('dashbaord.index')}}" class="nav-link">
       <i class="bi bi-speedometer"></i>
       <p>
         Dashboard
@@ -10,6 +10,7 @@
       </p>
     </a>
   </li>
+  @endrole
   <div id="server-time" style="font-size:18px;font-family:monospace;color:#fff;text-align:center;"></div>
   @role('Sales')
   <li class="nav-item  menu-open">

@@ -1,6 +1,6 @@
-@extends('layouts.app')
 
-@section('content')
+
+<?php $__env->startSection('content'); ?>
 
 <!--begin::App Content Header-->
 <div class="app-content-header">
@@ -31,14 +31,14 @@
     <!--begin::Row-->
     <div class="row">
       <h3 class="mb-0">Waiting Certificates</h3>
-      @include('certificate.index.trainee_table')
+      <?php echo $__env->make('certificate.index.trainee_table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
     <!--end::Row-->
 
     <!--begin::Row-->
     <div class="row">
       <h3 class="mb-0">Waiting Certificates</h3>
-      @include('certificate.index.certificate_table')
+      <?php echo $__env->make('certificate.index.certificate_table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
     <!--end::Row-->
 
@@ -47,4 +47,5 @@
   <!--end::App Content-->
 </div>
 
-  @endsection()
+  <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/certificate/index.blade.php ENDPATH**/ ?>
