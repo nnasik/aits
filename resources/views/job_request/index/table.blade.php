@@ -49,7 +49,7 @@
                                 <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-primary">
                                     {{$request->job->status}}
                                 </span>
-                                @elseif($request->job->status=='Completed')
+                                @elseif($request->job->status=='Closed')
                                 <i class="bi bi-briefcase-fill text-dark"></i> : <span class="badge bg-success">
                                     {{$request->job->status}}
                                 </span>
