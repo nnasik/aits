@@ -6,7 +6,7 @@
             <div class="inner">
                 <h3>{{$closed_jobs_count}} / {{$total_jobs_count}}</h3>
 
-                <p>Total Jobs</p>
+                <p>Closed Jobs / Total Jobs</p>
             </div>
             <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true">
@@ -15,7 +15,7 @@
                 </path>
             </svg>
             <a href="#" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
-                View All <i class="bi bi-link-45deg"></i>
+                View All
             </a>
         </div>
         <!--end::Small Box Widget 1-->
@@ -27,7 +27,7 @@
             <div class="inner">
                 <h3>56</h3>
 
-                <p>Total Training</p>
+                <p>Total Training Sessions</p>
             </div>
             <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true">
@@ -36,7 +36,7 @@
                 </path>
             </svg>
             <a href="#" class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
-                More info <i class="bi bi-link-45deg"></i>
+                Training Sessions
             </a>
         </div>
         <!--end::Small Box Widget 2-->
@@ -48,7 +48,7 @@
             <div class="inner">
                 <h3>{{$invoice_queue_count}}</h3>
 
-                <p>Not Invoiced</p>
+                <p>Jobs Not Invoiced</p>
             </div>
             <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true">
@@ -57,7 +57,7 @@
                 </path>
             </svg>
             <a href="#" class="small-box-footer link-dark link-underline-opacity-0 link-underline-opacity-50-hover">
-                More info <i class="bi bi-link-45deg"></i>
+                 View Jobs
             </a>
         </div>
         <!--end::Small Box Widget 3-->
@@ -69,7 +69,7 @@
             <div class="inner">
                 <h3>AED {{$unpaid_amount}}</h3>
 
-                <p>Unpaid Invoice ({{$unpaid_count}})</p>
+                <p>Unpaid Invoices ({{$unpaid_count}})</p>
             </div>
             <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true">

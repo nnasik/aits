@@ -26,6 +26,13 @@
         <a href="#" class="nav-link">
           <div>  </div>
           <i class="nav-icon bi bi-people-fill"></i>
+          <p>Reminder</p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-people-fill"></i>
           <p>CRM</p>
         </a>
       </li>
