@@ -20,6 +20,22 @@
                         <td>{{$trainee->company_name_in_certificate}}</td>
                         <td>{{$trainee->candidate_name_in_certificate}}</td>
                         <td>
+                            <button type="button" class="btn btn-outline-primary btn-sm"
+    onclick="openCertificateModal(
+        {{ $trainee->id }},
+        {{ $trainee->training->work_order_id }},
+        '{{ $trainee->candidate_name_in_certificate }}',
+        '{{ $trainee->company_name_in_certificate }}',
+        '{{ $trainee->company_location ?? '' }}',
+        '{{ $trainee->course_name_in_certificate }}',
+        '{{ $trainee->eid_no }}',
+        '{{ $trainee->passport_no }}',
+        '{{ $trainee->date }}',
+        '{{ $trainee->live_photo }}'
+    )">
+    <i class='bi bi-award-fill'></i> Certificate
+</button>
+
                             <a href="{{route('certificate.pdf',$trainee->id)}}" target="_blank">{{$trainee->name}}</a>
                            <button class="btn btn-outline-primary"><i class="bi bi-check"></i> Make Certificate</button>
                            <button class="btn btn-outline-primary"><i class="bi bi-check"></i> Card</button>
@@ -32,3 +48,5 @@
         <!-- /.card-body -->
     </div>
 </div>
+
+@include('certificate.modals.certificate_confirmation')

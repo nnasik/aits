@@ -19,6 +19,7 @@ class Trainee extends Model
         'course_name_in_certificate',
         'date',
         'eid_no',
+        'passport_no',
         'live_photo',
         'certificate_status',
         'id_card_status',

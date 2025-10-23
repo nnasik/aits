@@ -32,6 +32,7 @@ class TrainingCoursesSeeder extends Seeder
             "BRICK CRANE OPERATOR",
             "CHEMICAL HANDLING",
             "CHEMICAL HANDLING SAFETY AWARENESS",
+            "COMPRESSED GAS SAFETY AWARENESS TRAINING",
             "CONCRETE MACHINE OPERATOR",
             "CONCRETE PUMP OPERATOR",
             "CONFINED SPACE ENTRY",
@@ -65,6 +66,7 @@ class TrainingCoursesSeeder extends Seeder
             "MIG WELDER",
             "MOBILE CRANE OPERATOR",
             "MOBILE ELEVATING WORK PLATFORM",
+            
             "NOZZLEMAN",
             "OVER HEAD CRANE OPERATOR",
             "PAT SAFETY",

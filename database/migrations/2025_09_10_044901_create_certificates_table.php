@@ -13,7 +13,24 @@ return new class extends Migration
     {
         Schema::create('certificates', function (Blueprint $table) {
             $table->id();
-            $table->string('certificate_no')->nullable();
+            $table->foreignId('job_id')->constrained(
+                table: 'work_orders'
+            );
+            $table->foreignId('trainee_id')->constrained(
+                table: 'trainee_requests'
+            );
+            $table->string('candidate_name_in_certificate');
+            $table->string('company_name_in_certificate');
+            $table->string('company_location');
+            $table->string('text_1')->nullable();
+            $table->string('text_2')->nullable();
+            $table->string('text_3')->nullable();
+            $table->string('course_name_in_certificate');
+            $table->string('eid_no')->nullable();
+            $table->string('passport_no')->nullable();
+            $table->date('date');
+            $table->date('valid_unit');
+            $table->string('live_photo');
             $table->timestamps();
         });
     }

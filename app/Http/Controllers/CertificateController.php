@@ -16,10 +16,34 @@ class CertificateController extends Controller
     }
 
     public function store(Request $request){
-        $request->validate([
-            
+        $validated = $request->validate([
+            'id' => 'required|numeric|unique:certificates,id',
+            'job_id' => 'required|exists:work_orders,id',
+            'trainee_id' => 'required|exists:trainees,id',
+            'candidate_name_in_certificate' => 'required|string|max:255',
+            'company_name_in_certificate' => 'required|string|max:255',
+            'company_location' => 'required|string|max:255',
+            'course_name_in_certificate' => 'required|string|max:255',
+            'text_1' => 'nullable|string|max:255',
+            'text_2' => 'nullable|string|max:255',
+            'text_3' => 'nullable|string|max:255',
+            'eid_no' => 'nullable|string|max:255',
+            'passport_no' => 'nullable|string|max:255',
+            'date' => 'required|date',
+            'valid_unit' => 'required|date',
+            'live_photo' => 'nullable|image|max:2048',
         ]);
+
+        if ($request->hasFile('live_photo')) {
+            $validated['live_photo'] = $request->file('live_photo')->store('certificates/photos', 'public');
+        }
+
+        // create manually including custom id
+        Certificate::create($validated);
+
+        return redirect()->back()->with('success', 'Certificate created successfully!');
     }
+
 
     public function certificatePDF($id){
         $record = Trainee::findOrFail($id);

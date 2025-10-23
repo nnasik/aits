@@ -70,6 +70,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Certificate
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
     Route::get('/certficate/{id}/pdf',[CertificateController::class,'certificatePDF'])->name('certificate.pdf');
+    Route::post('/certificates/store', [CertificateController::class, 'store'])->name('certificate.store');
 
     // Job Request
     Route::resource('jobrequest', JobRequestController::class)->only(['index','store','show','edit']);
