@@ -35,24 +35,62 @@ const profilePicInput = document.getElementById('profilePicInput');
 const profilePicPreview = document.getElementById('profilePicPreview');
 const profilePicFileName = document.getElementById('profilePicFileName');
 
+// Click to open file selector
 profilePicDropZone.addEventListener('click', () => profilePicInput.click());
+
+// Normal file input change
 profilePicInput.addEventListener('change', () => {
-  if(profilePicInput.files.length>0){
+  if (profilePicInput.files.length > 0) {
     profilePicPreview.classList.remove('d-none');
     profilePicFileName.textContent = profilePicInput.files[0].name;
   }
 });
-profilePicDropZone.addEventListener('dragover', e=>{e.preventDefault(); profilePicDropZone.classList.add('bg-white');});
-profilePicDropZone.addEventListener('dragleave', ()=>profilePicDropZone.classList.remove('bg-white'));
-profilePicDropZone.addEventListener('drop', e=>{
+
+// Drag & Drop handling
+profilePicDropZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  profilePicDropZone.classList.add('bg-white');
+});
+
+profilePicDropZone.addEventListener('dragleave', () => {
+  profilePicDropZone.classList.remove('bg-white');
+});
+
+profilePicDropZone.addEventListener('drop', e => {
   e.preventDefault();
   profilePicInput.files = e.dataTransfer.files;
   profilePicInput.dispatchEvent(new Event('change'));
   profilePicDropZone.classList.remove('bg-white');
 });
 
-function changeProfilePic(traineeId){
-    document.querySelector('#profilePicForm input[name="trainee_request_id"]').value = traineeId;
-}
+// Paste from clipboard (Ctrl + V)
+document.addEventListener('paste', e => {
+  // Only handle when modal is open
+  const modalOpen = document.querySelector('#editProfilePicModal.show');
+  if (!modalOpen) return;
 
+  const items = e.clipboardData.items;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image') !== -1) {
+      const blob = items[i].getAsFile();
+
+      // Create a File object (to simulate file input)
+      const file = new File([blob], 'pasted_image.png', { type: blob.type });
+
+      // Create a DataTransfer object to assign to input
+      const dataTransfer = new DataTransfer();
+      dataTransfer.items.add(file);
+      profilePicInput.files = dataTransfer.files;
+
+      // Trigger change event to update preview
+      profilePicInput.dispatchEvent(new Event('change'));
+
+      break; // Only handle first image found
+    }
+  }
+});
+
+function changeProfilePic(traineeId) {
+  document.querySelector('#profilePicForm input[name="trainee_request_id"]').value = traineeId;
+}
 </script>

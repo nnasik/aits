@@ -9,18 +9,23 @@
                         <th>Job No</th>
                         <th>Candidate Name</th>
                         <th>Training Course</th>
-                        <th>Status</th>
+                        <th>Issued Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($trainees as $trainee)
+                    @foreach($certificates as $certificate)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{$certificate->id}}</td>
+                        <td>{{$certificate->trainee->training->job->id}}</td>
+                        <td><strong>{{$certificate->candidate_name_in_certificate}}</strong>
+                            <br>
+                            {{$certificate->company_name_in_certificate}}
+                            <br>
+                            {{$certificate->company_location}}
+                        </td>
+                        <td>{{$certificate->course_name_in_certificate}}</td>
+                        <td>{{$certificate->date}}</td>
                         <td>
                             <table>
                                 <tr>
@@ -28,7 +33,7 @@
                                         Certificate :
                                     </td>
                                     <td>
-                                        <button class="btn btn-outline-primary">V1</button>
+                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v1',$certificate->id)}}">V1</a>
                                         <button class="btn btn-outline-primary">V2</button>
                                         <button class="btn btn-outline-primary">V3</button>
                                         <button class="btn btn-outline-primary">V4</button>

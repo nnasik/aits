@@ -20,8 +20,7 @@
                         <td><?php echo e($trainee->company_name_in_certificate); ?></td>
                         <td><?php echo e($trainee->candidate_name_in_certificate); ?></td>
                         <td>
-                            <button type="button" class="btn btn-outline-primary btn-sm"
-    onclick="openCertificateModal(
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="openCertificateModal(
         <?php echo e($trainee->id); ?>,
         <?php echo e($trainee->training->work_order_id); ?>,
         '<?php echo e($trainee->candidate_name_in_certificate); ?>',
@@ -33,12 +32,8 @@
         '<?php echo e($trainee->date); ?>',
         '<?php echo e($trainee->live_photo); ?>'
     )">
-    <i class='bi bi-award-fill'></i> Certificate
-</button>
-
-                            <a href="<?php echo e(route('certificate.pdf',$trainee->id)); ?>" target="_blank"><?php echo e($trainee->name); ?></a>
-                           <button class="btn btn-outline-primary"><i class="bi bi-check"></i> Make Certificate</button>
-                           <button class="btn btn-outline-primary"><i class="bi bi-check"></i> Card</button>
+                                <i class='bi bi-award-fill'></i> Certificate
+                            </button>
                         </td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -6,6 +6,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\PublicTrainingController;
+use App\Http\Controllers\PublicController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\JobRequestController;
 use App\Http\Controllers\TrainingRequestController;
@@ -29,6 +30,9 @@ Route::post('/trainee/signature', [PublicTrainingController::class, 'saveSignatu
 // Upload photo (pivot ID)
 Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])
     ->name('public.trainee.photo');
+
+// Certificate Verification
+Route::get('/verify/{certificate_no}/{job_no}', [PublicController::class, 'verify'])->name('certificate.verify');
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -69,7 +73,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Certificate
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
-    Route::get('/certficate/{id}/pdf',[CertificateController::class,'certificatePDF'])->name('certificate.pdf');
+    Route::get('/certficate/{id}/pdf/v1',[CertificateController::class,'certificatePDF_V1'])->name('certificate.pdf.v1');
+    Route::get('/certficate/{id}/pdf/v2',[CertificateController::class,'certificatePDF_V2'])->name('certificate.pdf.v2');
     Route::post('/certificates/store', [CertificateController::class, 'store'])->name('certificate.store');
 
     // Job Request

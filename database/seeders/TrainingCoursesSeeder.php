@@ -66,7 +66,6 @@ class TrainingCoursesSeeder extends Seeder
             "MIG WELDER",
             "MOBILE CRANE OPERATOR",
             "MOBILE ELEVATING WORK PLATFORM",
-            
             "NOZZLEMAN",
             "OVER HEAD CRANE OPERATOR",
             "PAT SAFETY",

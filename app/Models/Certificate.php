@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\Trainee;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -25,5 +26,9 @@ class Certificate extends Model
         'valid_unit',
         'live_photo'
     ];
+
+    public function trainee(){
+        return $this->belongsTo(Trainee::class);
+    }
 
 }

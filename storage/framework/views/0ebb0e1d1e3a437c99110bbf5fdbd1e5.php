@@ -9,18 +9,25 @@
                         <th>Job No</th>
                         <th>Candidate Name</th>
                         <th>Training Course</th>
-                        <th>Status</th>
+                        <th>Issued Date</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $__currentLoopData = $trainees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $trainee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php $__currentLoopData = $certificates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $certificate): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><?php echo e($certificate->id); ?></td>
+                        <td><?php echo e($certificate->trainee->training->job->id); ?></td>
+                        <td><strong><?php echo e($certificate->candidate_name_in_certificate); ?></strong>
+                            <br>
+                            <?php echo e($certificate->company_name_in_certificate); ?>
+
+                            <br>
+                            <?php echo e($certificate->company_location); ?>
+
+                        </td>
+                        <td><?php echo e($certificate->course_name_in_certificate); ?></td>
+                        <td><?php echo e($certificate->date); ?></td>
                         <td>
                             <table>
                                 <tr>
@@ -28,7 +35,7 @@
                                         Certificate :
                                     </td>
                                     <td>
-                                        <button class="btn btn-outline-primary">V1</button>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v1',$certificate->id)); ?>">V1</a>
                                         <button class="btn btn-outline-primary">V2</button>
                                         <button class="btn btn-outline-primary">V3</button>
                                         <button class="btn btn-outline-primary">V4</button>
