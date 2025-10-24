@@ -45,6 +45,7 @@
                                     </td>
                                     <td>
                                         <a href="{{route('id.pdf.v1',$certificate->id)}}" target="_blank" class="btn btn-outline-primary">V1</a>
+                                        <a href="{{route('id.pdf.v2',$certificate->id)}}" target="_blank" class="btn btn-outline-primary">V2</a>
                                     </td>
                                 </tr>
                             </table>
