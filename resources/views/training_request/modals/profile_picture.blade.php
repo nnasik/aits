@@ -12,7 +12,7 @@
           <input type="hidden" name="trainee_request_id">
           <div id="profilePicDropZone" class="border border-2 border-dashed rounded-3 p-5 text-center bg-light" style="cursor:pointer;">
             <i class="bi bi-cloud-arrow-up fs-1 text-primary"></i>
-            <p class="mt-2 mb-0 fw-bold">Drag & Drop your file here</p>
+            <p class="mt-2 mb-0 fw-bold">Drag & Drop your file here or Paste (Ctrl + V)</p>
             <p class="text-muted small">or click to browse (Images allowed)</p>
             <input type="file" name="profile_pic" class="d-none" id="profilePicInput">
           </div>

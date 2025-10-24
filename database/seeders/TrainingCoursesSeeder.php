@@ -52,6 +52,7 @@ class TrainingCoursesSeeder extends Seeder
             "FLAGMAN",
             "FORKLIFT OPERATOR",
             "FOOD SAFETY AWARENESS",
+            "GENERAL SAFETY AWARENESS",
             "GAS CUTTING & WELDING SAFETY",
             "GRINDING MACHINE OPERATOR",
             "HAIB CRANE OPERATOR",
