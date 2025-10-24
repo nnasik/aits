@@ -164,8 +164,8 @@ class CertificateController extends Controller
         $pdf->SetAutoPageBreak(true, 0);
         // Some space
         
-        $pdf->setXY(68,20);
-        $pdf->Cell(15,19, "",1,1,'L');
+        $pdf->setXY(67.8,19.8);
+        $pdf->Cell(15.4,19.5, "",1,1,'L');
         $pdf->Image(public_path('assets/images/logo.png'), 32, 0, 22, 12);
         if ($record->live_photo) {
             $pdf->Image(public_path('storage/'.$record->live_photo), 68, 20, 15, 19);
