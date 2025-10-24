@@ -37,7 +37,7 @@
 
     <!--begin::Row-->
     <div class="row">
-      <h3 class="mb-0">Waiting Certificates</h3>
+      <h3 class="mb-0">Certificates</h3>
       @include('certificate.index.certificate_table')
     </div>
     <!--end::Row-->
