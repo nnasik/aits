@@ -93,7 +93,7 @@ class CertificateController extends Controller
 
         $pdf->SetFont('Times','B',14);
         $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, strtoupper($record->candidate_name_in_certificate),0,0,'L');
+        $pdf->Cell(170,9, substr($record->candidate_name_in_certificate, 0, 3) . strtoupper(substr($record->candidate_name_in_certificate, 3)),0,0,'L');
         if($record->eid_no){
             $pdf->Cell(85,9, "Emirates ID No : ".$record->eid_no,0,0,'R');
         }

@@ -37,7 +37,7 @@
 
     <!--begin::Row-->
     <div class="row">
-      <h3 class="mb-0">Waiting Certificates</h3>
+      <h3 class="mb-0">Certificates</h3>
       <?php echo $__env->make('certificate.index.certificate_table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
     <!--end::Row-->

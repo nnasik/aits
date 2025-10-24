@@ -42,7 +42,6 @@
             <div class="row mt-3">
                 <?php echo e($trainees->links()); ?>
 
-
             </div>
         </div>
         <!-- /.card-body -->

@@ -69,7 +69,6 @@
     }
 </script>
 
-
     @include('job.index.table')
     <!--end::Row-->
     <!--end::Container-->
