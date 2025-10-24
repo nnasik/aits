@@ -152,6 +152,80 @@ class CertificateController extends Controller
         ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.pdf"');
     }
 
+    public function cardPDF_V1($id){
+        $record = Certificate::findOrFail($id);
+
+        // Import FPDF (absolute path from vendor)
+        require_once base_path('vendor/setasign/fpdf/fpdf.php');
+
+        $pdf = new FPDF('L', 'mm', array(86, 54));
+        $pdf->AddPage();
+        $pdf->SetMargins(0,0);
+        $pdf->SetAutoPageBreak(true, 0);
+        // Some space
+        
+
+
+        $pdf->Image(public_path('assets/images/logo.png'), 30, 0, 22, 12);
+        if ($record->live_photo) {
+            $pdf->Image(public_path('storage/'.$record->live_photo), 68, 20, 15, 19);
+        } else {
+            $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 68, 20, 15, 19);
+        }
+        $pdf->setXY(1,0);
+        $pdf->SetFont('Arial','',4.8);
+        $pdf->Cell(15,23, "AMERICAN INTERNATIONAL TRAINING SERVICES LLC - ABU DHABI, U.A.E | Contact : +971 55914 7537",0,1,'L');
+        $pdf->setXY(0,13);
+        $pdf->Cell(86,0, "",1,1,'L');
+
+        $pdf->SetTextColor(0, 0, 70); // Dark Blue = RGB(0,0,139)
+        $pdf->setXY(2,15);
+        $pdf->SetFont('Arial','',6);
+        $pdf->Cell(84,4, "Candidate Name : ",0,1,'L');
+        $pdf->setXY(2,21);
+        $pdf->Cell(64,4, "Job & Certificate No : ",0,1,'L');
+        $pdf->setXY(2,27);
+        $pdf->Cell(64,4, "Training Date : ",0,1,'L');
+        $pdf->setXY(2,33);
+        $pdf->Cell(64,4, "Due Date : ",0,1,'L');
+        $pdf->setXY(2,39);
+        $pdf->Cell(82,4, "Company : ",0,1,'L');
+
+
+        $pdf->SetTextColor(0, 0, 0);
+
+        $pdf->setXY(20,15);
+        $pdf->SetFont('Arial','',6);
+        $pdf->Cell(64,4,substr($record->candidate_name_in_certificate, 0, 3) . strtoupper(substr($record->candidate_name_in_certificate, 3)),0,1,'L');
+        $pdf->setXY(23,21);
+        $pdf->Cell(44,4, "AITS-".$record->trainee->training->job->id . " | AITS". $record->id,0,1,'L');
+        $pdf->setXY(23,27);
+        $pdf->Cell(44,4, $record->date,0,1,'L');
+        $pdf->setXY(23,33);
+        $pdf->Cell(44,4, $record->valid_unit,0,1,'L');
+        $pdf->setXY(23,39);
+        $pdf->Cell(44,4, $record->company_name_in_certificate,0,1,'L');
+
+        $pdf->setXY(0,44);
+        $pdf->SetFillColor(4,63,122);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->SetFont('Arial','B',7);
+        $pdf->Cell(86,5, "Has successfully completed safety training for the following",0,1,'C',1);
+        
+        $pdf->setXY(0,49);
+        $pdf->SetFillColor(4,63,122);
+        $pdf->SetTextColor(255, 255, 255);
+        $pdf->SetFont('Arial','B',7);
+        $pdf->Cell(86,5, "\"".$record->course_name_in_certificate."\"",0,1,'C',1);
+
+
+
+        // Download as PDF
+        return response($pdf->Output('S'))
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.pdf"');
+    }
+
     public function certificatePDF_V2($id){
         $record = Certificate::findOrFail($id);
 

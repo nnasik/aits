@@ -17,7 +17,7 @@ return new class extends Migration
                 table: 'work_orders'
             );
             $table->foreignId('trainee_id')->constrained(
-                table: 'trainee_requests'
+                table: 'trainees'
             );
             $table->string('candidate_name_in_certificate');
             $table->string('company_name_in_certificate');

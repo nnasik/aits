@@ -34,7 +34,7 @@
                                     </td>
                                     <td>
                                         <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v1',$certificate->id)}}">V1</a>
-                                        <button class="btn btn-outline-primary">V2</button>
+                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v2',$certificate->id)}}">V2</a>
                                         <button class="btn btn-outline-primary">V3</button>
                                         <button class="btn btn-outline-primary">V4</button>
                                     </td>
@@ -44,7 +44,7 @@
                                         Card :
                                     </td>
                                     <td>
-                                        <button class="btn btn-outline-primary">V1</button>
+                                        <a href="{{route('id.pdf.v1',$certificate->id)}}" target="_blank" class="btn btn-outline-primary">V1</a>
                                     </td>
                                 </tr>
                             </table>
