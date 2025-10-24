@@ -13,9 +13,9 @@ class CertificateController extends Controller
         // Get IDs of trainees who already have certificates
         $traineeIdsWithCertificates = Certificate::pluck('trainee_id')->toArray();
         // Only get trainees that don't have certificates yet
-        $data['trainees'] = Trainee::whereNotIn('id', $traineeIdsWithCertificates)->get();
+        $data['trainees'] = Trainee::whereNotIn('id', $traineeIdsWithCertificates)->orderBy('id','desc')->paginate(10);
         // Get all certificates
-        $data['certificates'] = Certificate::get();
+        $data['certificates'] = Certificate::orderBy('id','desc')->paginate(10);
         return view('certificate.index', $data);
     }
 

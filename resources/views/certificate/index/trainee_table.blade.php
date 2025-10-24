@@ -39,6 +39,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="row mt-3">
+                {{ $trainees->links() }}
+            </div>
         </div>
         <!-- /.card-body -->
     </div>

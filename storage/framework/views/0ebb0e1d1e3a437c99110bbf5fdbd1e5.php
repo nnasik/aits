@@ -55,6 +55,10 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>
             </table>
+            <div class="row mt-3">
+                <?php echo e($certificates->links()); ?>
+
+            </div>
         </div>
         <!-- /.card-body -->
     </div>

@@ -67,7 +67,7 @@
 
             <div class="col-md-6">
               <label class="form-label">Text 2</label>
-              <input type="text" class="form-control" name="text_2" id="text_2">
+              <input type="text" class="form-control" name="text_2" id="text_2" value="has successfully completed the Awareness Training on">
             </div>
 
             <div class="col-md-6">

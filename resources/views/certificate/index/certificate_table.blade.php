@@ -53,6 +53,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="row mt-3">
+                {{ $certificates->links() }}
+            </div>
         </div>
         <!-- /.card-body -->
     </div>
