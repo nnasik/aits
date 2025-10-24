@@ -164,14 +164,15 @@ class CertificateController extends Controller
         $pdf->SetAutoPageBreak(true, 0);
         // Some space
         
-
-
+        $pdf->setXY(68,20);
+        $pdf->Cell(15,19, "",1,1,'L');
         $pdf->Image(public_path('assets/images/logo.png'), 32, 0, 22, 12);
         if ($record->live_photo) {
             $pdf->Image(public_path('storage/'.$record->live_photo), 68, 20, 15, 19);
         } else {
             $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 68, 20, 15, 19);
         }
+
         $pdf->setXY(2,0);
         $pdf->SetFont('Arial','B',4.6);
         $pdf->Cell(15,23, "AMERICAN INTERNATIONAL TRAINING SERVICES LLC - ABU DHABI, U.A.E | Contact : +971 55914 7537",0,1,'L');
