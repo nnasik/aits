@@ -226,6 +226,65 @@ class CertificateController extends Controller
         ->header('Content-Disposition', 'inline; filename="ID_Card_'.$record->id.'.pdf"');
     }
 
+    public function certificateImage_V1($id){
+    $record = Certificate::findOrFail($id);
+
+    // Canvas size (A4 Landscape approx)
+    $width = 1123;
+    $height = 794;
+    $image = imagecreatetruecolor($width, $height);
+
+    // Colors
+    $white = imagecolorallocate($image, 255, 255, 255);
+    $black = imagecolorallocate($image, 0, 0, 0);
+    $blue  = imagecolorallocate($image, 0, 0, 139);
+
+    // Fill background
+    imagefill($image, 0, 0, $white);
+
+    // === Draw text using built-in GD fonts ===
+    imagestring($image, 5, 200, 50, strtoupper($record->text_1), $blue);
+    imagestring($image, 3, 50, 120, "Certificate No.: AITS{$record->id}", $black);
+    imagestring($image, 3, 50, 150, "Job No.: AITS-{$record->trainee->training->job->id}", $black);
+    imagestring($image, 3, 50, 180, "This is to certify that:", $black);
+    imagestring($image, 5, 50, 210, strtoupper($record->candidate_name_in_certificate), $black);
+    imagestring($image, 3, 50, 250, "an employee of:", $black);
+    imagestring($image, 4, 50, 280, strtoupper($record->company_name_in_certificate), $black);
+    imagestring($image, 3, 50, 310, $record->company_location, $black);
+    imagestring($image, 4, 50, 350, "\"{$record->course_name_in_certificate}\"", $black);
+    imagestring($image, 2, 50, 380, "Date of Training: {$record->date}", $black);
+    imagestring($image, 2, 50, 400, "Valid Until: {$record->valid_unit}", $black);
+    imagestring($image, 3, 50, 430, "Trainer: _______________________", $black);
+
+    // === Candidate photo ===
+    $photoPath = $record->live_photo 
+        ? public_path('storage/'.$record->live_photo) 
+        : public_path('assets/images/user_placeholder.jpg');
+
+    if(file_exists($photoPath)) {
+        $photo = imagecreatefromjpeg($photoPath);
+        $photoWidth = 120;
+        $photoHeight = 150;
+        imagecopyresampled(
+            $image,
+            $photo,
+            950, 100, // destination x,y
+            0, 0,     // source x,y
+            $photoWidth, $photoHeight, // destination width/height
+            imagesx($photo), imagesy($photo) // source width/height
+        );
+        imagedestroy($photo);
+    }
+
+    // === Output directly to browser as PNG ===
+    header('Content-Type: image/png');
+    header('Content-Disposition: inline; filename="Certificate_'.$record->id.'.png"');
+    imagepng($image);
+    imagedestroy($image);
+    exit; // terminate script to prevent extra output
+}
+
+
     public function cardPDF_V2($id){
         $record = Certificate::findOrFail($id);
 
@@ -391,6 +450,7 @@ class CertificateController extends Controller
 
         // The text or URL to encode
         $qrData = 'https://aitsacademy.com/verify/'.$record->id.'/'.$record->trainee->training->job->id;
+        $link = 'https://aitsacademy.com/';
 
         $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($qrData);
 
@@ -405,7 +465,7 @@ class CertificateController extends Controller
         $pdf->Cell(20,6, "Verify this certificate at",0,0,'L');
         
         $pdf->setXY(30,182);
-        $pdf->Cell(20,0, $qrData,0,0,'L');
+        $pdf->Cell(20,0, $link,0,0,'L');
         
 
         // Download as PDF

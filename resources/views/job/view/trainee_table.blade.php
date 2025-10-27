@@ -27,7 +27,7 @@
                         <td>{{$loop->iteration}}</td>
                         <td>{{$trainee->candidate_name_in_certificate}}</td>
                         <td>{{$trainee->eid_no ?? $trainee->passport}}<br>
-                            @if($trainee->traineeRequest->eid_front_pic)
+                            @if(isset($trainee->traineeRequest->eid_front_pic))
                             <a href="{{ '/storage/'.$trainee->traineeRequest->eid_front_pic }}" target="_blank">
                                 <span>📄 EID Front Pic</span>
                             </a>

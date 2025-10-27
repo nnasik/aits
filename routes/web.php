@@ -34,6 +34,9 @@ Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])
 // Certificate Verification
 Route::get('/verify/{certificate_no}/{job_no}', [PublicController::class, 'verify'])->name('certificate.verify');
 
+// PDF of certificate Generation
+Route::get('/certficate/preview/{id}/pdf/v1',[CertificateController::class,'certificatePDF_V1'])->name('certificate.preview');
+
 
 Route::group(['middleware' => ['auth']], function () {
 
