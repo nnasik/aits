@@ -68,9 +68,7 @@
   <div class="certificate-container row g-0">
     <div class="col-md-6 certificate-image">
       <!-- Left side: certificate image -->
-      <iframe src="<?php echo e(route('certificate.preview', $certificate->id)); ?>" width="100%"
-        style="width:100%; height:100vh; border:none;">
-      </iframe>
+      <img src="" alt="">
     </div>
     <div class="col-md-6 certificate-details">
       <h2>

@@ -33,10 +33,18 @@
                                         Certificate :
                                     </td>
                                     <td>
-                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v1',$certificate->id)}}">V1</a>
-                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v2',$certificate->id)}}">V2</a>
-                                        <button class="btn btn-outline-primary">V3</button>
-                                        <button class="btn btn-outline-primary">V4</button>
+                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v1',$certificate->id)}}">V 1.1</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v2',$certificate->id)}}">V 1.2</a>
+                                        <button class="btn btn-outline-primary">V 1.4</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v1',$certificate->id)}}">V 2.1</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="{{route('certificate.pdf.v2',$certificate->id)}}">V 2.2</a>
                                     </td>
                                 </tr>
                                 <tr>

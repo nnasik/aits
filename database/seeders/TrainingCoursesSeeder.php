@@ -59,7 +59,8 @@ class TrainingCoursesSeeder extends Seeder
             "HDPE (Pipe Welding Machine Operator)",
             "HIGH VOLTAGE OPERATOR",
             "HOLE WATCHER",
-            "LIFITING SUPERVISIOR",
+            "HOT WORK",
+            "LIFTING SUPERVISIOR",
             "LIFE GUARD",
             "LOADER CRANE OPERATOR",
             "LORRY CRANE OPERATOR",
@@ -94,6 +95,7 @@ class TrainingCoursesSeeder extends Seeder
             "WHEEL LOADER OPERATOR",
             "WINDOW CRADLE OPERATOR",
             "WORK AT HEIGHT",
+            "ISO",
         ];
 
         foreach ($courses as $course) {

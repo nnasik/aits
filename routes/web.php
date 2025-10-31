@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Certificate
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
     Route::get('/certficate/{id}/pdf/v1',[CertificateController::class,'certificatePDF_V1'])->name('certificate.pdf.v1');
-    Route::get('/certficate/{id}/pdf/v2',[CertificateController::class,'certificatePDF_V2'])->name('certificate.pdf.v2');
+    Route::get('/certficate/{id}/pdf/v2',[CertificateController::class,'certificatePDF_V_1_2'])->name('certificate.pdf.v2');
     Route::get('/id/{id}/pdf/v1',[CertificateController::class,'cardPDF_V1'])->name('id.pdf.v1');
     Route::get('/id/{id}/pdf/v2',[CertificateController::class,'cardPDF_V2'])->name('id.pdf.v2');
     Route::post('/certificates/store', [CertificateController::class, 'store'])->name('certificate.store');

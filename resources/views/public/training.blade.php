@@ -41,8 +41,8 @@
             <tr>
                 <th>S.No</th>
                 <th>Name / EID</th>
-                <th>Photo</th>
-                <th>Signature</th>
+                <th>Photo <br>(Not Mandatory)</th>
+                <th>Signature <br>(Required)</th>
             </tr>
         </thead>
         <tbody>
