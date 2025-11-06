@@ -40,21 +40,28 @@
                         <td><?php echo e($request->requested_on); ?></td>
                         <td>
                             <!-- View Button -->
-                            <a href="" class="btn btn-outline-primary btn-sm" title="View">
+                            <!-- <a href="" class="btn btn-outline-primary btn-sm" title="View">
                                 <i class="bi bi-eye"></i> View
-                            </a>
+                            </a> -->
 
-                            <button type="button" class="btn btn-outline-success btn-sm" 
+                            <button type="button" class="btn btn-outline-success btn-sm m-1" 
                                     data-bs-toggle="modal"
                                     data-bs-target="#acceptModal" 
                                     onclick="setJobRequestId(<?php echo e($request->id); ?>, <?php echo e($request->work_order_id ?? 'null'); ?>)">
-                                <i class="bi bi-check-circle"></i> Accept
+                                <i class="bi bi-check-circle"></i> New Job
+                            </button>
+                            <br>
+                            <button type="button" class="btn btn-outline-success btn-sm m-1" 
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#acceptModal" 
+                                    onclick="setJobRequestId(<?php echo e($request->id); ?>, <?php echo e($request->work_order_id ?? 'null'); ?>)">
+                                <i class="bi bi-check-circle"></i> Merge Job
                             </button>
 
-                            
+                            <br>
 
                             <!-- Reject Button -->
-                            <a href="" class="btn btn-outline-danger btn-sm" title="Reject">
+                            <a href="" class="btn btn-outline-danger btn-sm m-1" title="Reject">
                                 <i class="bi bi-x-circle"></i> Reject
                             </a>
 
