@@ -68,7 +68,7 @@
   <div class="certificate-container row g-0">
     <div class="col-md-6 certificate-image">
       <!-- Left side: certificate image -->
-      <img src="" alt="">
+      <img src="{{route('certificate.preview',$certificate->id)}}" alt="">
     </div>
     <div class="col-md-6 certificate-details">
       <h2>

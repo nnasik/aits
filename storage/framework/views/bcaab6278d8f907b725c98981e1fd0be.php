@@ -67,7 +67,6 @@
     }
 </script>
 
-
     <?php echo $__env->make('job.index.table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <!--end::Row-->
     <!--end::Container-->

@@ -68,7 +68,7 @@
   <div class="certificate-container row g-0">
     <div class="col-md-6 certificate-image">
       <!-- Left side: certificate image -->
-      <img src="" alt="">
+      <img src="<?php echo e(route('certificate.preview',$certificate->id)); ?>" alt="">
     </div>
     <div class="col-md-6 certificate-details">
       <h2>
@@ -104,9 +104,6 @@
           </div>
         </div>
       </div>
-
-
-
 
       <p><span class="label">Company / Employer:</span><br>
         <span class="value"><?php echo e($certificate->company_name_in_certificate); ?></span>

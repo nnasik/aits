@@ -25,19 +25,57 @@
                             </form>
                         </td>
                         <td>{{$loop->iteration}}</td>
-                        <td>{{$trainee->candidate_name_in_certificate}}</td>
+                        <td>
+                            @if(isset($trainee->traineeRequest->profile_pic))
+                            <img src="{{ '/storage/'.$trainee->traineeRequest->profile_pic}}" alt="Live Photo"
+                                height="100">
+                            @endif
+
+                            @if(isset($trainee->live_photo))
+                            <img src="{{ '/storage/'.$trainee->live_photo}}" alt="Live Photo" height="100">
+                            @endif
+                            {{$trainee->candidate_name_in_certificate}}
+                        </td>
                         <td>{{$trainee->eid_no ?? $trainee->passport}}<br>
                             @if(isset($trainee->traineeRequest->eid_front_pic))
                             <a href="{{ '/storage/'.$trainee->traineeRequest->eid_front_pic }}" target="_blank">
-                                <span>📄 EID Front Pic</span>
+                                <span>📄 EID Front</span>
                             </a>
-                            @else
-                            <span>📄 EID Front Pic</span>
+                            @endif
+                            <br>
+                            @if(isset($trainee->traineeRequest->eid_back_pic))
+                            <a href="{{ '/storage/'.$trainee->traineeRequest->eid_back_pic }}" target="_blank">
+                                <span>📄 EID Back</span>
+                            </a>
+                            @endif
+                            <br>
+                            @if(isset($trainee->traineeRequest->visa_pic))
+                            <a href="{{ '/storage/'.$trainee->traineeRequest->visa_pic }}" target="_blank">
+                                <span>📄 Visa</span>
+                            </a>
+                            @endif
+                            <br>
+                            @if(isset($trainee->traineeRequest->passport_pic))
+                            <a href="{{ '/storage/'.$trainee->traineeRequest->passport_pic }}" target="_blank">
+                                <span>📄 Passport</span>
+                            </a>
+                            @endif
+                            <br>
+                            @if(isset($trainee->traineeRequest->dl_pic))
+                            <a href="{{ '/storage/'.$trainee->traineeRequest->dl_pic }}" target="_blank">
+                                <span>📄 Driving License</span>
+                            </a>
                             @endif
                         </td>
                         <td>
                             @if($trainee->signature)
                             <img src="{{ '/storage/'.$trainee->signature}}" alt="Signature" height="100">
+                            <br>
+                            <!-- Delete Button -->
+                            <button type="button" class="btn btn-danger btn-sm"
+                                onclick="confirmDeleteSignature({{$trainee->id}})">
+                                <i class="bi bi-trash"></i> Signature
+                            </button>
                             @endif
                         </td>
                         <td>

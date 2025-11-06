@@ -16,7 +16,11 @@
                 <tbody>
                     <?php $__currentLoopData = $certificates; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $certificate): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
-                        <td><?php echo e($certificate->id); ?></td>
+                        <td><?php echo e($certificate->id); ?>
+
+                            <br>
+                            
+                        </td>
                         <td><?php echo e($certificate->trainee->training->job->id); ?></td>
                         <td><strong><?php echo e($certificate->candidate_name_in_certificate); ?></strong>
                             <br>

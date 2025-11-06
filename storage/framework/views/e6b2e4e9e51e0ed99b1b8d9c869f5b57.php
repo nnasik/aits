@@ -25,19 +25,58 @@
                             </form>
                         </td>
                         <td><?php echo e($loop->iteration); ?></td>
-                        <td><?php echo e($trainee->candidate_name_in_certificate); ?></td>
+                        <td>
+                            <?php if(isset($trainee->traineeRequest->profile_pic)): ?>
+                            <img src="<?php echo e('/storage/'.$trainee->traineeRequest->profile_pic); ?>" alt="Live Photo"
+                                height="100">
+                            <?php endif; ?>
+
+                            <?php if(isset($trainee->live_photo)): ?>
+                            <img src="<?php echo e('/storage/'.$trainee->live_photo); ?>" alt="Live Photo" height="100">
+                            <?php endif; ?>
+                            <?php echo e($trainee->candidate_name_in_certificate); ?>
+
+                        </td>
                         <td><?php echo e($trainee->eid_no ?? $trainee->passport); ?><br>
-                            <?php if($trainee->traineeRequest->eid_front_pic): ?>
+                            <?php if(isset($trainee->traineeRequest->eid_front_pic)): ?>
                             <a href="<?php echo e('/storage/'.$trainee->traineeRequest->eid_front_pic); ?>" target="_blank">
-                                <span>📄 EID Front Pic</span>
+                                <span>📄 EID Front</span>
                             </a>
-                            <?php else: ?>
-                            <span>📄 EID Front Pic</span>
+                            <?php endif; ?>
+                            <br>
+                            <?php if(isset($trainee->traineeRequest->eid_back_pic)): ?>
+                            <a href="<?php echo e('/storage/'.$trainee->traineeRequest->eid_back_pic); ?>" target="_blank">
+                                <span>📄 EID Back</span>
+                            </a>
+                            <?php endif; ?>
+                            <br>
+                            <?php if(isset($trainee->traineeRequest->visa_pic)): ?>
+                            <a href="<?php echo e('/storage/'.$trainee->traineeRequest->visa_pic); ?>" target="_blank">
+                                <span>📄 Visa</span>
+                            </a>
+                            <?php endif; ?>
+                            <br>
+                            <?php if(isset($trainee->traineeRequest->passport_pic)): ?>
+                            <a href="<?php echo e('/storage/'.$trainee->traineeRequest->passport_pic); ?>" target="_blank">
+                                <span>📄 Passport</span>
+                            </a>
+                            <?php endif; ?>
+                            <br>
+                            <?php if(isset($trainee->traineeRequest->dl_pic)): ?>
+                            <a href="<?php echo e('/storage/'.$trainee->traineeRequest->dl_pic); ?>" target="_blank">
+                                <span>📄 Driving License</span>
+                            </a>
                             <?php endif; ?>
                         </td>
                         <td>
                             <?php if($trainee->signature): ?>
                             <img src="<?php echo e('/storage/'.$trainee->signature); ?>" alt="Signature" height="100">
+                            <br>
+                            <!-- Delete Button -->
+                            <button type="button" class="btn btn-danger btn-sm"
+                                onclick="confirmDeleteSignature(<?php echo e($trainee->id); ?>)">
+                                <i class="bi bi-trash"></i> Signature
+                            </button>
                             <?php endif; ?>
                         </td>
                         <td>

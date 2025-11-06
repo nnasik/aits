@@ -16,7 +16,10 @@
                 <tbody>
                     @foreach($certificates as $certificate)
                     <tr>
-                        <td>{{$certificate->id}}</td>
+                        <td>{{$certificate->id}}
+                            <br>
+                            
+                        </td>
                         <td>{{$certificate->trainee->training->job->id}}</td>
                         <td><strong>{{$certificate->candidate_name_in_certificate}}</strong>
                             <br>

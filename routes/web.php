@@ -35,7 +35,7 @@ Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])
 Route::get('/verify/{certificate_no}/{job_no}', [PublicController::class, 'verify'])->name('certificate.verify');
 
 // PDF of certificate Generation
-Route::get('/certficate/preview/{id}/pdf/v1',[CertificateController::class,'certificatePDF_V1'])->name('certificate.preview');
+Route::get('/certficate/preview/{id}/png/v1',[CertificateController::class,'certificatePNG'])->name('certificate.preview');
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -72,6 +72,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Trainee
     Route::resource('trainee', TraineeController::class)->only(['index','store','show','edit']);
     Route::put('/trainee/update', [TraineeController::class, 'update'])->name('trainee.update');
+    Route::post('/trainees/delete-signature', [TraineeController::class, 'deleteSignature'])->name('trainee.signature.delete');
+
+
 
 
     // Certificate

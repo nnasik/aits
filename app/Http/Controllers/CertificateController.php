@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Certificate;
 use App\Models\Trainee;
+use Spatie\PdfToImage\Pdf;
 use FPDF;
 
 class CertificateController extends Controller
@@ -227,64 +228,6 @@ class CertificateController extends Controller
         ->header('Content-Disposition', 'inline; filename="ID_Card_'.$record->id.'.pdf"');
     }
 
-    public function certificateImage_V1($id){
-    $record = Certificate::findOrFail($id);
-
-    // Canvas size (A4 Landscape approx)
-    $width = 1123;
-    $height = 794;
-    $image = imagecreatetruecolor($width, $height);
-
-    // Colors
-    $white = imagecolorallocate($image, 255, 255, 255);
-    $black = imagecolorallocate($image, 0, 0, 0);
-    $blue  = imagecolorallocate($image, 0, 0, 139);
-
-    // Fill background
-    imagefill($image, 0, 0, $white);
-
-    // === Draw text using built-in GD fonts ===
-    imagestring($image, 5, 200, 50, strtoupper($record->text_1), $blue);
-    imagestring($image, 3, 50, 120, "Certificate No.: AITS{$record->id}", $black);
-    imagestring($image, 3, 50, 150, "Job No.: AITS-{$record->trainee->training->job->id}", $black);
-    imagestring($image, 3, 50, 180, "This is to certify that:", $black);
-    imagestring($image, 5, 50, 210, strtoupper($record->candidate_name_in_certificate), $black);
-    imagestring($image, 3, 50, 250, "an employee of:", $black);
-    imagestring($image, 4, 50, 280, strtoupper($record->company_name_in_certificate), $black);
-    imagestring($image, 3, 50, 310, $record->company_location, $black);
-    imagestring($image, 4, 50, 350, "\"{$record->course_name_in_certificate}\"", $black);
-    imagestring($image, 2, 50, 380, "Date of Training: {$record->date}", $black);
-    imagestring($image, 2, 50, 400, "Valid Until: {$record->valid_unit}", $black);
-    imagestring($image, 3, 50, 430, "Trainer: _______________________", $black);
-
-    // === Candidate photo ===
-    $photoPath = $record->live_photo 
-        ? public_path('storage/'.$record->live_photo) 
-        : public_path('assets/images/user_placeholder.jpg');
-
-    if(file_exists($photoPath)) {
-        $photo = imagecreatefromjpeg($photoPath);
-        $photoWidth = 120;
-        $photoHeight = 150;
-        imagecopyresampled(
-            $image,
-            $photo,
-            950, 100, // destination x,y
-            0, 0,     // source x,y
-            $photoWidth, $photoHeight, // destination width/height
-            imagesx($photo), imagesy($photo) // source width/height
-        );
-        imagedestroy($photo);
-    }
-
-    // === Output directly to browser as PNG ===
-    header('Content-Type: image/png');
-    header('Content-Disposition: inline; filename="Certificate_'.$record->id.'.png"');
-    imagepng($image);
-    imagedestroy($image);
-    exit; // terminate script to prevent extra output
-}
-
 
     public function cardPDF_V2($id){
         $record = Certificate::findOrFail($id);
@@ -456,6 +399,50 @@ class CertificateController extends Controller
         return response($pdf->Output('S'))
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.pdf"');
+    }
+
+    public function certificatePNG($id){
+    $record = Certificate::findOrFail($id);
+
+    // 1. Generate the PDF content using FPDF (same as your certificatePDF_V_1_2)
+    require_once base_path('vendor/setasign/fpdf/fpdf.php');
+
+    $pdf = new \FPDF();
+    $pdf->AliasNbPages();
+    $pdf->SetMargins(10, 10);
+    $pdf->SetAutoPageBreak(true, 30);
+
+    $pdf->AddPage('L');
+    $pdf->Ln(30);
+    $pdf->SetFont('Times','B',26);
+    $pdf->SetTextColor(0, 0, 139);
+    $pdf->Cell(275,14, strtoupper($record->text_1),0,1,'C');
+    // ... (same content as in your PDF generator)
+
+    // Instead of outputting directly, get the PDF binary string
+    $pdfContent = $pdf->Output('S'); // 'S' = return as string
+
+    // 2. Save PDF temporarily to memory or a temp file
+    $tempPdfPath = tempnam(sys_get_temp_dir(), 'cert_') . '.pdf';
+    file_put_contents($tempPdfPath, $pdfContent);
+
+    // 3. Convert PDF to PNG using Spatie
+    $pdfToImage = new Pdf($tempPdfPath);
+    $pdfToImage->setPage(1); // First page only
+    $tempPngPath = tempnam(sys_get_temp_dir(), 'cert_') . '.png';
+    $pdfToImage->saveImage($tempPngPath);
+
+    // 4. Read PNG contents
+    $pngContent = file_get_contents($tempPngPath);
+
+    // 5. Clean up temp files
+    unlink($tempPdfPath);
+    unlink($tempPngPath);
+
+    // 6. Return PNG directly in response
+    return response($pngContent)
+        ->header('Content-Type', 'image/png')
+        ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.png"');
     }
 
     public function certificatePDF_V_1_3($id){

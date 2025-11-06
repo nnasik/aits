@@ -51,4 +51,17 @@ class TraineeController extends Controller
 
         return redirect()->back()->with('success', 'Trainee record updated successfully.');
     }
+
+    public function deleteSignature(Request $request)
+    {
+        $request->validate([
+            'trainee_id' => 'required|exists:trainees,id',
+        ]);
+
+        $trainee = Trainee::findOrFail($request->trainee_id);
+        $trainee->signature = null; // clear signature field
+        $trainee->save();
+
+        return redirect()->back()->with('success', 'Signature removed successfully.');
+    }
 }
