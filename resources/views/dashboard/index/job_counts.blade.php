@@ -67,7 +67,7 @@
         <!--begin::Small Box Widget 4-->
         <div class="small-box text-bg-danger">
             <div class="inner">
-                <h3>AED {{$unpaid_amount}}</h3>
+                <h3>AED {{number_format($unpaid_amount, 2, '.', ',')}}</h3>
 
                 <p>Unpaid Invoices ({{$unpaid_count}})</p>
             </div>

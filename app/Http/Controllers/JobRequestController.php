@@ -10,12 +10,40 @@ use App\Models\WorkOrder;
 use App\Models\Training;
 use App\Models\Trainee;
 use Str;
+use Auth;
 use Illuminate\Support\Facades\DB;
+
 
 class JobRequestController extends Controller{
     //
     public function index(){
-        $data['requests'] = JobRequest::orderBy('id', 'desc')->paginate(10);
+        $user_id = Auth::user()->id;
+
+        // Total Jobs Request
+        $data['total_jobs_requested']=JobRequest::where('request_by',$user_id)->where(function($query){
+            $query->where('request_status','Requested')->orWhere('request_status','Accepted')->orWhere('request_status','Rejected');
+        })->count();
+
+        // Total Jobs Requested Accepted
+        $data['total_jobs_accepted']=JobRequest::where('request_by',$user_id)->where('request_status','Accepted')->count();
+
+        // Total Jobs by Sales Person
+        $data['total_jobs']=WorkOrder::where('sales_by',$user_id)->where(function($query){
+            $query->where('status','Open')->orWhere('status','Closed');
+        })->count();
+
+        // Total Closed 
+        $data['total_jobs_closed']=WorkOrder::where('sales_by',$user_id)->where(function($query){
+            $query->where('status','Closed');
+        })->count();
+
+        // 
+        $data['total_not_invoiced']=WorkOrder::where('sales_by',$user_id)->where('invoice_status','Waiting')->count();
+
+        $data['unpaid_count'] = WorkOrder::where('sales_by',$user_id)->where('status','Closed')->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->count();
+        $data['unpaid_amount'] = WorkOrder::where('sales_by',$user_id)->where('status','Closed')->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->sum('invoice_amount');
+
+        $data['requests'] = JobRequest::orderBy('id', 'desc')->where('request_by',$user_id)->paginate(10);
         $data['companies'] = Company::all();
         return view('job_request.index')->with($data);
     }
