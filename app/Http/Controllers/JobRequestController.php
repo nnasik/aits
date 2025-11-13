@@ -20,12 +20,15 @@ class JobRequestController extends Controller{
         $user_id = Auth::user()->id;
 
         // Total Jobs Request
-        $data['total_jobs_requested']=JobRequest::where('request_by',$user_id)->where(function($query){
-            $query->where('request_status','Requested')->orWhere('request_status','Accepted')->orWhere('request_status','Rejected');
+        $data['total_jobs_request']=JobRequest::where('request_by',$user_id)->where(function($query){
+            $query->where('request_status','Requested')->orWhere('request_status','Accepted')->orWhere('request_status','Rejected')->orWhere('request_status','Created');
         })->count();
 
-        // Total Jobs Requested Accepted
-        $data['total_jobs_accepted']=JobRequest::where('request_by',$user_id)->where('request_status','Accepted')->count();
+        // Total Jobs Requested Handled
+        
+        $data['total_jobs_handled']=JobRequest::where('request_by',$user_id)->where(function($query){
+            $query->where('request_status','Rejected')->orWhere('request_status','Accepted')->orWhere('request_status','Rejected')->orWhere('request_status','Created');
+        })->count();
 
         // Total Jobs by Sales Person
         $data['total_jobs']=WorkOrder::where('sales_by',$user_id)->where(function($query){
@@ -37,9 +40,10 @@ class JobRequestController extends Controller{
             $query->where('status','Closed');
         })->count();
 
-        // 
+        // Not Invoiced
         $data['total_not_invoiced']=WorkOrder::where('sales_by',$user_id)->where('invoice_status','Waiting')->count();
 
+        // Unpaid
         $data['unpaid_count'] = WorkOrder::where('sales_by',$user_id)->where('status','Closed')->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->count();
         $data['unpaid_amount'] = WorkOrder::where('sales_by',$user_id)->where('status','Closed')->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->sum('invoice_amount');
 
