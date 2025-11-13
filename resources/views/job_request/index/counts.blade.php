@@ -4,9 +4,9 @@
         <!--begin::Small Box Widget 1-->
         <div class="small-box text-bg-primary">
             <div class="inner">
-                <h3>{{$total_jobs_handled}} / {{$total_jobs_request}}</h3>
+                <h3>{{$total_jobs_handled}} / {{$total_jobs_requests}}</h3>
 
-                <p>Request Handled / Total Request</p>
+                <p>Request Handled / Total Requests</p>
             </div>
             <svg class="small-box-icon" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true">

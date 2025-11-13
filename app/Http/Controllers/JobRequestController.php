@@ -20,7 +20,7 @@ class JobRequestController extends Controller{
         $user_id = Auth::user()->id;
 
         // Total Jobs Request
-        $data['total_jobs_request']=JobRequest::where('request_by',$user_id)->where(function($query){
+        $data['total_jobs_requests']=JobRequest::where('request_by',$user_id)->where(function($query){
             $query->where('request_status','Requested')->orWhere('request_status','Accepted')->orWhere('request_status','Rejected')->orWhere('request_status','Created');
         })->count();
 
