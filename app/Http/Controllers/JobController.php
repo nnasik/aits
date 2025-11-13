@@ -117,11 +117,11 @@ class JobController extends Controller
 
         
         $height = 20;
-        if(strlen($job->company->name)>50){
+        if(strlen($job->company_name_in_work_order)>50){
             $height = 10;
         }
         $pdf->SetFont('Times','B',14);
-        $pdf->MultiCell(120,$height,$job->company->name,1,'C',0);
+        $pdf->MultiCell(120,$height,$job->company_name_in_work_order,1,'C',0);
 
         // Contact Person & Contact No
         $pdf->SetFont('Times','',14);
