@@ -111,17 +111,41 @@ class JobController extends Controller
         $pdf->Cell(70,10,$formattedDate,1,1,'C');
 
         // Company Name
+        // $pdf->SetFont('Times','',14);
+        // $pdf->SetFillColor(230,230,255);
+        // $pdf->Cell(60,20,"Client / Company Name :",1,0,'C',1);
+
+        
+        // $height = 20;
+        // if(strlen($job->company_name_in_work_order)>50){
+        //     $height = 10;
+        // }
+        // $pdf->SetFont('Times','B',14);
+        // $pdf->MultiCell(120,$height,$job->company_name_in_work_order,1,'C',0);
+
+
+        // Company Name label
         $pdf->SetFont('Times','',14);
         $pdf->SetFillColor(230,230,255);
         $pdf->Cell(60,20,"Client / Company Name :",1,0,'C',1);
 
-        
-        $height = 20;
-        if(strlen($job->company_name_in_work_order)>50){
-            $height = 10;
-        }
+        // Prepare company name text
+        $companyName = trim($job->company_name_in_work_order);
+
+        // Split into two lines of max 33 characters each
+        $line1 = mb_substr($companyName, 0, 33);
+        $line2 = mb_substr($companyName, 33, 33);
+
+        // Trim any extra text beyond 66 chars
+        $line2 = mb_substr($line2, 0, 33);
+
         $pdf->SetFont('Times','B',14);
-        $pdf->MultiCell(120,$height,$job->company_name_in_work_order,1,'C',0);
+
+        // First line cell (height = 10)
+        $pdf->Cell(120,10,$line1, 'LTR', 2, 'C', 0);
+
+        // Second line cell (height = 10)
+        $pdf->Cell(120,10,$line2, 'LBR', 1, 'C', 0);
 
         // Contact Person & Contact No
         $pdf->SetFont('Times','',14);

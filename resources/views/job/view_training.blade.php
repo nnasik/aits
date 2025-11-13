@@ -167,8 +167,8 @@
         <a class="btn btn-dark" href="{{route('attendance.pdf',$training->id)}}" target="_blank">
           <i class="bi bi-file-earmark-pdf-fill"></i> Attendance Sheet
         </a>
-        <a class="btn btn-primary" href="{{route('public.training.show',$training->hash)}}">
-          <i class="bi bi-whatsapp"></i> Attendance Link
+        <a class="btn btn-primary" target="_blank" href="{{route('public.training.show',$training->hash)}}">
+          <i class="bi bi-box-arrow-up-right"></i> Attendance Link
         </a>
       </div>
     </div>

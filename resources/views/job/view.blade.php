@@ -92,7 +92,7 @@
     <!-- ROW-3 -->
     <div class="row">
       <div class="col-sm-6">
-        <a class="btn btn-dark" href="{{route('job.pdf',$job->id)}}">
+        <a class="btn btn-dark" target="_blank" href="{{route('job.pdf',$job->id)}}">
           <i class="bi bi-file-earmark-pdf-fill"></i> Work Permit
         </a>
       </div>
