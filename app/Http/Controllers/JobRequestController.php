@@ -27,7 +27,7 @@ class JobRequestController extends Controller{
         // Total Jobs Requested Handled
         
         $data['total_jobs_handled']=JobRequest::where('request_by',$user_id)->where(function($query){
-            $query->where('request_status','Rejected')->orWhere('request_status','Accepted')->orWhere('request_status','Rejected')->orWhere('request_status','Created');
+            $query->where('request_status','Rejected')->orWhere('request_status','Accepted');
         })->count();
 
         // Total Jobs by Sales Person
