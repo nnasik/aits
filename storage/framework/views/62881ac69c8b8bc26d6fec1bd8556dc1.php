@@ -17,7 +17,7 @@
             <!-- Editable Certificate Number -->
             <div class="col-md-6">
               <label class="form-label">Certificate No</label>
-              <input type="number" class="form-control" name="id" id="certificate_id" placeholder="Enter Certificate Number" required>
+              <input type="number" class="form-control" name="id" id="certificate_id" value="<?php echo e($certificate_next_id); ?>" placeholder="Enter Certificate Number" required>
             </div>
 
             <div class="col-md-6">
@@ -101,7 +101,6 @@ function openCertificateModal(
     // Fill modal fields
     document.getElementById('trainee_id').value = traineeId;
     document.getElementById('job_id').value = jobId;
-    document.getElementById('certificate_id').value = ''; // user enters manually
     document.getElementById('candidate_name_in_certificate').value = candidateName || '';
     document.getElementById('company_name_in_certificate').value = companyName || '';
     document.getElementById('company_location').value = companyLocation || '';

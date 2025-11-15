@@ -44,12 +44,17 @@ class JobRequestController extends Controller{
         $data['total_not_invoiced']=WorkOrder::where('sales_by',$user_id)->where('invoice_status','Waiting')->count();
 
         // Unpaid
-        $data['unpaid_count'] = WorkOrder::where('sales_by',$user_id)->where('status','Closed')->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->count();
-        $data['unpaid_amount'] = WorkOrder::where('sales_by',$user_id)->where('status','Closed')->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->sum('invoice_amount');
+        $data['unpaid_count'] = WorkOrder::where('sales_by',$user_id)->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->count();
+        $data['unpaid_amount'] = WorkOrder::where('sales_by',$user_id)->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->sum('invoice_amount');
 
         $data['requests'] = JobRequest::orderBy('id', 'desc')->where('request_by',$user_id)->paginate(10);
         $data['companies'] = Company::all();
         return view('job_request.index')->with($data);
+    }
+
+    public function unpaid_invoices_jobs(){
+        $user_id = Auth::user()->id;
+        $data['unpaid_jobs'] = WorkOrder::where('sales_by',$user_id)->where('invoice_status', 'Completed')->where('payment_status', 'Unpaid')->paginate(10);
     }
 
     public function store(Request $request){
