@@ -79,8 +79,14 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Certificate
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
-    Route::get('/certficate/{id}/pdf/v1',[CertificateController::class,'certificatePDF_V1'])->name('certificate.pdf.v1');
-    Route::get('/certficate/{id}/pdf/v2',[CertificateController::class,'certificatePDF_V_1_2'])->name('certificate.pdf.v2');
+    Route::get('/certficate/{id}/pdf/v_1_1',[CertificateController::class,'certificatePDF_V_1_1'])->name('certificate.pdf.v_1_1');
+    Route::get('/certficate/{id}/pdf/v_1_2',[CertificateController::class,'certificatePDF_V_1_2'])->name('certificate.pdf.v_1_2');
+    //Route::get('/certficate/{id}/pdf/v_1_3',[CertificateController::class,'certificatePDF_V_1_3'])->name('certificate.pdf.v_1_3');
+    //Route::get('/certficate/{id}/pdf/v_2_1',[CertificateController::class,'certificatePDF_V_2_1'])->name('certificate.pdf.v_2_1');
+    Route::get('/certficate/{id}/pdf/v_2_2',[CertificateController::class,'certificatePDF_V_2_2'])->name('certificate.pdf.v_2_2');
+    //Route::get('/certficate/{id}/pdf/v_2_3',[CertificateController::class,'certificatePDF_V_2_3'])->name('certificate.pdf.v_2_3');
+    Route::get('/scan/{id}/pdf/v_1',[CertificateController::class,'scan_v_1'])->name('scan.pdf.v_1');
+    
     Route::get('/id/{id}/pdf/v1',[CertificateController::class,'cardPDF_V1'])->name('id.pdf.v1');
     Route::get('/id/{id}/pdf/v2',[CertificateController::class,'cardPDF_V2'])->name('id.pdf.v2');
     Route::post('/certificates/store', [CertificateController::class, 'store'])->name('certificate.store');

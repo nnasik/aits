@@ -39,9 +39,10 @@
                                         Certificate :
                                     </td>
                                     <td>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v1',$certificate->id)); ?>">V 1.1</a>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v2',$certificate->id)); ?>">V 1.2</a>
-                                        <button class="btn btn-outline-primary">V 1.4</button>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_2',$certificate->id)); ?>">V 1.1</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_2',$certificate->id)); ?>">V 1.2</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="">V 1.3</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="">V 1.4</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -49,8 +50,8 @@
                                         
                                     </td>
                                     <td>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v1',$certificate->id)); ?>">V 2.1</a>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v2',$certificate->id)); ?>">V 2.2</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="">V 2.1</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_2_2',$certificate->id)); ?>">V 2.2</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -60,6 +61,15 @@
                                     <td>
                                         <a href="<?php echo e(route('id.pdf.v1',$certificate->id)); ?>" target="_blank" class="btn btn-outline-primary">V1</a>
                                         <a href="<?php echo e(route('id.pdf.v2',$certificate->id)); ?>" target="_blank" class="btn btn-outline-primary">V2</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Client Copy :
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo e(route('scan.pdf.v_1',$certificate->id)); ?>" target="_blank" class="btn btn-outline-primary">V1</a>
+                                        
                                     </td>
                                 </tr>
                             </table>
