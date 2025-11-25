@@ -63,7 +63,7 @@ class JobRequestController extends Controller{
             'priority'                   => 'required|in:low,normal,urgent',
             'company_id'                 => 'required|integer|exists:companies,id',
             'company_name'               => 'required|string|max:255',
-            'training_mode'              => 'required|string|in:Certification,In-Class,Online,On-Site',
+            'training_mode'              => 'required|string|in:In-Class,Online,On-Site',
             'training_expected_date'     => 'nullable|date',
             'training_expected_time'     => 'nullable|date_format:H:i',
         ]);
@@ -109,7 +109,7 @@ class JobRequestController extends Controller{
         
         if ($job_request->request_status=='Created') {
             foreach($job_request->training_requests as $training_request){
-                if($training_request->training_mode=='Certification'){
+                if($training_request->training_mode=='Online'){
                     foreach($training_request->trainee_requests as $trainee_request){
                         if(isset($trainee_request->eid_front_pic) 
                         || isset($trainee_request->eid_back_pic)
@@ -306,7 +306,7 @@ public function duplicateJobRequest(Request $request){
         'priority'       => 'required|in:low,normal,urgent',
         'company_id'     => 'required|integer|exists:companies,id',
         'company_name'   => 'required|string|max:255',
-        'training_mode'  => 'required|string|in:Certification,In-Class,Online,On-Site',
+        'training_mode'  => 'required|string|in:In-Class,Online,On-Site',
         'job_request_id' => 'required|exists:job_requests,id', // old job request to duplicate children from
     ]);
 

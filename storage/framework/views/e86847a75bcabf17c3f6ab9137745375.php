@@ -56,7 +56,6 @@
           <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">Training Mode</span>
             <select class="form-control" name="training_mode" id="training_mode">
-              <option value="Certification" selected>Certification</option>
               <option value="Online">Online</option>
               <option value="In-Class">In Class</option>
               <option value="On-Site">On Site</option>

@@ -13,6 +13,7 @@ use App\Http\Controllers\TrainingRequestController;
 use App\Http\Controllers\TraineeRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ReportController;
 
 Auth::routes();
 
@@ -157,7 +158,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/remove-role', [UserController::class, 'removeRole'])->name('user.removeRole');
 
         Route::post('/users/update-status', [UserController::class, 'updateStatus']) ->name('users.updateStatus');
+
+        
+
     });
+
+    // Reports
+    Route::get('/report/jobs-by-sale', [ReportController::class, 'jobs_by_sale'])->name('report.jobsBySale');
 
     Route::get('/logout', function () {
         Auth::logout();                         // Logs out user
