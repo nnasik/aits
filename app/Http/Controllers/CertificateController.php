@@ -802,6 +802,6 @@ class CertificateController extends Controller
     
     return response($pdf->Output('S'))
         ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="Certificate_And_ID_'.$record->id.'.pdf"');
+        ->header('Content-Disposition', 'inline; filename="AITS-'.$record->trainee->training->job->id.$record->id."-".substr($record->company_name_in_certificate, 0, 20)."-".substr($record->candidate_name_in_certificate, 3,20).'.pdf"');
     }
 }
