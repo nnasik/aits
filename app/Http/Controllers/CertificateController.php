@@ -658,7 +658,7 @@ class CertificateController extends Controller
         $pdf->AliasNbPages();
         $pdf->SetMargins(10, 10);
         $pdf->SetAutoPageBreak(true, 30);
-        $pdf->Image(public_path('assets/images/digital/certificate_bg_min.png.png'), 0,0, 297, 210);
+        $pdf->Image(public_path('assets/images/digital/certificate_bg_min.png'), 0,0, 297, 210);
         // Some space
         $pdf->Ln(30);
 
