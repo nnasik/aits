@@ -48,4 +48,8 @@ class JobRequest extends Model{
     public function histories(){
         return $this->morphMany(History::class, 'subject');
     }
+
+    public function files(){
+        return $this->morphMany(File::class, 'fileable');
+    }
 }

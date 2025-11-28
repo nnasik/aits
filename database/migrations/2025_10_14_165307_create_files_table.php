@@ -12,12 +12,47 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('files', function (Blueprint $table) {
+
+
             $table->id();
+
+            // System-generated name (stored filename)
             $table->string('name');
+
+            // Original filename
+            $table->string('original_name');
+
+            // Optional description
             $table->string('description')->nullable();
+
+            // Document type (Invoice, Delivery Note, etc.)
             $table->string('document_type')->nullable();
-            $table->string('path'); // stored file path
-            $table->morphs('fileable'); // creates fileable_id + fileable_type
+
+            // File path in storage
+            $table->string('path');
+
+            // MIME type
+            $table->string('mime_type')->nullable();
+
+            // File size in bytes
+            $table->unsignedBigInteger('size')->nullable();
+
+            // Polymorphic relation
+            $table->morphs('fileable');
+
+            // Who uploaded the file
+            $table->foreignId('uploaded_by')
+                  ->nullable()
+                  ->constrained('users')
+                  ->nullOnDelete();
+
+            // Cloud Archive fields
+            $table->string('storage_disk')->default('local'); 
+            $table->foreignId('archived_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('archived_at')->nullable();
+            $table->string('remote_path')->nullable();
+            $table->string('hash')->nullable();
+
             $table->timestamps();
         });
     }

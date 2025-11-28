@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
+    protected $fillable = [
+        'name',
+        'description',
+        'document_type',
+        'path'
+    ];
+    
     //
     public function files(){
         return $this->morphMany(File::class, 'fileable');

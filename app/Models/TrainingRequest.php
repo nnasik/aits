@@ -49,4 +49,8 @@ class TrainingRequest extends Model{
     public function training(){
         return $this->hasOne(Training::class,'training_request_id');
     }
+
+    public function files(){
+        return $this->morphMany(File::class, 'fileable');
+    }
 }
