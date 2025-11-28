@@ -196,10 +196,10 @@ class JobController extends Controller
         $pdf->SetTextColor(255,255,255);
 
         $pdf->SetFont('Times','B',14);
-        $pdf->Cell(20,10,'Item No',1,0,'C',1);
-        $pdf->Cell(90,10,'Training Course',1,0,'C',1);
-        $pdf->Cell(20,10,'Qty',1,0,'C',1);
-        $pdf->Cell(50,10,'Scheduled Date',1,1,'C',1);
+        $pdf->Cell(15,10,'S. No',1,0,'C',1);
+        $pdf->Cell(110,10,'Training Course',1,0,'C',1);
+        $pdf->Cell(15,10,'Qty',1,0,'C',1);
+        $pdf->Cell(40,10,'Scheduled Date',1,1,'C',1);
 
         // Table rows
         $pdf->SetTextColor(0,0,0);
@@ -207,28 +207,28 @@ class JobController extends Controller
         $pdf->SetFont('Times','',14);
 
         foreach($job->trainings as $training){
-            $pdf->Cell(20,11, $counter,1,0,'C',0);
+            $pdf->Cell(15,11, $counter,1,0,'C',0);
             $pdf->SetFont('Times','',12);
-            $pdf->Cell(90,11,$training->course->name,1);
+            $pdf->Cell(110,11,$training->course->name,1);
             $pdf->SetFont('Times','',14);
-            $pdf->Cell(20,11,$training->quantity,1,0,'C');
-            $pdf->Cell(50,11,$training->scheduled_date,1,1,'C');
+            $pdf->Cell(15,11,$training->quantity,1,0,'C');
+            $pdf->Cell(40,11,$training->scheduled_date,1,1,'C');
             $counter++;
         }
 
         while($counter<=10){
-            $pdf->Cell(20,11, $counter,1,0,'C',0);
-            $pdf->Cell(90,11,'',1);
-            $pdf->Cell(20,11,'',1,0,'C');
-            $pdf->Cell(50,11,'',1);
+            $pdf->Cell(15,11, $counter,1,0,'C',0);
+            $pdf->Cell(110,11,'',1);
+            $pdf->Cell(15,11,'',1,0,'C');
+            $pdf->Cell(40,11,'',1);
             $counter++;
             $pdf->Ln();
         }
 
         $pdf->SetFont('Times','B',14);
-        $pdf->Cell(110,10,"Total",1,0,'C',0);
-        $pdf->Cell(20,10,$job->trainings->sum('quantity'),1,0,'C',0);
-        $pdf->Cell(50,10,'',1,1);
+        $pdf->Cell(125,10,"Total",1,0,'C',0);
+        $pdf->Cell(15,10,$job->trainings->sum('quantity'),1,0,'C',0);
+        $pdf->Cell(40,10,'',1,1);
 
         // --- Draw footer manually ---
 
