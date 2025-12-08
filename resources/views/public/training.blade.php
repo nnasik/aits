@@ -33,7 +33,7 @@
         <tr>
             <td colspan="2" class="text-center">
                 <img src="{{asset('assets/images/logo.png')}}" alt="" height="100">
-                <h4 class="h4">American International Training Services LLC, Abu DHabi, UAE</h4>
+                <h4 class="h4">American International Training Services LLC, Abu Dhabi, UAE</h4>
                 <hr>
                 <p>
                     Training Attendance Record: {{ $training->course_title_in_certificate }} - {{ $training->scheduled_date }} - {{$training->company_name_in_certificate}}</p>
