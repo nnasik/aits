@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training: {{ $training->course->name }}</title>
+    <title> AITS{{ $training->job->id }} - Attendance of {{ $training->course_title_in_certificate }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Bootstrap CSS -->
@@ -29,18 +29,42 @@
 </head>
 <body>
 <div class="container my-4">
-    <h2 class="mb-4">Training: <b>{{ $training->course->name }}</b></h2>
-    <h2 class="mb-4">Date: <b>{{ $training->scheduled_date }}</b></h2>
-    <h2 class="mb-4">Company Name: <b>{{ $training->job->company->name }}</b></h2>
-
-    <table class="table table-bordered">
+    <table class="table table-bordered mt-3" style="font-size:1.5em">
+        <tr>
+            <td colspan="2" class="text-center">
+                <img src="{{asset('assets/images/logo.png')}}" alt="" height="100">
+                <h4 class="h4">American International Training Services LLC, Abu DHabi, UAE</h4>
+                <hr>
+                <p>
+                    Training Attendance Record: {{ $training->course_title_in_certificate }} - {{ $training->scheduled_date }} - {{$training->company_name_in_certificate}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td>AITS Job</td>
+            <td><b>{{ $training->job->id }}</b></td>
+        </tr>
+        <tr>
+            <td>Training</td>
+            <td>{{ $training->course->name }} as <b>{{ $training->course_title_in_certificate }}</td>
+        </tr>
+        <tr>
+            <td>Date </td>
+            <td><b>{{ $training->scheduled_date }}</b></td>
+        </tr>
+        <tr>
+            <td>Company Name</td>
+            <td>{{ $training->job->company->name }} as <b>{{$training->company_name_in_certificate}}</td>
+        </tr>
+    </table>
+        
+    <table class="table table-bordered mt-3">
         <thead class="table-light">
             <tr>
                 <th class="text-center" colspan="4">Trainee Details</th>
             </tr>
             <tr>
                 <th>S.No</th>
-                <th>Name / EID</th>
+                <th>Trainee</th>
                 <th>Photo <br>(Not Mandatory)</th>
                 <th>Signature <br>(Required)</th>
             </tr>
@@ -49,7 +73,7 @@
             @foreach($training->trainees as $index => $trainee)
             <tr>
                 <td>{{ $index + 1 }}</td>
-                <td>{{ $trainee->candidate_name_in_certificate }}<br>{{ $trainee->eid_no }}</td>
+                <td>Name : {{ $trainee->candidate_name_in_certificate }}<br>Emirates ID : {{ $trainee->eid_no }}<br> <span class="text-muted">Company : {{$trainee->company_name_in_certificate}}</span></td>
 
                 {{-- Photo --}}
                 <td>

@@ -45,6 +45,14 @@ return new class extends Migration
                   ->nullable()
                   ->constrained('users')
                   ->nullOnDelete();
+            $table->timestamp('uploaded_at')->nullable();
+
+            // Who Checked the file
+            $table->foreignId('checked_by')
+                  ->nullable()
+                  ->constrained('users')
+                  ->nullOnDelete();
+            $table->timestamp('checked_at')->nullable();
 
             // Cloud Archive fields
             $table->string('storage_disk')->default('local'); 

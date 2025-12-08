@@ -33,5 +33,6 @@
   </div>
   <!--end::App Content-->
   @include('job_acc.modal.change_status')
+  @include('job.modals.add_files')
   </div>
   @endsection()

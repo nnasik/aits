@@ -9,9 +9,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <form id="uploadFileForm" action="{{ route('job.file.upload') }}" 
+            <form id="uploadFileForm" action="<?php echo e(route('job.file.upload')); ?>" 
                   method="POST" enctype="multipart/form-data">
-                @csrf
+                <?php echo csrf_field(); ?>
 
                 <div class="modal-body">
 
@@ -133,3 +133,4 @@
         showPreview(file);
     });
 </script>
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/job/modals/add_files.blade.php ENDPATH**/ ?>

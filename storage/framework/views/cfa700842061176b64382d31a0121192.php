@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Training: <?php echo e($training->course->name); ?></title>
+    <title> AITS<?php echo e($training->job->id); ?> - Attendance of <?php echo e($training->course_title_in_certificate); ?></title>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
     <!-- Bootstrap CSS -->
@@ -29,27 +29,51 @@
 </head>
 <body>
 <div class="container my-4">
-    <h2 class="mb-4">Training: <b><?php echo e($training->course->name); ?></b></h2>
-    <h2 class="mb-4">Date: <b><?php echo e($training->scheduled_date); ?></b></h2>
-    <h2 class="mb-4">Company Name: <b><?php echo e($training->job->company->name); ?></b></h2>
-
-    <table class="table table-bordered">
+    <table class="table table-bordered mt-3" style="font-size:1.5em">
+        <tr>
+            <td colspan="2" class="text-center">
+                <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="" height="100">
+                <h4 class="h4">American International Training Services LLC, Abu DHabi, UAE</h4>
+                <hr>
+                <p>
+                    Training Attendance Record: <?php echo e($training->course_title_in_certificate); ?> - <?php echo e($training->scheduled_date); ?> - <?php echo e($training->company_name_in_certificate); ?></p>
+            </td>
+        </tr>
+        <tr>
+            <td>AITS Job</td>
+            <td><b><?php echo e($training->job->id); ?></b></td>
+        </tr>
+        <tr>
+            <td>Training</td>
+            <td><?php echo e($training->course->name); ?> as <b><?php echo e($training->course_title_in_certificate); ?></td>
+        </tr>
+        <tr>
+            <td>Date </td>
+            <td><b><?php echo e($training->scheduled_date); ?></b></td>
+        </tr>
+        <tr>
+            <td>Company Name</td>
+            <td><?php echo e($training->job->company->name); ?> as <b><?php echo e($training->company_name_in_certificate); ?></td>
+        </tr>
+    </table>
+        
+    <table class="table table-bordered mt-3">
         <thead class="table-light">
             <tr>
                 <th class="text-center" colspan="4">Trainee Details</th>
             </tr>
             <tr>
                 <th>S.No</th>
-                <th>Name / EID</th>
-                <th>Photo</th>
-                <th>Signature</th>
+                <th>Trainee</th>
+                <th>Photo <br>(Not Mandatory)</th>
+                <th>Signature <br>(Required)</th>
             </tr>
         </thead>
         <tbody>
             <?php $__currentLoopData = $training->trainees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $trainee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <tr>
                 <td><?php echo e($index + 1); ?></td>
-                <td><?php echo e($trainee->candidate_name_in_certificate); ?><br><?php echo e($trainee->eid_no); ?></td>
+                <td>Name : <?php echo e($trainee->candidate_name_in_certificate); ?><br>Emirates ID : <?php echo e($trainee->eid_no); ?><br> <span class="text-muted">Company : <?php echo e($trainee->company_name_in_certificate); ?></span></td>
 
                 
                 <td>

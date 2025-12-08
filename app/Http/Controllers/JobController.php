@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use FPDF;
 use Auth;
 use Redirect;
+use Str;
 
 class JobController extends Controller
 {
@@ -311,44 +312,62 @@ class JobController extends Controller
         return redirect()->back()->with('success', 'Job status updated successfully.');
     }
 
-    public function uploadFiles(Request $request, WorkOrder $workOrder){
-        // --- Validation ---
-        $request->validate([
-            'file' => 'required|file|max:20480', // 20MB max
-            'description' => 'nullable|string',
-            'document_type' => 'required|string|in:Invoice,Delivery Note,Certificates & Ids,Training Feedback,Other',
-        ]);
+    public function uploadFile(Request $request)
+{
+    // ---------------------------------------------------------
+    // 1. VALIDATE REQUEST
+    // ---------------------------------------------------------
+    $validated = $request->validate([
+        'file'          => 'required|file|max:10240', // 10MB
+        'description'   => 'nullable|string|max:255',
+        'document_type' => 'required|string|in:Invoice,Delivery Note,Certificates & Ids,Training Feedback,Other',
+        'fileable_id'   => 'required|integer|exists:work_orders,id',
+    ]);
 
-        $file = $request->file('file');
+    // ---------------------------------------------------------
+    // 2. RETRIEVE WORKORDER
+    // ---------------------------------------------------------
+    $workOrder = WorkOrder::findOrFail($validated['fileable_id']);
 
-        // --- Generate system filename ---
-        $systemName = Str::uuid() . '.' . $file->getClientOriginalExtension();
+    // ---------------------------------------------------------
+    // 3. PROCESS FILE
+    // ---------------------------------------------------------
+    $file = $validated['file'];
+    $systemName = Str::uuid() . '.' . $file->getClientOriginalExtension();
 
-        // --- Store file locally (storage/app/public/uploads/workorders/{id}) ---
-        $path = $file->storeAs(
-            'uploads/workorders/' . $workOrder->id,
-            $systemName,
-            'public'
-        );
+    // store file
+    $path = $file->storeAs(
+        'uploads/workorders/' . $workOrder->id,
+        $systemName,
+        'public'
+    );
 
-        // --- Create file record ---
-        $workOrder->files()->create([
-            'name'          => $systemName,
-            'original_name' => $file->getClientOriginalName(),
-            'description'   => $request->description,
-            'document_type' => $request->document_type,
-            'path'          => $path,
-            'mime_type'     => $file->getClientMimeType(),
-            'size'          => $file->getSize(),
-            'storage_disk'  => 'local',          // future: change to 'google_drive' when archived
-            'uploaded_by'   => auth()->id(),
-            'archived_at'   => null,
-            'archived_by'   => null,
-            'hash'          => hash_file('sha256', $file->getRealPath()),
-        ]);
+    // ---------------------------------------------------------
+    // 4. SAVE FILE RECORD (POLYMORPHIC)
+    // ---------------------------------------------------------
+    $workOrder->files()->create([
+        'fileable_id'   => $workOrder->id,
+        'fileable_type' => App\Models\WorkOrder::class, // set programmatically
 
-        return back()->with('success', 'File uploaded successfully.');
-    }
+        'name'           => $systemName,
+        'original_name'  => $file->getClientOriginalName(),
+        'description'    => $validated['description'] ?? null,
+        'document_type'  => $validated['document_type'],
+        'path'           => $path,
+        'mime_type'      => $file->getClientMimeType(),
+        'size'           => $file->getSize(),
+        'storage_disk'   => 'public',
+        'hash'           => hash_file('sha256', $file->getRealPath()),
+        'uploaded_by'    => auth()->id(),
+        'archived_at'    => null,
+        'archived_by'    => null,
+    ]);
+
+    // ---------------------------------------------------------
+    // 5. DONE
+    // ---------------------------------------------------------
+    return back()->with('success', 'File uploaded successfully.');
+}
 
 
 }

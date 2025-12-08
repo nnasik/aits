@@ -31,6 +31,7 @@
   </div>
   <!--end::App Content-->
   <?php echo $__env->make('job_acc.modal.change_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('job.modals.add_files', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   </div>
   <?php $__env->stopSection(); ?>
 

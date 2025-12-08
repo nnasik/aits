@@ -78,4 +78,5 @@
   @include('job.modals.accept_request')
   @include('job.modals.change_status')
   @include('job.modals.change_job_status')
+  @include('job.modals.add_files')
   @endsection()
