@@ -7,6 +7,11 @@ use App\Models\Certificate;
 use App\Models\Trainee;
 use Spatie\PdfToImage\Pdf;
 use FPDF;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Geometry\Factories\LineFactory;
+
+
 
 class CertificateController extends Controller
 {
@@ -25,6 +30,28 @@ class CertificateController extends Controller
     }
 
     public function store(Request $request){
+
+        // 
+        $jobNo = $request->input('job_no');           
+        $certNo = $request->input('certificate_no'); 
+        $secret = env('CERT_HASH_SALT', 'default_secret');
+
+        // Combine data for hash
+        $data = $jobNo . '|' . $certNo . '|' . $secret;
+
+        // Hash (SHA256)
+        $hash = hash('sha256', $data);
+
+        // Encode first 16 chars as base36 and take 10 chars
+        $shortHash = substr(base_convert(substr($hash, 0, 16), 16, 36), 0, 10);
+
+        // Ensure uniqueness in DB (collision handling)
+        while (Certificate::where('hash', $shortHash)->exists()) {
+            $data .= '|' . Str::random(4);  // slightly change input
+            $hash = hash('sha256', $data);
+            $shortHash = substr(base_convert(substr($hash, 0, 16), 16, 36), 0, 10);
+        }
+
         $validated = $request->validate([
             'id' => 'required|numeric|unique:certificates,id',
             'job_id' => 'required|exists:work_orders,id',
@@ -42,6 +69,8 @@ class CertificateController extends Controller
             'valid_unit' => 'required|date',
             'live_photo' => 'nullable|image|max:2048',
         ]);
+        
+        $validated['hash'] = $shortHash;
 
         // Fetch the trainee record
         $trainee = Trainee::findOrFail($request->trainee_id);
@@ -56,7 +85,7 @@ class CertificateController extends Controller
         }
 
         // ✅ Create certificate (with manual id)
-        Certificate::create($validated);
+         Certificate::create($validated);
 
         return redirect()->back()->with('success', 'Certificate created successfully!');
     }
@@ -805,5 +834,192 @@ class CertificateController extends Controller
     return response($pdf->Output('S'))
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="AITS-'.$record->trainee->training->job->id."-".$record->id."-".substr($record->company_name_in_certificate, 0, 20)."-".substr($record->candidate_name_in_certificate, 4,20).'.pdf"');
+    }
+
+    public function certificate_preview_v1($hash){
+        // Dynamic values from query 
+        $certificate = Certificate::where('hash',$hash)->first();
+
+        // Load template certificate background
+        $manager = new ImageManager(new Driver());
+        $image = $manager->read(storage_path('app/certificates/template_1.jpg'));
+
+        // Path to Cambria font
+        $cambriaFont = storage_path('app/fonts/cambria.ttc'); // Make sure the TTF file exists here
+        $cambriaBoldFont = storage_path('app/fonts/cambriab.ttf'); // Make sure the TTF file exists here
+
+        // Add Name
+        $image->text($certificate->text_1, 420, 120, function ($font) use ($cambriaBoldFont) {
+            $font->file($cambriaBoldFont);   // Set Cambria font
+            $font->size(32);            // Bigger size
+            $font->color('#000000');
+            $font->align('center');
+            $font->valign('top');
+        });
+
+        // Certificate No
+        $image->text('Certificate No : '.$certificate->id, 40, 160, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('left');
+            $font->valign('top');
+        });
+        
+        // Job No
+        $image->text('Job No : '.$certificate->trainee->training->job->id, 800, 160, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('top');
+        });
+
+        // 
+        $image->text('This is to certify that', 420, 200, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('center');
+            $font->valign('top');
+        });
+
+        // Certificate No
+        $image->text($certificate->candidate_name_in_certificate, 40, 240, function ($font) use ($cambriaBoldFont) {
+            $font->file($cambriaBoldFont);   // Set Cambria font
+            $font->size(22);            // Bigger size
+            $font->color('#000000');
+            $font->align('left');
+            $font->valign('top');
+        });
+
+        // Emirates ID
+        $image->text("Emirates ID No. : ". $certificate->eid_no, 810, 240, function ($font) use ($cambriaBoldFont) {
+            $font->file($cambriaBoldFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('top');
+        });
+
+        // Employee of
+        $image->text("Employee of ", 40, 270, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('left');
+            $font->valign('top');
+        });
+
+        // Company Name
+        $image->text($certificate->company_name_in_certificate, 40, 300, function ($font) use ($cambriaBoldFont) {
+            $font->file($cambriaBoldFont);   // Set Cambria font
+            $font->size(22);            // Bigger size
+            $font->color('#000000');
+            $font->align('left');
+            $font->valign('top');
+        });
+
+        // Employee of
+        $image->text($certificate->company_location, 40, 330, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('left');
+            $font->valign('top');
+        });
+
+        // Employee of
+        $image->text($certificate->text_2, 40, 370, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('left');
+            $font->valign('top');
+        });
+
+        // Employee of
+        $image->text($certificate->course_name_in_certificate, 40, 400, function ($font) use ($cambriaBoldFont) {
+            $font->file($cambriaBoldFont);   // Set Cambria font
+            $font->size(22);            // Bigger size
+            $font->color('#000000');
+            $font->align('left');
+            $font->valign('top');
+        });
+
+        // 
+        $image->text('Trainer', 420, 500, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('center');
+            $font->valign('top');
+        });
+
+        // draw a half transparent white line
+        $image->drawLine(function (LineFactory $line) {
+            $line->from(320, 490);
+            $line->to(520, 490);
+            $line->color('000000');
+            $line->width(4);
+        });
+
+
+
+        if ($certificate->live_photo) {
+            $photo = $manager->read(public_path('storage/' . $certificate->live_photo));
+            $photo = $photo->scaleDown(100); // max width or height = 100px
+            $image->place(
+            $photo,
+            'right', 
+            30, 
+            30,
+            100
+            );
+            
+        } else {
+
+            $photo = $manager->read(public_path('assets/images/user_placeholder.jpg'));
+            $photo = $photo->scaleDown(100); // max width or height = 100px
+            $image->place(
+            $photo,
+            'right', 
+            30, 
+            30,
+            100
+            );
+        }
+
+        // Date of Training
+        $image->text('Date of Training : '.$certificate->date , 810, 410, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('top');
+        });
+
+        // Valid Until
+        $image->text('Valid Until : '.$certificate->valid_unit , 810, 440, function ($font) use ($cambriaFont) {
+            $font->file($cambriaFont);   // Set Cambria font
+            $font->size(18);            // Bigger size
+            $font->color('#000000');
+            $font->align('right');
+            $font->valign('top');
+        });
+
+        
+
+
+
+        // Encode as JPEG (this returns EncodedImage)
+        $jpeg = $image->toJpeg(90);
+
+        // Encode to JPEG → returns EncodedImage
+        $jpeg = $image->toJpeg(90);
+
+        // FINAL CORRECT OUTPUT
+        return response($jpeg->toString(), 200)
+            ->header('Content-Type', 'image/jpeg');
     }
 }

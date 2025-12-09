@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Training;
 use Illuminate\Support\Facades\Storage;
 
+
 class PublicTrainingController extends Controller
 {
     /**

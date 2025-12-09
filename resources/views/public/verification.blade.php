@@ -8,6 +8,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Add this once in your layout (if not already included) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <link rel="shortcut icon" href="{{asset('assets/images/fav_icon.png')}}" type="image/x-icon">
 
   <style>
     body {
@@ -19,19 +20,19 @@
       margin: 40px auto;
       background: #fff;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
       overflow: hidden;
     }
 
     .certificate-image {
-      background: #eee;
+      background: #ddd;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .certificate-image img {
-      width: 100%;
+      width: 95%;
       height: auto;
       display: block;
     }
@@ -68,7 +69,7 @@
   <div class="certificate-container row g-0">
     <div class="col-md-6 certificate-image">
       <!-- Left side: certificate image -->
-      <img src="{{route('certificate.preview',$certificate->id)}}" alt="">
+      <img src="{{route('certificate.preview.v1',$hash)}}" alt="" class="shadow-sm">
     </div>
     <div class="col-md-6 certificate-details">
       <h2>
@@ -97,7 +98,7 @@
               </p>
             </div>
             <div class="row">
-              <p><span class="label">Name of Recipient:</span><br>
+              <p><span class="label">Name :</span><br>
                 <span class="value">{{ $certificate->candidate_name_in_certificate }}</span>
               </p>
             </div>

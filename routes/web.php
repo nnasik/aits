@@ -27,18 +27,15 @@ Route::get('/public/training/{hash}', [PublicTrainingController::class, 'showTra
 // Save signature (pivot ID)
 Route::post('/trainee/signature', [PublicTrainingController::class, 'saveSignature'])
     ->name('public.trainee.signature');
-    
 
-// Upload photo (pivot ID)
-Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])
-    ->name('public.trainee.photo');
+// Upload photo (Pivot ID)
+Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])->name('public.trainee.photo');
 
 // Certificate Verification
-Route::get('/verify/{certificate_no}/{job_no}', [PublicController::class, 'verify'])->name('certificate.verify');
+Route::get('/verify/{hash}', [PublicController::class, 'verify'])->name('certificate.verify');
 
-// PDF of certificate Generation
-Route::get('/certficate/preview/{id}/png/v1',[CertificateController::class,'certificatePNG'])->name('certificate.preview');
-
+// Image Generation
+Route::get('/certficate/{hash}/preview/png/v1',[CertificateController::class,'certificate_preview_v1'])->name('certificate.preview.v1');
 
 Route::group(['middleware' => ['auth']], function () {
 

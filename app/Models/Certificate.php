@@ -24,7 +24,8 @@ class Certificate extends Model
         'passport_no',
         'date',
         'valid_unit',
-        'live_photo'
+        'live_photo',
+        'hash'
     ];
 
     public function trainee(){

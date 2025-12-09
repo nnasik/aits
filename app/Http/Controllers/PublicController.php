@@ -8,21 +8,18 @@ use App\Models\WorkOrder;
 
 class PublicController extends Controller
 {
-    public function verify($certificate_no, $job_no){
+    public function verify($hash){
         // Retrieve the certificate and job using the provided numbers
-        $certificate = Certificate::where('id', $certificate_no)->first();
+        $certificate = Certificate::where('hash', $hash)->first();
+        $data['hash'] = $hash;
 
         // Check if both the certificate and job exist
         if (!$certificate) {
             return view('public.verification_not_found');
         }
 
-        // Check if the job ID matches the certificate's job ID
-        if ((string) $certificate->trainee->training->job->id !== (string) $job_no) {
-            return view('public.verification_invalid');
-        }
         $data['certificate'] = $certificate;
         // Return the certificate details to the view
         return view('public.verification')->with($data);
-    }
+    }    
 }
