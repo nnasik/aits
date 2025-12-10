@@ -56,23 +56,6 @@ class TrainingController extends Controller
         }
 
         $training->save();
-
-        if($request->zoom==True && $request->training_mode=='Online'){
-            $zoom = app(\App\Services\ZoomService::class);
-
-            $startTime = date('c', strtotime($request->scheduled_date . ' ' . $request->scheduled_time));
-
-            $meeting = $zoom->createMeeting(
-                $training->course->name . ' Training',
-                $startTime,
-                60
-            );
-            
-            $training->training_link = $meeting['join_url'];
-            $training->save();
-            return redirect()->back()->with('error', 'Failed to create Zoom meeting: ' . json_encode($meeting));
-    
-        }
         
         return back()->with('success', 'Training added successfully.');
     }

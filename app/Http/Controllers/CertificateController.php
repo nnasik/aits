@@ -10,8 +10,7 @@ use FPDF;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Geometry\Factories\LineFactory;
-
-
+use Illuminate\Support\Str;
 
 class CertificateController extends Controller
 {
