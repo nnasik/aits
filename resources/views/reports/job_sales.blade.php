@@ -134,7 +134,12 @@
 
         // PAYMENT STATUS FILTER
         $('#filter_payment_status').on('change', function () {
-            table.column(10).search(this.value).draw();
+            let val = this.value;
+            if(val) {
+                table.column(10).search('^' + val + '$', true, false).draw(); // exact match
+            } else {
+                table.column(10).search("").draw();
+            }
         });
 
         // INVOICE NUMBER SEARCH

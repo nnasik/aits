@@ -164,6 +164,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Reports
     Route::get('/report/jobs-by-sale', [ReportController::class, 'jobs_by_sale'])->name('report.jobsBySale');
+    Route::get('/report/jobs-accounts', [ReportController::class, 'jobs_accounts'])->name('report.jobsAccounts');
 
     Route::get('/logout', function () {
         Auth::logout();                         // Logs out user

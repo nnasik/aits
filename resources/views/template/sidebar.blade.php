@@ -132,6 +132,13 @@
           <p>Jobs</p>
         </a>
       </li>
+      <li class="nav-item">
+        <a href="{{route('report.jobsAccounts')}}" class="nav-link">
+          <div>  </div>
+          <i class="bi bi-file-bar-graph"></i>
+          <p>Report</p>
+        </a>
+      </li>
     </ul>
     <!-- <ul class="nav nav-treeview">
       <li class="nav-item">

@@ -20,4 +20,10 @@ class ReportController extends Controller
         $data['workOrders']=WorkOrder::where('sales_by',$user_id)->get();
         return view('reports.job_sales')->with($data);
     }
+
+    // All Jobs
+    public function jobs_accounts(){
+        $data['workOrders']=WorkOrder::all();
+        return view('reports.job_accounts')->with($data);
+    }
 }

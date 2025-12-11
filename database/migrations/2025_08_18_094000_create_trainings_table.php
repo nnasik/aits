@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('trainings', function (Blueprint $table) {
             $table->id();
             $table->string('hash')->nullable()->unique();
-            $table->foreignId('work_order_id')->constrained(
+            $table->foreignId('work_order_id')->nullable()->constrained(
                 table: 'work_orders', indexName: 'trainings_work_order_id'
             );
             
