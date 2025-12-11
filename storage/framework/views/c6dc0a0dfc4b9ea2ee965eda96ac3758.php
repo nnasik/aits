@@ -120,63 +120,61 @@
 <script>
     $(document).ready(function() {
 
-        let table = $('#reportTable').DataTable({
-            responsive: true,
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 
-                'excel', 
-                'csv', 
-                'print',
-                {
-                    extend: 'pdfHtml5',
-                    text: 'PDF',
-                    orientation: 'landscape',
-                    pageSize: 'A4'
-                }
-            ],
-        });
-
-        // JOB STATUS FILTER
-        $('#filter_job_status').on('change', function () {
-            table.column(3).search(this.value).draw();
-        });
-
-        // PAYMENT STATUS FILTER
-        $('#filter_payment_status').on('change', function () {
-            let val = this.value;
-            if(val) {
-                table.column(10).search('^' + val + '$', true, false).draw(); // exact match
-            } else {
-                table.column(10).search("").draw();
+    let table = $('#reportTable').DataTable({
+        responsive: true,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 
+            'excel', 
+            'csv', 
+            'print',
+            {
+                extend: 'pdfHtml5',
+                text: 'PDF',
+                orientation: 'landscape',
+                pageSize: 'A4'
             }
-        });
+        ],
+    });
 
-        // INVOICE NUMBER SEARCH
-        $('#filter_invoice').on('keyup', function () {
-            table.column(6).search(this.value).draw();
-        });
+    // CUSTOM FILTER
+    $.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+        let sales = $('#filter_sales').val();
+        let jobStatus = $('#filter_job_status').val();
+        let paymentStatus = $('#filter_payment_status').val();
+        let invoiceNull = $('#filter_invoice_null').val();
+        let invoiceSearch = $('#filter_invoice').val().toLowerCase();
 
-        // INVOICE NULL FILTER
-        $('#filter_invoice_null').on('change', function () {
-            if (this.value === 'null') {
-                table.column(6).search("^$", true, false).draw(); // empty invoice
-            } else {
-                table.column(6).search("").draw();
-            }
-        });
+        let rowSales = data[0];       // Sales column
+        let rowJobStatus = data[4];   // Job Status column
+        let rowPaymentStatus = data[11]; // Payment Status column
+        let rowInvoice = data[7];     // Invoice No column
 
         // SALES FILTER
-        $('#filter_sales').on('change', function () {
-            let val = this.value;
-            if(val) {
-                table.column(0).search('^' + val + '$', true, false).draw(); // exact match
-            } else {
-                table.column(0).search("").draw();
-            }
-        });
+        if(sales && rowSales !== sales) return false;
 
+        // JOB STATUS FILTER
+        if(jobStatus && rowJobStatus !== jobStatus) return false;
+
+        // PAYMENT STATUS FILTER
+        if(paymentStatus && rowPaymentStatus !== paymentStatus) return false;
+
+        // INVOICE NULL FILTER
+        if(invoiceNull === 'null' && rowInvoice !== '') return false;
+
+        // INVOICE SEARCH
+        if(invoiceSearch && !rowInvoice.toLowerCase().includes(invoiceSearch)) return false;
+
+        return true;
     });
+
+    // Trigger redraw when any filter changes
+    $('#filter_sales, #filter_job_status, #filter_payment_status, #filter_invoice_null, #filter_invoice').on('change keyup', function() {
+        table.draw();
+    });
+
+});
+
 </script>
 
 </body>
