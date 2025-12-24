@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('picture')->nullable();
+            $table->string('duration')->nullable();
             $table->longText('description')->nullable();
             $table->float('price',10,2)->nullable();
             $table->string('status')->default('active');
@@ -25,8 +26,7 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
-    public function down(): void
-    {
+    public function down(): void{
         Schema::dropIfExists('training_courses');
     }
 };

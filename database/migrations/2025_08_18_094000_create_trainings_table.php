@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('hash')->nullable()->unique();
             $table->foreignId('work_order_id')->nullable()->constrained(
                 table: 'work_orders', indexName: 'trainings_work_order_id'
-            );
+            )->nullable();
             
             $table->foreignId('training_course_id')->constrained(
                 table: 'training_courses', indexName: 'trainings_training_course_id'

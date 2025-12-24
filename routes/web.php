@@ -14,6 +14,8 @@ use App\Http\Controllers\TraineeRequestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\QuotationController;
+
 
 
 Auth::routes();
@@ -85,7 +87,8 @@ Route::group(['middleware' => ['auth']], function () {
     //Route::get('/certficate/{id}/pdf/v_2_1',[CertificateController::class,'certificatePDF_V_2_1'])->name('certificate.pdf.v_2_1');
     Route::get('/certficate/{id}/pdf/v_2_2',[CertificateController::class,'certificatePDF_V_2_2'])->name('certificate.pdf.v_2_2');
     //Route::get('/certficate/{id}/pdf/v_2_3',[CertificateController::class,'certificatePDF_V_2_3'])->name('certificate.pdf.v_2_3');
-    Route::get('/scan/{id}/pdf/v_1',[CertificateController::class,'scan_v_1'])->name('scan.pdf.v_1');
+    Route::get('/scan/{id}/pdf/v_1_1',[CertificateController::class,'scan_v_1_1'])->name('scan.pdf.v_1_1');
+    Route::get('/scan/{id}/pdf/v_1_2',[CertificateController::class,'scan_v_1_2'])->name('scan.pdf.v_1_2');
     
     Route::get('/id/{id}/pdf/v1',[CertificateController::class,'cardPDF_V1'])->name('id.pdf.v1');
     Route::get('/id/{id}/pdf/v2',[CertificateController::class,'cardPDF_V2'])->name('id.pdf.v2');
@@ -166,6 +169,21 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/report/jobs-by-sale', [ReportController::class, 'jobs_by_sale'])->name('report.jobsBySale');
     Route::get('/report/jobs-accounts', [ReportController::class, 'jobs_accounts'])->name('report.jobsAccounts');
 
+
+    // Quotations
+    Route::get('/quotation/', [QuotationController::class, 'index'])->name('quotation.index');
+    Route::post('/quotation/store', [QuotationController::class, 'store'])->name('quotation.store');
+    Route::post('/quotation/finalize', [QuotationController::class, 'finalize'])->name('quotation.finalize');
+    Route::get('/quotations/pdf/{id}', [QuotationController::class, 'generatePdf'])->name('quotation.pdf.00');
+    // Show quotation with rows
+    Route::get('/quotation/{id}/show', [QuotationController::class, 'show'])->name('quotation.show');
+    Route::post('/quotation_row/store', [QuotationController::class, 'storeRow'])->name('quotation_rows.store');
+   
+
+
+    Route::get('/documents/', [QuotationController::class, 'index'])->name('quotation.index');
+
+
     Route::get('/logout', function () {
         Auth::logout();                         // Logs out user
         request()->session()->invalidate();     // Invalidate session
@@ -173,4 +191,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         return redirect('/login');              // Redirect to login
     })->name('logout');
+
+    
+
 });

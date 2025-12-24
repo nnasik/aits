@@ -37,10 +37,10 @@
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="<?php echo e(route('quotation.index')); ?>" class="nav-link">
           <div>  </div>
           <i class="nav-icon bi bi-file-earmark-ruled"></i>
-          <p>RFQs</p>
+          <p>Quotations</p>
         </a>
       </li>
       <li class="nav-item">
@@ -154,6 +154,13 @@
 
   <li class="nav-item">
     <a href="#" class="nav-link">
+      <i class="bi bi-file-check"></i>
+      <p>Documents</p>
+    </a>
+  </li>
+
+  <!-- <li class="nav-item">
+    <a href="#" class="nav-link">
       <i class="bi bi-exclamation-octagon"></i>
       <p>Violations</p>
     </a>
@@ -164,7 +171,7 @@
       <i class="bi bi-x-octagon"></i>
       <p>Issues</p>
     </a>
-  </li>
+  </li> -->
 
 
   <?php if (\Illuminate\Support\Facades\Blade::check('hasanyrole', 'Developer|Admin')): ?>
