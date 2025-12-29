@@ -40,13 +40,13 @@
     </div>
     <!--end::Row-->
     <div class="row mt-3">
-      @include('trainings.index.table');
+      @include('trainings.index.table')
     </div>
     
     <!--end::Container-->
   </div>
   <!--end::App Content-->
   </div>
-  @include('trainings.modals.new_training');
-  @include('trainings.modals.link_to_job');
+  @include('trainings.modals.new_training')
+  @include('trainings.modals.link_to_job')
   @endsection()

@@ -15,16 +15,25 @@ use Illuminate\Support\Str;
 class CertificateController extends Controller
 {
     public function index(){
+
         // Get IDs of trainees who already have certificates
         $traineeIdsWithCertificates = Certificate::pluck('trainee_id')->toArray();
+
         // Only get trainees that don't have certificates yet
         $data['trainees'] = Trainee::whereNotIn('id', $traineeIdsWithCertificates)
-                                    ->orderBy('id','desc')
-                                    ->paginate(10);
+            ->whereNotNull('signature')
+            ->whereHas('training', function ($q) {
+                $q->whereNotNull('work_order_id');
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(10);
+        
         // Get all certificates
         $data['certificates'] = Certificate::orderBy('id','desc')->paginate(10);
+
         // Safely get next certificate ID
         $data['certificate_next_id'] = Certificate::max('id') ? Certificate::max('id') + 1 : 1;
+
         return view('certificate.index', $data);
     }
 
