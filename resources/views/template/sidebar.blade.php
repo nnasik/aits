@@ -81,7 +81,7 @@
       </li>
 
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{route('training.nojob')}}" class="nav-link">
           <div>  </div>
           <i class="nav-icon bi bi-calendar3"></i>
           <p>Trainings</p>

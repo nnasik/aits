@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> AITS<?php echo e($training->job->id); ?> - Attendance of <?php echo e($training->course_title_in_certificate); ?></title>
+    <title> <?php if($training->job): ?>AITS<?php echo e($training->job->id); ?> - <?php endif; ?> Attendance of <?php echo e($training->course_title_in_certificate); ?></title>
     <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
     <!-- Bootstrap CSS -->
@@ -33,7 +33,7 @@
         <tr>
             <td colspan="2" class="text-center">
                 <img src="<?php echo e(asset('assets/images/logo.png')); ?>" alt="" height="100">
-                <h4 class="h4">American International Training Services LLC, Abu DHabi, UAE</h4>
+                <h4 class="h4">American International Training Services LLC, Abu Dhabi, UAE</h4>
                 <hr>
                 <p>
                     Training Attendance Record: <?php echo e($training->course_title_in_certificate); ?> - <?php echo e($training->scheduled_date); ?> - <?php echo e($training->company_name_in_certificate); ?></p>
@@ -41,7 +41,12 @@
         </tr>
         <tr>
             <td>AITS Job</td>
-            <td><b><?php echo e($training->job->id); ?></b></td>
+            <td>
+                <?php if($training->job): ?>
+                <b><?php echo e($training->job->id); ?></b>
+                <?php endif; ?>
+            </td>
+            
         </tr>
         <tr>
             <td>Training</td>
@@ -53,7 +58,9 @@
         </tr>
         <tr>
             <td>Company Name</td>
-            <td><?php echo e($training->job->company->name); ?> as <b><?php echo e($training->company_name_in_certificate); ?></td>
+                <td>
+                <?php if($training->job): ?> <?php echo e($training->job->company->name); ?> as <b><?php echo e($training->company_name_in_certificate); ?> <?php endif; ?>
+                </td>
         </tr>
     </table>
         

@@ -2,8 +2,8 @@
 <div class="modal fade" id="createTrainingModal" tabindex="-1" aria-labelledby="createTrainingModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <form action="{{ route('training.store') }}" method="POST">
-                @csrf
+            <form action="<?php echo e(route('training.store')); ?>" method="POST">
+                <?php echo csrf_field(); ?>
 
                 <div class="modal-header">
                     <h5 class="modal-title" id="createTrainingModalLabel">Create Training</h5>
@@ -19,9 +19,9 @@
                             <select name="training_course_id" class="form-select select2" required>
                                 
                                 <option value="">Select Training Course</option>
-                                @foreach($trainingCourses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->name }}</option>
-                                @endforeach
+                                <?php $__currentLoopData = $trainingCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($course->id); ?>"><?php echo e($course->name); ?></option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </select>
                         </div>
 
@@ -93,3 +93,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/trainings/modals/new_training.blade.php ENDPATH**/ ?>

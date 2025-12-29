@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Training;
+use App\Models\TrainingCourse;
 use App\Models\Trainee;
 use App\Models\Company;
+use App\Models\WorkOrder;
 use App\Services\ZoomService;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use FPDF;
 
 // Extend FPDF with custom footer
@@ -26,38 +29,85 @@ class PDF extends FPDF
 
 class TrainingController extends Controller
 {
+
+    public function index(){
+
+    }
+
+    public function trainingsWithoutJob(){
+        $data['jobs'] = WorkOrder::where('status','open')->get()->reverse();
+        $data['trainings'] = Training::where('work_order_id',NULL)->get()->reverse();
+        $data['trainingCourses'] = TrainingCourse::where('status','active')->get();
+        return view('trainings.withoutjob')->with($data);
+    }
+
     // 
     public function store(Request $request){
 
-        $validated = $request->validate([
-            'work_order_id'   => 'required|exists:work_orders,id',
-            'course_id'       => 'required|exists:training_courses,id',
-            'qty'             => 'required|integer|min:1',
-            'scheduled_date'  => 'nullable|date',
-            'training_mode'   => 'nullable|string|max:255',
-            'scheduled_time'  => 'nullable|date_format:H:i',
-            'remark'          => 'nullable|string|max:255',
+        return DB::transaction(function () use ($request) {
+            $validated = $request->validate([
+                'training_course_id'=> 'required|exists:training_courses,id',
+                'qty'             => 'required|integer|min:1',
+                'scheduled_date'  => 'nullable|date',
+                'training_mode'   => 'nullable|string|max:255',
+                'course_title_in_certificate'   => 'required|string|max:255',
+                'scheduled_time'  => 'nullable|date_format:H:i',
+                'remarks'          => 'nullable|string|max:255',
+            ]);
+
+            $training = new Training([
+                'training_course_id' => $validated['training_course_id'],
+                'course_title_in_certificate' => $validated['course_title_in_certificate'],
+                'quantity'           => $validated['qty'],
+                'scheduled_date'     => $validated['scheduled_date'] ?? null,
+                'training_mode'      => $validated['training_mode'] ?? null,
+                'scheduled_time'     => $validated['scheduled_time'] ?? null,
+                'remarks'            => $validated['remarks'] ?? null,
+                'hash'               => Str::uuid()->toString(),
+            ]);
+
+            if($validated['scheduled_date'] && $validated['scheduled_time']){
+                $training->status = 'Scheduled';
+            }
+
+            $training->save();
+
+            for ($i=0; $i < $training->quantity; $i++) { 
+                $training->trainees()->create([
+                    
+                    'company_name_in_certificate' => $training->company_name_in_certificate,
+                    'course_title_in_certificate' => $training->course_title_in_certificate,
+                    'date' => $training->scheduled_date,
+                ]);
+            }
+
+            return back()->with('success', 'Training added successfully.');
+
+        });
+        
+    }
+
+    public function linkJob(Request $request){
+        // Validate input
+        $request->validate([
+            'job_id' => 'required|exists:work_orders,id',
+            'training_id' => 'required', // assuming this carries the training ID
         ]);
 
-        $training = new Training([
-            'work_order_id'      => $validated['work_order_id'],
-            'training_course_id' => $validated['course_id'],
-            'quantity'           => $validated['qty'],
-            'scheduled_date'     => $validated['scheduled_date'] ?? null,
-            'training_mode'      => $validated['training_mode'] ?? null,
-            'scheduled_time'     => $validated['scheduled_time'] ?? null,
-            'remarks'            => $validated['remark'] ?? null,
-            'hash'               => Str::uuid()->toString(),
+        // Get values
+        $jobId = $request->input('job_id');
+        $trainingId = $request->input('training_id');
 
-        ]);
-
-        if($validated['scheduled_date'] && $validated['scheduled_time']){
-            $training->status = 'Scheduled';
+        // Update the training with the selected job
+        $training = Training::findOrFail($trainingId);
+        if (!$training) {
+            return back()->with('error', 'Training not found.');
         }
 
+        $training->work_order_id = $jobId;
         $training->save();
-        
-        return back()->with('success', 'Training added successfully.');
+
+        return back()->with('success', 'Training linked to job successfully.');
     }
 
     public function destroy(Training $training){

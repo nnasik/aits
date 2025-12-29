@@ -13,7 +13,9 @@
         <ol class="breadcrumb float-sm-end">
           <li class="breadcrumb-item"><a href="#">Jobs</a></li>
           <li class="breadcrumb-item">All</li>
+          <?php if($job): ?>
           <li class="breadcrumb-item active" aria-current="page"><?php echo e($job->id); ?></li>
+          <?php endif; ?>
         </ol>
       </div>
     </div>
@@ -34,14 +36,14 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Job No</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="<?php echo e($job->id); ?>" readonly>
+            value="<?php if($job): ?> <?php echo e($job->id); ?> <?php endif; ?>" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-6">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Date</span>
           <input type="date" class="form-control" aria-label="Date" aria-describedby="basic-addon1"
-            value="<?php echo e($job->date); ?>">
+            value="<?php if($job): ?> <?php echo e($job->date); ?> <?php endif; ?>">
         </div>
       </div>
     </div>
@@ -52,7 +54,7 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Client / Company</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="<?php echo e($job->company->name); ?>" readonly>
+            value="<?php if($job): ?> <?php echo e($job->company->name); ?> <?php endif; ?>" readonly>
         </div>
       </div>
     </div>
@@ -63,21 +65,21 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Issued By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="<?php echo e($job->issued->name); ?>" readonly>
+            value="<?php if($job): ?> <?php echo e($job->issued->name); ?> <?php endif; ?>" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Authorized By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="<?php echo e($job->authorized->name); ?>" readonly>
+            value="<?php if($job): ?> <?php echo e($job->authorized->name); ?> <?php endif; ?>" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Sales By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="<?php echo e($job->sales->name); ?>" readonly>
+            value="<?php if($job): ?> <?php echo e($job->sales->name); ?> <?php endif; ?>" readonly>
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> AITS{{ $training->job->id }} - Attendance of {{ $training->course_title_in_certificate }}</title>
+    <title> @if($training->job)AITS{{ $training->job->id }} - @endif Attendance of {{ $training->course_title_in_certificate }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Bootstrap CSS -->
@@ -41,7 +41,12 @@
         </tr>
         <tr>
             <td>AITS Job</td>
-            <td><b>{{ $training->job->id }}</b></td>
+            <td>
+                @if($training->job)
+                <b>{{ $training->job->id }}</b>
+                @endif
+            </td>
+            
         </tr>
         <tr>
             <td>Training</td>
@@ -53,7 +58,9 @@
         </tr>
         <tr>
             <td>Company Name</td>
-            <td>{{ $training->job->company->name }} as <b>{{$training->company_name_in_certificate}}</td>
+                <td>
+                @if($training->job) {{ $training->job->company->name }} as <b>{{$training->company_name_in_certificate}} @endif
+                </td>
         </tr>
     </table>
         

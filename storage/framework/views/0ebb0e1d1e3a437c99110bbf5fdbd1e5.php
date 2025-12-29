@@ -41,6 +41,18 @@
                                     <td>
                                         <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_1',$certificate->id)); ?>">V 1.1</a>
                                         <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_2',$certificate->id)); ?>">V 1.2</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_3',$certificate->id)); ?>">V 1.3</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        Certificate with BG :
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_1',$certificate->id)); ?>">V 1.1</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_2',$certificate->id)); ?>">V 1.2</a>
+                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_3',$certificate->id)); ?>">V 1.3</a>
                                     </td>
                                 </tr>
                                 

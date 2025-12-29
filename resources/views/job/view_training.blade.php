@@ -15,7 +15,9 @@
         <ol class="breadcrumb float-sm-end">
           <li class="breadcrumb-item"><a href="#">Jobs</a></li>
           <li class="breadcrumb-item">All</li>
+          @if($job)
           <li class="breadcrumb-item active" aria-current="page">{{$job->id}}</li>
+          @endif
         </ol>
       </div>
     </div>
@@ -36,14 +38,14 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Job No</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->id}}" readonly>
+            value="@if($job) {{$job->id}} @endif" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-6">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Date</span>
           <input type="date" class="form-control" aria-label="Date" aria-describedby="basic-addon1"
-            value="{{$job->date}}">
+            value="@if($job) {{$job->date}} @endif">
         </div>
       </div>
     </div>
@@ -54,7 +56,7 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Client / Company</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->company->name}}" readonly>
+            value="@if($job) {{$job->company->name}} @endif" readonly>
         </div>
       </div>
     </div>
@@ -65,21 +67,21 @@
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Issued By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->issued->name}}" readonly>
+            value="@if($job) {{$job->issued->name}} @endif" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Authorized By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->authorized->name}}" readonly>
+            value="@if($job) {{$job->authorized->name}} @endif" readonly>
         </div>
       </div>
       <div class="col-sm-12 col-md-4">
         <div class="input-group mb-3">
           <span class="input-group-text" id="basic-addon1">Sales By</span>
           <input type="text" class="form-control" aria-label="Job No" aria-describedby="basic-addon1"
-            value="{{$job->sales->name}}" readonly>
+            value="@if($job) {{$job->sales->name}} @endif" readonly>
         </div>
       </div>
     </div>
