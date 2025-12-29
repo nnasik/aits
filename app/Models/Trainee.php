@@ -13,6 +13,7 @@ class Trainee extends Model
     //
 
     protected $fillable = [
+        'training_id',
         'trainee_request_id',
         'candidate_name_in_certificate',
         'company_name_in_certificate',

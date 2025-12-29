@@ -151,7 +151,7 @@
         <h3 class="">Trainee Information</h3>
       </div>
       <div class="col-sm-6 text-end">
-        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#addTrainee">
+        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#createTraineeModal">
           <i class="bi bi-plus-lg"></i> Trainee
         </button>
       </div>

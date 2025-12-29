@@ -28,6 +28,10 @@ return new class extends Migration
             $table->date('dl_issued')->nullable();
             $table->date('dl_expiry')->nullable();
             $table->string('signature')->nullable();
+            $table->bool('attendance_confirmed')->nullable();
+            $table->foreignId('attendance_confirmed_by')->constrained(
+                table:'users',
+            )->nullable();
             $table->timestamps();
         });
     }

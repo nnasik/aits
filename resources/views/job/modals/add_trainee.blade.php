@@ -1,132 +1,78 @@
-<!-- Modal -->
-<div class="modal fade" id="addTrainee" tabindex="-1" aria-labelledby="addTraineeLabel" aria-hidden="true">
-  <form action="{{route('training.add-trainee')}}" method="post">
-    @csrf
-    <input type="hidden" name="training" value="{{$training->id}}">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addTraineeLabel">Add Trainee</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
+<!-- Create Training Trainee Modal -->
+<div class="modal fade" id="createTraineeModal" tabindex="-1" aria-labelledby="createTraineeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
 
-        <div class="modal-body">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createTraineeModalLabel">New Trainee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
 
-          <!-- Training -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Training</span>
-            <input type="text" class="form-control" value="{{$training->course->name}}" readonly>
-          </div>
+      <form method="POST" action="{{ route('trainee.store') }}" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="training_id" value="{{$training->id}}">
 
-          <!-- + Trainee Link -->
-          <div class="mb-2 text-end">
-            <a href="#" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              + Trainee
-            </a>
-          </div>
+        <div class="modal-body row g-3">
           
-          <!-- Trainee Dropdown (Searchable) -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Trainee</span>
-            <div class="dropdown flex-grow-1">
-              <button class="form-control text-start dropdown-toggle" type="button" id="traineeDropdown"
-                data-bs-toggle="dropdown" aria-expanded="false">
-                Select Trainee
-              </button>
-              <ul class="dropdown-menu p-2" aria-labelledby="traineeDropdown"
-                style="max-height: 200px; overflow-y:auto; min-width: 100%;">
 
-                <!-- Search box -->
-                <li>
-                  <input type="text" class="form-control" id="traineeSearch" placeholder="Search by Name or EID...">
-                </li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-
-                <!-- Dynamic trainee list -->
-                @foreach($trainees as $trainee)
-                  <li>
-                    <a class="dropdown-item trainee-item" href="#"
-                       data-value="{{ $trainee->id }}" 
-                       data-eid="{{ $trainee->eid_no }}"
-                       data-photo="{{ $trainee->live_photo ? asset('storage/'.$trainee->live_photo) : asset('images/placeholder.png') }}">
-                      {{ $trainee->name }}
-                    </a>
-                  </li>
-                @endforeach
-              </ul>
-            </div>
-            <input type="hidden" name="trainee_id" id="selectedTraineeId">
+          <div class="col-md-6">
+            <label class="form-label">Candidate Name</label>
+            <input type="text" class="form-control" name="candidate_name_in_certificate" required>
           </div>
 
-          <!-- Auto-fill fields -->
-          <div class="input-group mb-3">
-            <span class="input-group-text">Company</span>
-            <input type="text" class="form-control" id="trainee_company" name="company" readonly>
+          <div class="col-md-6">
+            <label class="form-label">Company Name</label>
+            <input type="text" class="form-control" name="company_name_in_certificate" value="{{$training->company_name_in_certificate}}">
           </div>
 
-          <div class="input-group mb-3">
-            <span class="input-group-text">Emirates ID / Passport / Visa</span>
-            <input type="text" class="form-control" id="trainee_eid" name="eid" readonly>
+          <div class="col-md-6">
+            <label class="form-label">Course Name</label>
+            <input type="text" class="form-control" name="course_name_in_certificate" value="{{$training->course_title_in_certificate}}">
           </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Live Photo</label>
+            <input type="file" class="form-control" name="live_photo" accept=".jpg,.jpeg,.png,.pdf">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">EID No</label>
+            <input type="text" class="form-control" name="eid_no">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Date</label>
+            <input type="date" class="form-control" name="date" value="{{$training->scheduled_date}}">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Passport No</label>
+            <input type="text" class="form-control" name="passport_no">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">DL No</label>
+            <input type="text" class="form-control" name="dl_no">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">DL Issued</label>
+            <input type="date" class="form-control" name="dl_issued">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">DL Expiry</label>
+            <input type="date" class="form-control" name="dl_expiry">
+          </div>
+
         </div>
-
-        <!-- Photo Preview -->
-          <div class="text-center my-3">
-            <img id="trainee_photo" 
-                 src="{{ asset('images/placeholder.png') }}" 
-                 alt="Trainee Photo" 
-                 class="img-thumbnail" 
-                 style="max-height: 150px;">
-          </div>
 
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success">Add</button>
+          <button type="submit" class="btn btn-success">Add Trainee</button>
         </div>
+      </form>
 
-      </div>
     </div>
-  </form>
+  </div>
 </div>
-
-<script>
-  // 🔎 Reusable function for filtering dropdowns
-  function setupSearch(searchInputId, itemClass, searchByEid = false) {
-    document.getElementById(searchInputId).addEventListener('keyup', function () {
-      let filter = this.value.toLowerCase();
-      document.querySelectorAll('.' + itemClass).forEach(function (item) {
-        let text = item.textContent.toLowerCase();
-        let eid = item.dataset.eid ? item.dataset.eid.toLowerCase() : "";
-        // if searchByEid = true, match by name OR eid
-        item.style.display = (text.includes(filter) || (searchByEid && eid.includes(filter))) ? '' : 'none';
-      });
-    });
-  }
-
-  // ✅ Reusable function for selecting dropdown item
-  function setupSelection(itemClass, buttonId, hiddenInputId, extraCallback = null) {
-    document.querySelectorAll('.' + itemClass).forEach(function (item) {
-      item.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.getElementById(buttonId).textContent = this.textContent;
-        document.getElementById(hiddenInputId).value = this.dataset.value;
-        if (extraCallback) extraCallback(this); // custom handler
-      });
-    });
-  }
-
-  // 🟢 Initialize Trainee Dropdown (search by Name OR EID)
-  setupSearch('traineeSearch', 'trainee-item', true);
-
-  setupSelection('trainee-item', 'traineeDropdown', 'selectedTraineeId', function (item) {
-    // Auto-fill company + EID when trainee selected
-    document.getElementById('trainee_company').value = item.dataset.company;
-    document.getElementById('trainee_eid').value = item.dataset.eid;
-
-    // Set photo
-    document.getElementById('trainee_photo').src = item.dataset.photo;
-  });
-</script>
