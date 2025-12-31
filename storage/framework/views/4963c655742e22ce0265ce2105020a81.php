@@ -11,11 +11,12 @@
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
-          <li class="breadcrumb-item"><a href="#">Jobs</a></li>
-          <li class="breadcrumb-item">All</li>
+         <li class="breadcrumb-item">Training (<?php echo e($training->id); ?>)</li>
           <?php if($job): ?>
-          <li class="breadcrumb-item active" aria-current="page"><?php echo e($job->id); ?></li>
+          <li class="breadcrumb-item active" aria-current="page"><a href="<?php echo e(route('job.show', $job->id)); ?>">Job - <?php echo e($job->id); ?></a></li>
           <?php endif; ?>
+           <li class="breadcrumb-item"><a href="<?php echo e(route('job.index')); ?>">Jobs (All)</a></li>
+          
         </ol>
       </div>
     </div>

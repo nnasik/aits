@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Trainee;
+use App\Models\Training;
 use App\Models\Company;
 
 class TraineeController extends Controller
@@ -103,7 +104,12 @@ class TraineeController extends Controller
             'dl_expiry'                     => $request->dl_expiry,
         ]);
 
+        $training = Training::findOrFail($request->training_id);
+        $training->quantity = $training->trainees()->count();
+        $training->save();
+
         return redirect()->back()->with('success', 'Trainee record created successfully.');
+
     }
 
 }

@@ -13,9 +13,8 @@
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
-          <li class="breadcrumb-item"><a href="#">Jobs</a></li>
-          <li class="breadcrumb-item">All</li>
-          <li class="breadcrumb-item active" aria-current="page">{{$job->id}}</li>
+          <li class="breadcrumb-item active" aria-current="page">Job - {{$job->id}}</li>
+          <li class="breadcrumb-item"><a href="{{route('job.index')}}">Jobs (All)</a></li>
         </ol>
       </div>
     </div>
