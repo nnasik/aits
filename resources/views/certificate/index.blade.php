@@ -64,21 +64,23 @@
 
         <div class="col">
           <form method="POST" action="{{ route('change.user.settings') }}">
-    @csrf
-    <input type="hidden" name="key" value="certificate_quality_option">
+            @csrf
+            <input type="hidden" name="key" value="certificate_quality_option">
 
-    <div class="btn-group mb-2" role="group" aria-label="Quality options">
-        <label class="btn btn-outline-primary">Quality</label>
+            <div class="btn-group mb-2" role="group" aria-label="Quality options">
+              <label class="btn btn-outline-primary">Quality</label>
 
-        <input type="radio" class="btn-check" name="value" id="quality_print" value="0" autocomplete="off"
-            onchange="this.form.submit()" {{ (isset($user_settings['certificate_quality_option']) && $user_settings['certificate_quality_option']==0 ) ? 'checked' : '' }}>
-        <label class="btn btn-outline-primary" for="quality_print">Print</label>
+              <input type="radio" class="btn-check" name="value" id="quality_print" value="0" autocomplete="off"
+                onchange="this.form.submit()" {{ (isset($user_settings['certificate_quality_option']) &&
+                $user_settings['certificate_quality_option']==0 ) ? 'checked' : '' }}>
+              <label class="btn btn-outline-primary" for="quality_print">Print</label>
 
-        <input type="radio" class="btn-check" name="value" id="quality_digital" value="1" autocomplete="off"
-            onchange="this.form.submit()" {{ (isset($user_settings['certificate_quality_option']) && $user_settings['certificate_quality_option']==1 ) ? 'checked' : '' }}>
-        <label class="btn btn-outline-primary" for="quality_digital">Digital</label>
-    </div>
-</form>
+              <input type="radio" class="btn-check" name="value" id="quality_digital" value="1" autocomplete="off"
+                onchange="this.form.submit()" {{ (isset($user_settings['certificate_quality_option']) &&
+                $user_settings['certificate_quality_option']==1 ) ? 'checked' : '' }}>
+              <label class="btn btn-outline-primary" for="quality_digital">Digital</label>
+            </div>
+          </form>
         </div>
 
 
@@ -113,7 +115,7 @@
           </form>
         </div>
 
-        
+
 
         <div class="col">
           <form method="POST" action="{{ route('change.user.settings') }}">
@@ -142,21 +144,24 @@
             <input type="hidden" name="key" value="certificate_qr_option">
 
             <div class="btn-group mb-2" role="group" aria-label="QR options">
-                <label class="btn btn-outline-primary">QR</label>
+              <label class="btn btn-outline-primary">QR</label>
 
-                <input type="radio" class="btn-check" name="value" id="qr_off" value="0" autocomplete="off"
-                    onchange="this.form.submit()" {{ (isset($user_settings['certificate_qr_option']) && $user_settings['certificate_qr_option']==0 ) ? 'checked' : '' }}>
-                <label class="btn btn-outline-primary" for="qr_off">Off</label>
+              <input type="radio" class="btn-check" name="value" id="qr_off" value="0" autocomplete="off"
+                onchange="this.form.submit()" {{ (isset($user_settings['certificate_qr_option']) &&
+                $user_settings['certificate_qr_option']==0 ) ? 'checked' : '' }}>
+              <label class="btn btn-outline-primary" for="qr_off">Off</label>
 
-                <input type="radio" class="btn-check" name="value" id="qr_left" value="1" autocomplete="off"
-                    onchange="this.form.submit()" {{ (isset($user_settings['certificate_qr_option']) && $user_settings['certificate_qr_option']==1 ) ? 'checked' : '' }}>
-                <label class="btn btn-outline-primary" for="qr_left">Left</label>
+              <input type="radio" class="btn-check" name="value" id="qr_left" value="1" autocomplete="off"
+                onchange="this.form.submit()" {{ (isset($user_settings['certificate_qr_option']) &&
+                $user_settings['certificate_qr_option']==1 ) ? 'checked' : '' }}>
+              <label class="btn btn-outline-primary" for="qr_left">Left</label>
 
-                <input type="radio" class="btn-check" name="value" id="qr_right" value="2" autocomplete="off"
-                    onchange="this.form.submit()" {{ (isset($user_settings['certificate_qr_option']) && $user_settings['certificate_qr_option']==2 ) ? 'checked' : '' }}>
-                <label class="btn btn-outline-primary" for="qr_right">Right</label>
+              <input type="radio" class="btn-check" name="value" id="qr_right" value="2" autocomplete="off"
+                onchange="this.form.submit()" {{ (isset($user_settings['certificate_qr_option']) &&
+                $user_settings['certificate_qr_option']==2 ) ? 'checked' : '' }}>
+              <label class="btn btn-outline-primary" for="qr_right">Right</label>
             </div>
-        </form>
+          </form>
 
         </div>
 
@@ -180,12 +185,37 @@
             </div>
           </form>
         </div>
-
-
-
-
-
-
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <form action="{{route('certificate.index')}}">
+            @csrf
+            <div class="input-group">
+              <input type="search" class="form-control form-control-lg"
+                placeholder="Certificate No | Trainee Name | EID No." name="search_1" @if(isset($search_1))
+                value="{{$search_1}}" @endif>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-lg btn-outline-dark btn-default">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-6">
+          <form action="{{route('certificate.index')}}">
+            @csrf
+            <div class="input-group">
+              <input type="search" class="form-control form-control-lg" placeholder="Job No | Company Name"
+                name="search_2" @if(isset($search_2)) value="{{$search_2}}" @endif>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-dark btn-lg btn-default">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
 
       @include('certificate.index.certificate_table')

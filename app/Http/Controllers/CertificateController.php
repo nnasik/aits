@@ -15,9 +15,32 @@ use Auth;
 
 class CertificateController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+
         // Get all certificates
-        $data['certificates'] = Certificate::orderBy('id','desc')->paginate(10);
+        
+        if(isset($request->search_1)){
+            $data['search_1'] = $request->search_1;
+            $data['certificates'] = Certificate::where('id','LIKE',"%{$request->search_1}%")->orWhere('candidate_name_in_certificate','LIKE',"%{$request->search_1}%")->orWhere('eid_no','LIKE',"%{$request->search_1}%")->orderBy('id','desc')->paginate(20);
+        }
+        elseif (!empty($request->search_2)) {
+            $search = $request->search_2;
+            $data['search_2'] = $search;
+
+            $data['certificates'] = Certificate::where(function ($q) use ($search) {
+
+                $q->where('company_name_in_certificate', 'LIKE', "%{$search}%")
+                ->orWhereHas('trainee.training', function ($r) use ($search) {
+                    $r->where('work_order_id', 'LIKE', "%{$search}%");
+                });
+
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(20);
+        }
+        else {
+            $data['certificates'] = Certificate::orderBy('id','desc')->paginate(20);
+        }
         $user = Auth::user();
         $user_settings = $user->settings;
         $data['user_settings'] = $user_settings->pluck('value', 'key')->toArray();
