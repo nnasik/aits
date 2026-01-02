@@ -11,11 +11,21 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\Geometry\Factories\LineFactory;
 use Illuminate\Support\Str;
+use Auth;
 
 class CertificateController extends Controller
 {
     public function index(){
+        // Get all certificates
+        $data['certificates'] = Certificate::orderBy('id','desc')->paginate(10);
+        $user = Auth::user();
+        $user_settings = $user->settings;
+        $data['user_settings'] = $user_settings->pluck('value', 'key')->toArray();
 
+        return view('certificate.index', $data);
+    }
+
+    public function waiting(){
         // Get IDs of trainees who already have certificates
         $traineeIdsWithCertificates = Certificate::pluck('trainee_id')->toArray();
 
@@ -27,14 +37,11 @@ class CertificateController extends Controller
             })
             ->orderBy('id', 'desc')
             ->paginate(10);
-        
-        // Get all certificates
-        $data['certificates'] = Certificate::orderBy('id','desc')->paginate(10);
 
         // Safely get next certificate ID
         $data['certificate_next_id'] = Certificate::max('id') ? Certificate::max('id') + 1 : 1;
 
-        return view('certificate.index', $data);
+        return view('certificate.waiting', $data);
     }
 
     public function store(Request $request){
@@ -98,22 +105,79 @@ class CertificateController extends Controller
         return redirect()->back()->with('success', 'Certificate created successfully!');
     }
 
-    // Certificate PDF V1.1
-    // Sign : No
-    // Stamp : No
-    // BG : No
-    public function certificatePDF_V_1_1($id){
-        $record = Certificate::findOrFail($id);
+    public function certificate($id){
+        $certificate_record = Certificate::findOrFail($id);
+        $certificate_pdf = new FPDF();
+        $certificate_pdf = $this->certificatePDF($certificate_pdf,$certificate_record);
+        // Download as PDF
+        return response($certificate_pdf->Output('S'))
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="Certificate_'.$id.'.pdf"');
+    }
 
+    public function card($id){
+        
+
+        $certificate_record = Certificate::findOrFail($id);
+        $card_pdf = new FPDF();
+        $card_pdf = $this->cardPDF($card_pdf, $certificate_record);
+
+        // Download as PDF
+        return response($card_pdf->Output('S'))
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="ID_Card_'.$id.'.pdf"');
+    }
+
+    public function scan($id){
+        $certificate_record = Certificate::findOrFail($id);
+
+        $scan_pdf = new FPDF();
+
+        $scan_pdf = $this->certificatePDF($scan_pdf,$certificate_record);
+        $scan_pdf = $this->cardPDF($scan_pdf,$certificate_record);
+
+        // Download as PDF
+        return response($scan_pdf->Output('S'))
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="AITS-'.$certificate_record->trainee->training->job->id."-".$certificate_record->id."-".substr($certificate_record->company_name_in_certificate, 0, 20)."-".substr($certificate_record->candidate_name_in_certificate, 4,20).'.pdf"');
+    }
+
+    private function certificatePDF($pdf, $record){
+
+        $user = Auth::user();
+        $user_settings = $user->settings;
+        $user_settings = $user_settings->pluck('value', 'key')->toArray();
+
+        
         // Import FPDF (absolute path from vendor)
         require_once base_path('vendor/setasign/fpdf/fpdf.php');
 
-        $pdf = new FPDF();
         $pdf->AliasNbPages();
         $pdf->SetMargins(10, 10);
-        $pdf->SetAutoPageBreak(true, 30);
+        $pdf->SetAutoPageBreak(false);
 
         $pdf->AddPage('L');
+
+        // BG Option
+        if (isset($user_settings['certificate_bg']) && $user_settings['certificate_bg']!=0) {
+
+            $file_name = '';
+            if ($user_settings['certificate_bg']==1) {
+                $file_name = 'certificate_bg_1';
+            }
+            elseif ($user_settings['certificate_bg']==2) {
+                $file_name = 'certificate_bg_2';
+            }
+            elseif ($user_settings['certificate_bg']==3) {
+                $file_name = 'certificate_bg_3';
+            }
+            if (isset($user_settings['certificate_quality_option']) && $user_settings['certificate_quality_option']==1) {
+                $file_name = $file_name."_min";
+            }
+            $path = 'assets/images/digital/'. $file_name.".jpg";
+            $pdf->Image(public_path($path), 0,0, 297, 210);
+        }
+
         // Some space
         $pdf->Ln(30);
 
@@ -123,111 +187,166 @@ class CertificateController extends Controller
         $pdf->SetFont('Times','',14);
 
         $pdf->SetTextColor(0, 0, 0); // Dark Blue = RGB(0,0,139)
-        $pdf->Cell(10,10, "",0,0,'L');
+        $pdf->Cell(05,10, "",0,0,'L');
         $pdf->Cell(35,10, "Certificate No. : ",0,0,'L');
         $pdf->SetFont('Times','B',14);
         $pdf->Cell(50,10, "AITS".$record->id,0,0,'L');
         $pdf->SetFont('Times','',14);
-        $pdf->Cell(105,10, "",0,0,'L');
-        $pdf->Cell(30,10, "Job No. : ",0,0,'R');
+        $pdf->Cell(115,10, "",0,0,'L');
+        $pdf->Cell(40,10, "Job No. : ",0,0,'R');
         $pdf->SetFont('Times','B',14);
-        $pdf->Cell(35,10, "AITS-".$record->trainee->training->job->id,0,0,'R');
+        $pdf->Cell(25,10, "AITS-".$record->trainee->training->job->id,0,0,'R');
         $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,10, "",0,1,'L');
+        $pdf->Cell(05,10, "",0,1,'L');
 
         $pdf->Cell(275,10, "This is to certify that ",0,1,'C');
 
         $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
+        $pdf->Cell(05,9, "",0,0,'L');
         $pdf->Cell(170,9, substr($record->candidate_name_in_certificate, 0, 3) . strtoupper(substr($record->candidate_name_in_certificate, 3)),0,0,'L');
         if($record->eid_no){
-            $pdf->Cell(85,9, "Emirates ID No : ".$record->eid_no,0,0,'R');
+            $pdf->Cell(95,9, "Emirates ID No : ".$record->eid_no,0,0,'R');
         }
         elseif($record->passport_no){
-            $pdf->Cell(85,9, "Passport No : ".$record->passport_no,0,0,'R');
+            $pdf->Cell(95,9, "Passport No : ".$record->passport_no,0,0,'R');
         }
         $pdf->Cell(10,9, "",0,1,'L');
-        
+
 
         $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
+        $pdf->Cell(05,9, "",0,0,'L');
         $pdf->Cell(170,9, "an employee of",0,1,'L');
 
         $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
+        $pdf->Cell(05,9, "",0,0,'L');
         $pdf->Cell(170,9, strtoupper($record->company_name_in_certificate),0,1,'L');
 
         $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
+        $pdf->Cell(05,9, "",0,0,'L');
         $pdf->Cell(170,9, $record->company_location,0,1,'L');
 
         $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
+        $pdf->Cell(05,9, "",0,0,'L');
         $pdf->Cell(170,9, $record->text_2,0,1,'L');
 
         $pdf->SetFont('Times','B',16);
-        $pdf->Cell(10,10, "",0,0,'L');
+        $pdf->Cell(05,10, "",0,0,'L');
         $pdf->Cell(170,10, strtoupper("\"".$record->course_name_in_certificate."\""),0,1,'L');
         
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Date of Training : ".$record->date,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
+        $pdf->Cell(05,8, "",0,0,'L');
+        $pdf->Cell(265,8, "Date of Training : ".$record->date,0,0,'R');
+        $pdf->Cell(05,8, "",0,1,'L');
 
         $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Valid Until : ".$record->valid_unit,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
-        
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,20, "",0,0,'L');
-        $pdf->Cell(255,10, "Trainer : _______________________",0,0,'C');
-        $pdf->Cell(10,20, "",0,1,'L');
+        $pdf->Cell(05,8, "",0,0,'L');
+        $pdf->Cell(265,8, "Valid Until : ".$record->valid_unit,0,0,'R');
+        $pdf->Cell(05,8, "",0,1,'L');
 
-        $pdf->setXY(246,85);
+        //$pdf->setXY(0,165);
+        $pdf->SetFont('Times','',14);
+        $pdf->Cell(05,20, "",0,0,'L');
+        $pdf->Cell(255,10, "Trainer : _______________________",0,0,'C');
+        $pdf->Cell(05,20, "",0,1,'L');
+
+        // Picture Border
+        $pdf->setXY(252,85);
         $pdf->Cell(27,32, "",1,1,'R');
+
+        // Live Photo
         if ($record->live_photo) {
-            $pdf->Image(public_path('storage/'.$record->live_photo), 247, 86, 25, 30);
+            $pdf->Image(public_path('storage/'.$record->live_photo), 253, 86, 25, 30);
         } else {
-            $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 247, 86, 25, 30);
+            $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 253, 86, 25, 30);
         }
 
-        // Download as PDF
-        return response($pdf->Output('S'))
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.pdf"');
+        // Signature Option
+        if (isset($user_settings['certificate_signature_option']) && $user_settings['certificate_signature_option']==1) {
+             $pdf->Image(public_path('assets/images/digital/digital_signature_1-min.png'), 140,135, 22, 18);
+        }
+        
+
+        // Stamp
+        if (isset($user_settings['certificate_stamp_option']) &&  $user_settings['certificate_stamp_option']==1) {
+             $pdf->Image(public_path('assets/images/digital/digital_stamp-min.png'), 150,120, 35, 35);
+        }
+       
+        // QR Code Option
+        if (isset($user_settings['certificate_qr_option']) && $user_settings['certificate_qr_option']!=0 ) {
+            // The text or URL to encode
+            $qrData = 'https://auh.aitsacademy.com/verify/'.$record->hash.'/';
+
+            $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($qrData);
+
+            $tempPath = storage_path('app/temp_qr.png');
+            file_put_contents($tempPath, file_get_contents($qrUrl));
+
+            // Place Left
+            if ($user_settings['certificate_qr_option']==1 ) {
+                $pdf->Image($tempPath, 10, 163, 20, 20);
+                $pdf->SetFont('Times','',9);
+                $pdf->setXY(30,175);
+                $pdf->Cell(20,6, "Verify this certificate at",0,0,'L');
+                
+            }
+
+            // Right Left
+            elseif ($user_settings['certificate_qr_option']==2 ) {
+                $pdf->Image($tempPath, 258, 158, 20, 20);
+                $pdf->SetFont('Times','',9);
+                $pdf->setXY(258,179);
+                $pdf->Cell(20,6, "Visit https://www.aitsacademy.com for certificate verification",0,0,'R');
+            }
+           
+            unlink($tempPath); // delete temporary file
+        }
+
+        return $pdf;
+
     }
 
-    // Card PDF V1
-    // Sign : No
-    // Stamp : No
-    // BG : No
-    public function cardPDF_V1($id){
-        $record = Certificate::findOrFail($id);
+
+    public function cardPDF($pdf, $record){
+        $user = Auth::user();
+        $user_settings = $user->settings;
+        $user_settings = $user_settings->pluck('value', 'key')->toArray();
 
         // Import FPDF (absolute path from vendor)
         require_once base_path('vendor/setasign/fpdf/fpdf.php');
 
-        $pdf = new FPDF('L', 'mm', array(86, 54));
-        $pdf->AddPage();
+        
+        $pdf->AddPage('L', [86, 54]);
         $pdf->SetMargins(0,0);
         $pdf->SetAutoPageBreak(true, 0);
         // Some space
         
+
         $pdf->setXY(67.8,19.8);
         $pdf->Cell(15.4,19.5, "",1,1,'L');
+
         $pdf->Image(public_path('assets/images/logo.png'), 32, 0, 22, 12);
         if ($record->live_photo) {
             $pdf->Image(public_path('storage/'.$record->live_photo), 68, 20, 15, 19);
         } else {
             $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 68, 20, 15, 19);
         }
+        
+        if (isset($user_settings['certificate_idcard_option']) &&  $user_settings['certificate_idcard_option']==1) {
+            $pdf->setXY(2,0);
+            $pdf->SetFont('Arial','B',4.6);
+            $pdf->Cell(15,23, "AMERICAN INTERNATIONAL TRAINING SERVICES LLC - ABU DHABI, U.A.E | Contact : +971 55914 7537",0,1,'L');
+            $pdf->setXY(3,13);
+            $pdf->Cell(80,0, "",1,1,'L');
+        }
+        elseif (isset($user_settings['certificate_idcard_option']) &&  $user_settings['certificate_idcard_option']==2) {
+            $pdf->setXY(0,0);
+            $pdf->SetFont('Arial','B',4.8);
+            $pdf->Cell(15,23, "AMERICAN INTERNATIONAL TRAINING SERVICES LLC - ABU DHABI, U.A.E | Contact : +971 55914 7537",0,1,'L');
+            $pdf->setXY(0,13);
+            $pdf->Cell(86,0, "",1,1,'L');
+        }
 
-        $pdf->setXY(2,0);
-        $pdf->SetFont('Arial','B',4.6);
-        $pdf->Cell(15,23, "AMERICAN INTERNATIONAL TRAINING SERVICES LLC - ABU DHABI, U.A.E | Contact : +971 55914 7537",0,1,'L');
-        $pdf->setXY(3,13);
-        $pdf->Cell(80,0, "",1,1,'L');
+        
 
         $pdf->SetTextColor(0, 0, 70); // Dark Blue = RGB(0,0,139)
         $pdf->setXY(2,15);
@@ -256,430 +375,37 @@ class CertificateController extends Controller
         $pdf->setXY(14,39);
         $pdf->Cell(44,4, $record->company_name_in_certificate,0,1,'L');
 
-        $pdf->setXY(3,44);
-        $pdf->SetFillColor(4,63,122);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFont('Arial','B',7);
-        $pdf->Cell(80,5, "Has successfully completed safety training for the following",0,1,'C',1);
-        
-        $pdf->setXY(3,49);
-        $pdf->SetFillColor(4,63,122);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFont('Arial','B',7);
-        $pdf->Cell(80,5, "\"".$record->course_name_in_certificate."\"",0,1,'C',1);
-
-
-
-        // Download as PDF
-        return response($pdf->Output('S'))
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="ID_Card_'.$record->id.'.pdf"');
-    }
-
-
-
-    public function cardPDF_V2($id){
-        $record = Certificate::findOrFail($id);
-
-        // Import FPDF (absolute path from vendor)
-        require_once base_path('vendor/setasign/fpdf/fpdf.php');
-
-        $pdf = new FPDF('L', 'mm', array(86, 54));
-        $pdf->AddPage();
-        $pdf->SetMargins(0,0);
-        $pdf->SetAutoPageBreak(true, 0);
-        // Some space
-        
-
-        $pdf->setXY(67.8,19.8);
-        $pdf->Cell(15.4,19.5, "",1,1,'L');
-
-        $pdf->Image(public_path('assets/images/logo.png'), 32, 0, 22, 12);
-        if ($record->live_photo) {
-            $pdf->Image(public_path('storage/'.$record->live_photo), 68, 20, 15, 19);
-        } else {
-            $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 68, 20, 15, 19);
+        if (isset($user_settings['certificate_idcard_option']) &&  $user_settings['certificate_idcard_option']==1) {
+            $pdf->setXY(3,44);
+            $pdf->SetFillColor(4,63,122);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFont('Arial','B',7);
+            $pdf->Cell(80,5, "Has successfully completed safety training for the following",0,1,'C',1);
+            
+            $pdf->setXY(3,49);
+            $pdf->SetFillColor(4,63,122);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFont('Arial','B',7);
+            $pdf->Cell(80,5, "\"".$record->course_name_in_certificate."\"",0,1,'C',1);
         }
-        $pdf->setXY(0,0);
-        $pdf->SetFont('Arial','B',4.8);
-        $pdf->Cell(15,23, "AMERICAN INTERNATIONAL TRAINING SERVICES LLC - ABU DHABI, U.A.E | Contact : +971 55914 7537",0,1,'L');
-        $pdf->setXY(0,13);
-        $pdf->Cell(86,0, "",1,1,'L');
-
-        $pdf->SetTextColor(0, 0, 70); // Dark Blue = RGB(0,0,139)
-        $pdf->setXY(2,15);
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(84,4, "Candidate Name : ",0,1,'L');
-        $pdf->setXY(2,21);
-        $pdf->Cell(64,4, "Job & Certificate No : ",0,1,'L');
-        $pdf->setXY(2,27);
-        $pdf->Cell(64,4, "Training Date : ",0,1,'L');
-        $pdf->setXY(2,33);
-        $pdf->Cell(64,4, "Due Date : ",0,1,'L');
-        $pdf->setXY(2,39);
-        $pdf->Cell(82,4, "Company : ",0,1,'L');
-
-        $pdf->SetTextColor(0, 0, 0);
-
-        $pdf->setXY(21,15);
-        $pdf->SetFont('Arial','B',6);
-        $pdf->Cell(64,4,substr($record->candidate_name_in_certificate, 0, 3) . strtoupper(substr($record->candidate_name_in_certificate, 3)),0,1,'L');
-        $pdf->setXY(25,21);
-        $pdf->Cell(44,4, "AITS-".$record->trainee->training->job->id . " | AITS". $record->id,0,1,'L');
-        $pdf->setXY(18,27);
-        $pdf->Cell(44,4, $record->date,0,1,'L');
-        $pdf->setXY(14,33);
-        $pdf->Cell(44,4, $record->valid_unit,0,1,'L');
-        $pdf->setXY(14,39);
-        $pdf->Cell(44,4, $record->company_name_in_certificate,0,1,'L');
-
-        $pdf->setXY(0,44);
-        $pdf->SetFillColor(4,63,122);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFont('Arial','B',7);
-        $pdf->Cell(86,5, "Has successfully completed safety training for the following",0,1,'C',1);
-        
-        $pdf->setXY(0,49);
-        $pdf->SetFillColor(4,63,122);
-        $pdf->SetTextColor(255, 255, 255);
-        $pdf->SetFont('Arial','B',7);
-        $pdf->Cell(86,5, "\"".$record->course_name_in_certificate."\"",0,1,'C',1);
-
-
-
-        // Download as PDF
-        return response($pdf->Output('S'))
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="ID_Card_'.$record->id.'.pdf"');
-    }
-
-    // Certificate PDF V1.2
-    // Sign : Yes
-    // Stamp : Yes
-    // BG : No
-    public function certificatePDF_V_1_2($id){
-        $record = Certificate::findOrFail($id);
-
-        // Import FPDF (absolute path from vendor)
-        require_once base_path('vendor/setasign/fpdf/fpdf.php');
-
-        $pdf = new FPDF();
-        $pdf->AliasNbPages();
-        $pdf->SetMargins(10, 10);
-        $pdf->SetAutoPageBreak(true, 30);
-
-        $pdf->AddPage('L');
-        // Some space
-        $pdf->Ln(30);
-
-        $pdf->SetFont('Times','B',26);
-        $pdf->SetTextColor(0, 0, 139); // Dark Blue = RGB(0,0,139)
-        $pdf->Cell(275,14, strtoupper($record->text_1),0,1,'C');
-        $pdf->SetFont('Times','',14);
-
-        $pdf->SetTextColor(0, 0, 0); // Dark Blue = RGB(0,0,139)
-        $pdf->Cell(10,10, "",0,0,'L');
-        $pdf->Cell(35,10, "Certificate No. : ",0,0,'L');
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(50,10, "AITS".$record->id,0,0,'L');
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(105,10, "",0,0,'L');
-        $pdf->Cell(30,10, "Job No. : ",0,0,'R');
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(35,10, "AITS-".$record->trainee->training->job->id,0,0,'R');
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,10, "",0,1,'L');
-
-        $pdf->Cell(275,10, "This is to certify that ",0,1,'C');
-
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, substr($record->candidate_name_in_certificate, 0, 3) . strtoupper(substr($record->candidate_name_in_certificate, 3)),0,0,'L');
-        if($record->eid_no){
-            $pdf->Cell(85,9, "Emirates ID No : ".$record->eid_no,0,0,'R');
+        elseif (isset($user_settings['certificate_idcard_option']) &&  $user_settings['certificate_idcard_option']==2) {
+            $pdf->setXY(0,44);
+            $pdf->SetFillColor(4,63,122);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFont('Arial','B',7);
+            $pdf->Cell(86,5, "Has successfully completed safety training for the following",0,1,'C',1);
+            
+            $pdf->setXY(0,49);
+            $pdf->SetFillColor(4,63,122);
+            $pdf->SetTextColor(255, 255, 255);
+            $pdf->SetFont('Arial','B',7);
+            $pdf->Cell(86,5, "\"".$record->course_name_in_certificate."\"",0,1,'C',1);
+            
         }
-        elseif($record->passport_no){
-            $pdf->Cell(85,9, "Passport No : ".$record->passport_no,0,0,'R');
-        }
-        $pdf->Cell(10,9, "",0,1,'L');
         
+        return $pdf;
 
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, "an employee of",0,1,'L');
-
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, strtoupper($record->company_name_in_certificate),0,1,'L');
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, $record->company_location,0,1,'L');
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, $record->text_2,0,1,'L');
-
-        $pdf->SetFont('Times','B',16);
-        $pdf->Cell(10,10, "",0,0,'L');
-        $pdf->Cell(170,10, strtoupper("\"".$record->course_name_in_certificate."\""),0,1,'L');
         
-        $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Date of Training : ".$record->date,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
-
-        $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Valid Until : ".$record->valid_unit,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
-
-        $pdf->Image(public_path('assets/images/digital/digital_signature_1-min.png'), 140,135, 22, 18);
-        $pdf->Image(public_path('assets/images/digital/digital_stamp-min.png'), 150,120, 35, 35);
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,20, "",0,0,'L');
-        $pdf->Cell(255,10, "Trainer : _______________________",0,0,'C');
-        $pdf->Cell(10,20, "",0,1,'L');
-
-        $pdf->setXY(246,85);
-        $pdf->Cell(27,32, "",1,1,'R');
-        if ($record->live_photo) {
-            $pdf->Image(public_path('storage/'.$record->live_photo), 247, 86, 25, 30);
-        } else {
-            $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 247, 86, 25, 30);
-        }
-
-        // Download as PDF
-        return response($pdf->Output('S'))
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.pdf"');
-    }
-
-    // Certificate PDF V1.3
-    // Sign : Yes
-    // Stamp : Yes
-    // QR : Yes
-    // BG : No
-    public function certificatePDF_V_1_3($id){
-        $record = Certificate::findOrFail($id);
-
-        // Import FPDF (absolute path from vendor)
-        require_once base_path('vendor/setasign/fpdf/fpdf.php');
-
-        $pdf = new FPDF();
-        $pdf->AliasNbPages();
-        $pdf->SetMargins(10, 0);
-        $pdf->SetAutoPageBreak(true, 20);
-
-        $pdf->AddPage('L');
-        // Some space
-        $pdf->Ln(40);
-
-        $pdf->SetFont('Times','B',26);
-        $pdf->SetTextColor(0, 0, 139); // Dark Blue = RGB(0,0,139)
-        $pdf->Cell(275,14, strtoupper($record->text_1),0,1,'C');
-        $pdf->SetFont('Times','',14);
-
-        $pdf->SetTextColor(0, 0, 0); // Dark Blue = RGB(0,0,139)
-        $pdf->Cell(10,10, "",0,0,'L');
-        $pdf->Cell(35,10, "Certificate No. : ",0,0,'L');
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(50,10, "AITS".$record->id,0,0,'L');
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(105,10, "",0,0,'L');
-        $pdf->Cell(30,10, "Job No. : ",0,0,'R');
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(35,10, "AITS-".$record->trainee->training->job->id,0,0,'R');
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,10, "",0,1,'L');
-
-        $pdf->Cell(275,10, "This is to certify that ",0,1,'C');
-
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, strtoupper($record->candidate_name_in_certificate),0,0,'L');
-        if($record->eid_no){
-            $pdf->Cell(85,9, "Emirates ID No : ".$record->eid_no,0,0,'R');
-        }
-        elseif($record->passport_no){
-            $pdf->Cell(85,9, "Passport No : ".$record->passport_no,0,0,'R');
-        }
-        $pdf->Cell(10,9, "",0,1,'L');
-        
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, "an employee of",0,1,'L');
-
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, strtoupper($record->company_name_in_certificate),0,1,'L');
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, $record->company_location,0,1,'L');
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, $record->text_2,0,1,'L');
-
-        $pdf->SetFont('Times','B',16);
-        $pdf->Cell(10,10, "",0,0,'L');
-        $pdf->Cell(170,10, strtoupper("\"".$record->course_name_in_certificate."\""),0,1,'L');
-        
-        $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Date of Training : ".$record->date,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
-
-        $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Valid Until : ".$record->valid_unit,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
-        
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,20, "",0,0,'L');
-        $pdf->Cell(255,10, "Trainer : _______________________",0,0,'C');
-        $pdf->Cell(10,20, "",0,1,'L');
-
-        $pdf->setXY(246,85);
-        $pdf->Cell(27,32, "",1,1,'R');
-        if ($record->live_photo) {
-            $pdf->Image(public_path('storage/'.$record->live_photo), 247, 86, 25, 30);
-        } else {
-            $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 247, 86, 25, 30);
-        }
-
-        // The text or URL to encode
-        $qrData = 'https://aitsacademy.com/verify/'.$record->id.'/'.$record->trainee->training->job->id;
-        $link = 'https://aitsacademy.com/';
-
-        $qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' . urlencode($qrData);
-
-        $tempPath = storage_path('app/temp_qr.png');
-        file_put_contents($tempPath, file_get_contents($qrUrl));
-
-        $pdf->Image($tempPath, 10, 163, 20, 20);
-        unlink($tempPath); // delete temporary file
-
-        $pdf->SetFont('Times','',9);
-        $pdf->setXY(30,175);
-        $pdf->Cell(20,6, "Verify this certificate at",0,0,'L');
-        
-        $pdf->setXY(30,182);
-        $pdf->Cell(20,0, $link,0,0,'L');
-        
-
-        // Download as PDF
-        return response($pdf->Output('S'))
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.pdf"');
-    }
-
-    // Certificate PDF V2.2
-    // Sign : Yes
-    // Stamp : Yes
-    // QR : No
-    // BG : Yes
-    public function certificatePDF_V_2_2($id){
-        $record = Certificate::findOrFail($id);
-
-        // Import FPDF (absolute path from vendor)
-        require_once base_path('vendor/setasign/fpdf/fpdf.php');
-
-        $pdf = new FPDF();
-        $pdf->AliasNbPages();
-        $pdf->SetMargins(10, 10);
-        $pdf->SetAutoPageBreak(true, 30);
-
-        $pdf->AddPage('L');
-        $pdf->Image(public_path('assets/images/digital/certificate_bg_min.png'), 0,0, 297, 210);
-        // Some space
-        $pdf->Ln(30);
-
-        $pdf->SetFont('Times','B',26);
-        $pdf->SetTextColor(0, 0, 139); // Dark Blue = RGB(0,0,139)
-        $pdf->Cell(275,14, strtoupper($record->text_1),0,1,'C');
-        $pdf->SetFont('Times','',14);
-
-        $pdf->SetTextColor(0, 0, 0); // Dark Blue = RGB(0,0,139)
-        $pdf->Cell(10,10, "",0,0,'L');
-        $pdf->Cell(35,10, "Certificate No. : ",0,0,'L');
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(50,10, "AITS".$record->id,0,0,'L');
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(105,10, "",0,0,'L');
-        $pdf->Cell(30,10, "Job No. : ",0,0,'R');
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(35,10, "AITS-".$record->trainee->training->job->id,0,0,'R');
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,10, "",0,1,'L');
-
-        $pdf->Cell(275,10, "This is to certify that ",0,1,'C');
-
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, substr($record->candidate_name_in_certificate, 0, 3) . strtoupper(substr($record->candidate_name_in_certificate, 3)),0,0,'L');
-        if($record->eid_no){
-            $pdf->Cell(85,9, "Emirates ID No : ".$record->eid_no,0,0,'R');
-        }
-        elseif($record->passport_no){
-            $pdf->Cell(85,9, "Passport No : ".$record->passport_no,0,0,'R');
-        }
-        $pdf->Cell(10,9, "",0,1,'L');
-        
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, "an employee of",0,1,'L');
-
-        $pdf->SetFont('Times','B',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, strtoupper($record->company_name_in_certificate),0,1,'L');
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, $record->company_location,0,1,'L');
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,9, "",0,0,'L');
-        $pdf->Cell(170,9, $record->text_2,0,1,'L');
-
-        $pdf->SetFont('Times','B',16);
-        $pdf->Cell(10,10, "",0,0,'L');
-        $pdf->Cell(170,10, strtoupper("\"".$record->course_name_in_certificate."\""),0,1,'L');
-        
-        $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Date of Training : ".$record->date,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
-
-        $pdf->SetFont('Times','',12);
-        $pdf->Cell(10,8, "",0,0,'L');
-        $pdf->Cell(255,8, "Valid Until : ".$record->valid_unit,0,0,'R');
-        $pdf->Cell(10,8, "",0,1,'L');
-
-        $pdf->Image(public_path('assets/images/digital/digital_signature_1-min.png'), 140,135, 22, 18);
-        $pdf->Image(public_path('assets/images/digital/digital_stamp-min.png'), 150,120, 35, 35);
-
-        $pdf->SetFont('Times','',14);
-        $pdf->Cell(10,20, "",0,0,'L');
-        $pdf->Cell(255,10, "Trainer : _______________________",0,0,'C');
-        $pdf->Cell(10,20, "",0,1,'L');
-
-        $pdf->setXY(246,85);
-        $pdf->Cell(27,32, "",1,1,'R');
-        if ($record->live_photo) {
-            $pdf->Image(public_path('storage/'.$record->live_photo), 247, 86, 25, 30);
-        } else {
-            $pdf->Image(public_path('assets/images/user_placeholder.jpg'), 247, 86, 25, 30);
-        }
-
-        // Download as PDF
-        return response($pdf->Output('S'))
-        ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="Certificate_'.$record->id.'.pdf"');
     }
 
     public function scan_v_1_1($id){
@@ -764,6 +490,7 @@ class CertificateController extends Controller
         $pdf->Image(public_path('assets/images/digital/digital_signature_1-min.png'), 140,135, 22, 18);
         $pdf->Image(public_path('assets/images/digital/digital_stamp-min.png'), 150,120, 35, 35);
 
+        
         $pdf->SetFont('Times','',14);
         $pdf->Cell(10,20, "",0,0,'L');
         $pdf->Cell(255,10, "Trainer : _______________________",0,0,'C');

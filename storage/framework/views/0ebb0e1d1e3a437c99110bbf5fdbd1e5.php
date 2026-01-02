@@ -33,48 +33,9 @@
                         <td><?php echo e($certificate->course_name_in_certificate); ?></td>
                         <td><?php echo e($certificate->date); ?></td>
                         <td>
-                            <table>
-                                <tr>
-                                    <td>
-                                        Certificate :
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_1',$certificate->id)); ?>">V 1.1</a>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_2',$certificate->id)); ?>">V 1.2</a>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_3',$certificate->id)); ?>">V 1.3</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        Certificate with BG :
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_1',$certificate->id)); ?>">V 1.1</a>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_2',$certificate->id)); ?>">V 1.2</a>
-                                        <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf.v_1_3',$certificate->id)); ?>">V 1.3</a>
-                                    </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td>
-                                        Card :
-                                    </td>
-                                    <td>
-                                        <a href="<?php echo e(route('id.pdf.v1',$certificate->id)); ?>" target="_blank" class="btn btn-outline-primary">V1</a>
-                                        <a href="<?php echo e(route('id.pdf.v2',$certificate->id)); ?>" target="_blank" class="btn btn-outline-primary">V2</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        Client Copy :
-                                    </td>
-                                    <td>
-                                        <a href="<?php echo e(route('scan.pdf.v_1_1',$certificate->id)); ?>" target="_blank" class="btn btn-outline-primary">V 1.1 </a>
-                                        <a href="<?php echo e(route('scan.pdf.v_1_2',$certificate->id)); ?>" target="_blank" class="btn btn-outline-primary">V 1.2 </a>
-                                    </td>
-                                </tr>
-                            </table>
+                            <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('certificate.pdf',$certificate->id)); ?>">Certificate</a>
+                            <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('card.pdf',$certificate->id)); ?>">ID</a>
+                            <a class="btn btn-outline-primary" target="_blank" href="<?php echo e(route('scan.pdf',$certificate->id)); ?>">Scan</a>
                         </td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

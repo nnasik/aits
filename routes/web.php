@@ -8,6 +8,7 @@ use App\Http\Controllers\TraineeController;
 use App\Http\Controllers\PublicTrainingController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\CertificateController;
+use App\Http\Controllers\CertificateBGController;
 use App\Http\Controllers\JobRequestController;
 use App\Http\Controllers\TrainingRequestController;
 use App\Http\Controllers\TraineeRequestController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\QuotationController;
+use App\Http\Controllers\SettingsController;
 
 
 
@@ -37,7 +39,7 @@ Route::post('/trainee/photo', [PublicTrainingController::class, 'uploadPhoto'])-
 Route::get('/verify/{hash}', [PublicController::class, 'verify'])->name('certificate.verify');
 
 // Image Generation
-Route::get('/certficate/{hash}/preview/png/v1',[CertificateController::class,'certificate_preview_v1'])->name('certificate.preview.v1');
+Route::get('/certficate/{hash}/preview/png/v1',[CertificateController::class,'certificate_preview_v_1_1'])->name('certificate.preview.v1');
 
 Route::group(['middleware' => ['auth']], function () {
 
@@ -82,25 +84,17 @@ Route::group(['middleware' => ['auth']], function () {
     Route::put('/trainee/update', [TraineeController::class, 'update'])->name('trainee.update');
     Route::post('/trainees/delete-signature', [TraineeController::class, 'deleteSignature'])->name('trainee.signature.delete');
 
-
-
-
-    // Certificate
+    // Certificate 
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
-    Route::get('/certficate/{id}/pdf/v_1_1',[CertificateController::class,'certificatePDF_V_1_1'])->name('certificate.pdf.v_1_1');
-    Route::get('/certficate/{id}/pdf/v_1_2',[CertificateController::class,'certificatePDF_V_1_2'])->name('certificate.pdf.v_1_2');
-    Route::get('/certficate/{id}/pdf/v_1_3',[CertificateController::class,'certificatePDF_V_1_3'])->name('certificate.pdf.v_1_3');
-    Route::get('/certficate/{id}/pdf/v_2_1',[CertificateController::class,'certificatePDF_V_2_1'])->name('certificate.pdf.v_2_1');
-    Route::get('/certficate/{id}/pdf/v_2_2',[CertificateController::class,'certificatePDF_V_2_2'])->name('certificate.pdf.v_2_2');
-    Route::get('/certficate/{id}/pdf/v_2_3',[CertificateController::class,'certificatePDF_V_2_3'])->name('certificate.pdf.v_2_3');
-    Route::get('/scan/{id}/pdf/v_1_1',[CertificateController::class,'scan_v_1_1'])->name('scan.pdf.v_1_1');
-    Route::get('/scan/{id}/pdf/v_1_2',[CertificateController::class,'scan_v_1_2'])->name('scan.pdf.v_1_2');
-    Route::get('/scan/{id}/pdf/v_1_3',[CertificateController::class,'scan_v_1_3'])->name('scan.pdf.v_1_3');
+    Route::get('/certificates/waiting',[CertificateController::class,'waiting'])->name('certificate.waiting');
+    // Certificate PDF
+    Route::get('/certficate/{id}/pdf/',[CertificateController::class,'certificate'])->name('certificate.pdf');
+    // Card PDF
+    Route::get('/card/{id}/pdf/',[CertificateController::class,'card'])->name('card.pdf');
+    // Client Copy
+    Route::get('/scan/{id}/pdf/',[CertificateController::class,'scan'])->name('scan.pdf');
     
-    Route::get('/id/{id}/pdf/v1',[CertificateController::class,'cardPDF_V1'])->name('id.pdf.v1');
-    Route::get('/id/{id}/pdf/v2',[CertificateController::class,'cardPDF_V2'])->name('id.pdf.v2');
-    Route::post('/certificates/store', [CertificateController::class, 'store'])->name('certificate.store');
-
+    
     // Job Request
     Route::resource('jobrequest', JobRequestController::class)->only(['index','store','show','edit']);
     Route::post('jobrequest/cancel/{id}',[JobRequestController::class,'cancel'])->name('jobrequest.cencel');
@@ -115,6 +109,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/training-requests/bulk-upload', [TrainingRequestController::class, 'bulkUploadDocuments'])
     ->name('training-requests.bulkUpload');
 
+    // settings Controller
+
+    Route::post('/user/settings/change', [SettingsController::class, 'change_user_settings'])->name('change.user.settings');
 
 
     // Trainee Request

@@ -92,7 +92,24 @@
         <a href="{{route('certificate.index')}}" class="nav-link">
           <div>  </div>
           <i class="nav-icon bi bi-patch-check"></i>
-          <p>Certificates</p>
+          <p>Issued Certificates</p>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{{route('certificate.waiting')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-clock-history"></i>
+          
+          <p>Waiting Certificates</p>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="{{route('certificate.index')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-hourglass-split"></i>
+          <p>Pending Certificates</p>
         </a>
       </li>
 

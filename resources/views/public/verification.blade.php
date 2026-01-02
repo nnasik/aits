@@ -67,7 +67,7 @@
 <body>
 
   <div class="certificate-container row g-0">
-    <div class="col-md-6 certificate-image">
+    <div class="col-md-6 certificate-image p-2">
       <!-- Left side: certificate image -->
       <img src="{{route('certificate.preview.v1',$hash)}}" alt="" class="shadow-sm">
     </div>
@@ -87,7 +87,7 @@
         <span class="value">AMERICAN INTERNATIONAL TRAINING SERVICES L.L.C</span>
       </p>
       <div class="row">
-        <div class="col-3">
+        <div class="col-4">
           <img src="{{ asset('storage/'.$certificate->live_photo) }}" alt="Candidate Photo" width="100">
         </div>
         <div class="col-8">
