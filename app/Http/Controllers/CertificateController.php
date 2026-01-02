@@ -357,7 +357,7 @@ class CertificateController extends Controller
         $pdf->setXY(2,27);
         $pdf->Cell(64,4, "Training Date : ",0,1,'L');
         $pdf->setXY(2,33);
-        $pdf->Cell(64,4, "Due Date : ",0,1,'L');
+        $pdf->Cell(64,4, "Valid Until : ",0,1,'L');
         $pdf->setXY(2,39);
         $pdf->Cell(82,4, "Company : ",0,1,'L');
 
