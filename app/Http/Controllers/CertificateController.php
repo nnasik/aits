@@ -21,7 +21,7 @@ class CertificateController extends Controller
         
         if(isset($request->search_1)){
             $data['search_1'] = $request->search_1;
-            $data['certificates'] = Certificate::where('id','LIKE',"%{$request->search_1}%")->orWhere('candidate_name_in_certificate','LIKE',"%{$request->search_1}%")->orWhere('eid_no','LIKE',"%{$request->search_1}%")->orderBy('id','desc')->paginate(20);
+            $data['certificates'] = Certificate::where('id','LIKE',"%{$request->search_1}%")->orWhere('candidate_name_in_certificate','LIKE',"%{$request->search_1}%")->orWhere('eid_no','LIKE',"%{$request->search_1}%")->orderBy('id','desc')->get();
         }
         elseif (!empty($request->search_2)) {
             $search = $request->search_2;
@@ -35,8 +35,7 @@ class CertificateController extends Controller
                 });
 
             })
-            ->orderBy('id', 'desc')
-            ->paginate(20);
+            ->orderBy('id', 'desc')->get();
         }
         else {
             $data['certificates'] = Certificate::orderBy('id','desc')->paginate(20);

@@ -42,7 +42,10 @@
                 </tbody>
             </table>
             <div class="row mt-3">
-                <?php echo e($certificates->links()); ?>
+                <?php if(empty($search_1) && empty($search_2)): ?>
+                    <?php echo e($certificates->links()); ?>
+
+                <?php endif; ?>
 
             </div>
         </div>
