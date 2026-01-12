@@ -20,34 +20,26 @@
                     @foreach($job->trainings as $training)
                     <tr>
                         <td>
-                            <form action="{{route('training.destroy',$training->id)}}" method="POST">
+                            <form action="{{route('training.unlink')}}" method="POST">
                                 @csrf
-                                @method('DELETE')
-                                <input type="hidden" name="id" value="{{$training->id}}">
-                                <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
+                                <input type="hidden" name="training_id" value="{{$training->id}}">
+                                <button class="btn btn-sm btn-danger" type="submit"><i
+                                        class="bi bi-dash-circle"></i></button>
                             </form>
                         </td>
                         <td>{{$loop->iteration}}</td>
-                        <td><a href="{{route('training.show',$training->id)}}">{{$training->course->name}}</a></td>
-                        <td>{{$training->quantity}}</td>
-                        <td>{{$training->scheduled_date}} {{$training->scheduled_time}}</td>
-                        <td>{{$training->training_mode}}
-                            <br>
-                            @if($training->training_mode=='Online' && $training->training_link)
-                                <button class="btn btn-sm btn-primary" onclick="copyZoomLink('{{ $training->training_link }}')">
-                                    <i class="bi bi-link-45deg"></i> Zoom Link
-                                </button>
-                            @endif
-                            <!-- Button -->
+                        <td><a href="{{route('training.show',$training->id)}}">{{$training->course->name}}</a> <br>
+                            as <i>{{$training->course_title_in_certificate}} </i> - (Training ID : {{$training->id}})
                         </td>
+                        <td>{{$training->quantity}} ({{$training->trainees->count()}})</td>
+                        <td>{{$training->scheduled_date}} {{$training->scheduled_time}}</td>
+                        <td>{{$training->training_mode}}</td>
                         <td>{{$training->remarks}}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary disabled" data-bs-toggle="modal">
-                                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
-                            </a>
-
-                            <a class="btn btn-sm btn-primary disabled">
-                                <i class="bi bi-whatsapp"></i> Link
+                            <a class="btn btn-sm btn-primary" href="javascript:void(0);"
+                                data-link="{{ route('public.training.show', $training->hash) }}"
+                                onclick="copyTrainingLink(this)">
+                                <i class="bi bi-copy"></i> Link
                             </a>
                         </td>
                         <td>
@@ -69,30 +61,27 @@
     </div>
     <!-- Script -->
     <script>
-function copyZoomLink(link) {
-    if (navigator.clipboard && window.isSecureContext) {
-        // ✅ Modern API
-        navigator.clipboard.writeText(link).then(() => {
-            alert("✅ Zoom link copied to clipboard!");
-        }).catch(err => {
-            alert("❌ Failed to copy: " + err);
-        });
-    } else {
-        // ⚡ Fallback for older browsers or non-HTTPS
-        let textArea = document.createElement("textarea");
-        textArea.value = link;
-        textArea.style.position = "fixed"; // avoid scrolling to bottom
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
+        function copyTrainingLink(el) {
+            const link = el.getAttribute('data-link');
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(link)
+                    .then(() => alert('Link copied to clipboard'))
+                    .catch(() => alert('Failed to copy link'));
+                return;
+            }
+
+            const textarea = document.createElement('textarea');
+            textarea.value = link;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
             document.execCommand('copy');
-            alert("✅ Zoom link copied to clipboard!");
-        } catch (err) {
-            alert("❌ Failed to copy: " + err);
+            document.body.removeChild(textarea);
+
+            alert('Link copied to clipboard');
         }
-        document.body.removeChild(textArea);
-    }
-}
-</script>
+    </script>
+
 </div>

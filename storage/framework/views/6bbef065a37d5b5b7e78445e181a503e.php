@@ -20,35 +20,26 @@
                     <?php $__currentLoopData = $job->trainings; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $training): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td>
-                            <form action="<?php echo e(route('training.destroy',$training->id)); ?>" method="POST">
+                            <form action="<?php echo e(route('training.unlink')); ?>" method="POST">
                                 <?php echo csrf_field(); ?>
-                                <?php echo method_field('DELETE'); ?>
-                                <input type="hidden" name="id" value="<?php echo e($training->id); ?>">
-                                <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
+                                <input type="hidden" name="training_id" value="<?php echo e($training->id); ?>">
+                                <button class="btn btn-sm btn-danger" type="submit"><i
+                                        class="bi bi-dash-circle"></i></button>
                             </form>
                         </td>
                         <td><?php echo e($loop->iteration); ?></td>
-                        <td><a href="<?php echo e(route('training.show',$training->id)); ?>"><?php echo e($training->course->name); ?></a></td>
-                        <td><?php echo e($training->quantity); ?></td>
-                        <td><?php echo e($training->scheduled_date); ?> <?php echo e($training->scheduled_time); ?></td>
-                        <td><?php echo e($training->training_mode); ?>
-
-                            <br>
-                            <?php if($training->training_mode=='Online' && $training->training_link): ?>
-                                <button class="btn btn-sm btn-primary" onclick="copyZoomLink('<?php echo e($training->training_link); ?>')">
-                                    <i class="bi bi-link-45deg"></i> Zoom Link
-                                </button>
-                            <?php endif; ?>
-                            <!-- Button -->
+                        <td><a href="<?php echo e(route('training.show',$training->id)); ?>"><?php echo e($training->course->name); ?></a> <br>
+                            as <i><?php echo e($training->course_title_in_certificate); ?> </i> - (Training ID : <?php echo e($training->id); ?>)
                         </td>
+                        <td><?php echo e($training->quantity); ?> (<?php echo e($training->trainees->count()); ?>)</td>
+                        <td><?php echo e($training->scheduled_date); ?> <?php echo e($training->scheduled_time); ?></td>
+                        <td><?php echo e($training->training_mode); ?></td>
                         <td><?php echo e($training->remarks); ?></td>
                         <td>
-                            <a class="btn btn-sm btn-primary disabled" data-bs-toggle="modal">
-                                <i class="bi bi-file-earmark-pdf-fill"></i> PDF
-                            </a>
-
-                            <a class="btn btn-sm btn-primary disabled">
-                                <i class="bi bi-whatsapp"></i> Link
+                            <a class="btn btn-sm btn-primary" href="javascript:void(0);"
+                                data-link="<?php echo e(route('public.training.show', $training->hash)); ?>"
+                                onclick="copyTrainingLink(this)">
+                                <i class="bi bi-copy"></i> Link
                             </a>
                         </td>
                         <td>
@@ -70,30 +61,27 @@
     </div>
     <!-- Script -->
     <script>
-function copyZoomLink(link) {
-    if (navigator.clipboard && window.isSecureContext) {
-        // ✅ Modern API
-        navigator.clipboard.writeText(link).then(() => {
-            alert("✅ Zoom link copied to clipboard!");
-        }).catch(err => {
-            alert("❌ Failed to copy: " + err);
-        });
-    } else {
-        // ⚡ Fallback for older browsers or non-HTTPS
-        let textArea = document.createElement("textarea");
-        textArea.value = link;
-        textArea.style.position = "fixed"; // avoid scrolling to bottom
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-        try {
+        function copyTrainingLink(el) {
+            const link = el.getAttribute('data-link');
+
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(link)
+                    .then(() => alert('Link copied to clipboard'))
+                    .catch(() => alert('Failed to copy link'));
+                return;
+            }
+
+            const textarea = document.createElement('textarea');
+            textarea.value = link;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
             document.execCommand('copy');
-            alert("✅ Zoom link copied to clipboard!");
-        } catch (err) {
-            alert("❌ Failed to copy: " + err);
+            document.body.removeChild(textarea);
+
+            alert('Link copied to clipboard');
         }
-        document.body.removeChild(textArea);
-    }
-}
-</script>
+    </script>
+
 </div><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/view/table.blade.php ENDPATH**/ ?>

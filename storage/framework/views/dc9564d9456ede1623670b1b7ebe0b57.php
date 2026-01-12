@@ -40,15 +40,15 @@
     </div>
     <!--end::Row-->
     <div class="row mt-3">
-      <?php echo $__env->make('trainings.index.table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>;
+      <?php echo $__env->make('trainings.index.table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     </div>
     
     <!--end::Container-->
   </div>
   <!--end::App Content-->
   </div>
-  <?php echo $__env->make('trainings.modals.new_training', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>;
-  <?php echo $__env->make('trainings.modals.link_to_job', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>;
+  <?php echo $__env->make('trainings.modals.new_training', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('trainings.modals.link_to_job', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/trainings/withoutjob.blade.php ENDPATH**/ ?>

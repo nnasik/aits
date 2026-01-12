@@ -115,6 +115,26 @@ class TrainingController extends Controller
         return redirect()->back()->with('success', 'Training deleted successfully.');
     }
 
+    public function unlinkJob(Request $request)
+{
+        // Validate input
+        $request->validate([
+            'training_id' => 'required|exists:trainings,id',
+        ]);
+
+        // Get value
+        $trainingId = $request->input('training_id');
+
+        // Fetch training
+        $training = Training::findOrFail($trainingId);
+
+        // Unlink job
+        $training->work_order_id = null;
+        $training->save();
+
+        return back()->with('success', 'Training unlinked from job successfully.');
+    }
+
     public function show($id){
         $training = Training::findOrFail($id);
         $data['trainees'] = Trainee::all();

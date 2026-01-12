@@ -66,6 +66,7 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('/trainings/withnojob', [TrainingController::class, 'trainingsWithoutJob'])->name('training.nojob');
     Route::post('/trainings/linkjob', [TrainingController::class, 'linkJob'])->name('training.linkjob');
+    Route::post('/trainings/unlink', [TrainingController::class, 'unlinkJob'])->name('training.unlink');
 
     Route::get('/training/{id}/pdf', [TrainingController::class, 'attendancePDF'])->name('attendance.pdf');
     
