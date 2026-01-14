@@ -77,6 +77,13 @@
                                 onclick="confirmDeleteSignature(<?php echo e($trainee->id); ?>)">
                                 <i class="bi bi-trash"></i> Signature
                             </button>
+                            <?php else: ?>
+                            <button type="button"
+        class="btn btn-sm btn-primary"
+        onclick="openSignatureModal(<?php echo e($training->id); ?>, <?php echo e($trainee->id); ?>)">
+    Import
+</button>
+
                             <?php endif; ?>
                         </td>
                         <td>

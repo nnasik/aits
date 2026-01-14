@@ -76,6 +76,13 @@
                                 onclick="confirmDeleteSignature({{$trainee->id}})">
                                 <i class="bi bi-trash"></i> Signature
                             </button>
+                            @else
+                            <button type="button"
+        class="btn btn-sm btn-primary"
+        onclick="openSignatureModal({{ $training->id }}, {{ $trainee->id }})">
+    Import
+</button>
+
                             @endif
                         </td>
                         <td>

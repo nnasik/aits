@@ -183,4 +183,5 @@
   @include('trainee.modals.new_trainee')
   @include('job.modals.edit_trainee')
   @include('job.modals.delete_signature')
+  @include('job.modals.add_signature')
   @endsection()

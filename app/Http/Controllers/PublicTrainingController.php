@@ -22,8 +22,7 @@ class PublicTrainingController extends Controller
     /**
      * Save trainee signature using trainee ID
      */
-    public function saveSignature(Request $request)
-{
+    public function saveSignature(Request $request){
     $request->validate([
         'training_hash' => 'required|exists:trainings,hash',
         'trainee_id'    => 'required|integer',

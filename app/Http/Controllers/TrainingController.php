@@ -302,4 +302,5 @@ class TrainingController extends Controller
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="training_attendance_'.$training->id.'.pdf"');
     }
+
 }

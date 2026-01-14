@@ -84,6 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('trainee', TraineeController::class)->only(['index','store','show','edit']);
     Route::put('/trainee/update', [TraineeController::class, 'update'])->name('trainee.update');
     Route::post('/trainees/delete-signature', [TraineeController::class, 'deleteSignature'])->name('trainee.signature.delete');
+    Route::post('/import-signature', [TraineeController::class, 'importSignature'])->name('trainee.signature.import');
 
     // Certificate 
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);

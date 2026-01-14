@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Trainee;
 use App\Models\Training;
 use App\Models\Company;
+use Illuminate\Support\Facades\Storage;
+
 
 class TraineeController extends Controller
 {
@@ -111,5 +113,46 @@ class TraineeController extends Controller
         return redirect()->back()->with('success', 'Trainee record created successfully.');
 
     }
+
+    public function importSignature(Request $request){
+    // Validate input
+    $request->validate([
+        'training_id' => 'required|exists:trainings,id',
+        'trainee_id'  => 'required|integer',
+        'signature'   => 'required|string', // Base64 string
+    ]);
+
+    // Find the training
+    $training = Training::findOrFail($request->training_id);
+
+    // Find the trainee linked to this training
+    $trainee = $training->trainees()->where('id', $request->trainee_id)->firstOrFail();
+
+    // Get the Base64 string and clean it
+    $base64 = $request->input('signature');
+    $base64 = preg_replace('/^data:image\/\w+;base64,/', '', $base64);
+    $base64 = str_replace(' ', '+', $base64);
+
+    // Decode Base64 to raw image bytes
+    $decoded = base64_decode($base64);
+    if ($decoded === false) {
+        return redirect()->back()->with('error', 'Invalid signature data.');
+    }
+
+    // Generate a unique filename
+    $fileName = 'signatures/' . uniqid('sig_') . '.png';
+
+    // Save the PNG file in public storage
+    $saved = Storage::disk('public')->put($fileName, $decoded);
+    if (!$saved) {
+        return redirect()->back()->with('error', 'Failed to save signature file.');
+    }
+
+    // Update trainee record
+    $trainee->signature = $fileName;
+    $trainee->save();
+
+    return redirect()->back()->with('success', 'Signature imported successfully.');
+}
 
 }

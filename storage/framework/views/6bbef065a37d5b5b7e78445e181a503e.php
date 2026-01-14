@@ -44,6 +44,15 @@
                         </td>
                         <td>
                             <div class="badge text-bg-warning"><?php echo e($training->status); ?></div>
+                            <?php echo e(isset($training->job)); ?>
+
+                            <?php if(!isset($training->job)): ?>
+                            <form action="" method="POST">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="training_id" value="<?php echo e($training->id); ?>">
+                                <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            </form>
+                            <?php endif; ?>
                         </td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

@@ -44,6 +44,14 @@
                         </td>
                         <td>
                             <div class="badge text-bg-warning">{{$training->status}}</div>
+                            {{isset($training->job)}}
+                            @if(!isset($training->job))
+                            <form action="" method="POST">
+                                @csrf
+                                <input type="hidden" name="training_id" value="{{$training->id}}">
+                                <button class="btn btn-sm btn-danger" type="submit"><i class="bi bi-trash"></i></button>
+                            </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
