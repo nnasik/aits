@@ -11,6 +11,7 @@ use App\Models\TrainingRequest;
 class Training extends Model
 {
     protected $fillable=[
+        'work_order_id',
         'training_course_id',
         'course_title_in_certificate',
         'company_name_in_certificate',

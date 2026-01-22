@@ -45,8 +45,11 @@ class TrainingController extends Controller
     public function store(Request $request){
 
         return DB::transaction(function () use ($request) {
+        
             $validated = $request->validate([
-                'training_course_id'=> 'required|exists:training_courses,id',
+                'course_id'=> 'required|exists:training_courses,id',
+                'work_order_id'=> 'required|exists:work_orders,id',
+                'company_name_in_certificate'=> 'required',
                 'qty'             => 'required|integer|min:1',
                 'scheduled_date'  => 'nullable|date',
                 'training_mode'   => 'nullable|string|max:255',
@@ -55,9 +58,13 @@ class TrainingController extends Controller
                 'remarks'          => 'nullable|string|max:255',
             ]);
 
+            $work_oder = WorkOrder::findOrFail($validated['work_order_id']);
+
             $training = new Training([
-                'training_course_id' => $validated['training_course_id'],
+                'work_order_id' => $validated['work_order_id'],
+                'training_course_id' => $validated['course_id'],
                 'course_title_in_certificate' => $validated['course_title_in_certificate'],
+                'company_name_in_certificate' => $validated['company_name_in_certificate'],
                 'quantity'           => $validated['qty'],
                 'scheduled_date'     => $validated['scheduled_date'] ?? null,
                 'training_mode'      => $validated['training_mode'] ?? null,
@@ -74,17 +81,14 @@ class TrainingController extends Controller
 
             for ($i=0; $i < $training->quantity; $i++) { 
                 $training->trainees()->create([
-                    
                     'company_name_in_certificate' => $training->company_name_in_certificate,
-                    'course_title_in_certificate' => $training->course_title_in_certificate,
+                    'course_name_in_certificate' => $training->course_title_in_certificate,
                     'date' => $training->scheduled_date,
                 ]);
             }
 
             return back()->with('success', 'Training added successfully.');
-
         });
-        
     }
 
     public function linkJob(Request $request){

@@ -16,12 +16,24 @@
           <!-- Training Courses Dropdown -->
           <div class="input-group mb-3">
             <span class="input-group-text">Course</span>
-            <select class="form-select" name="course_id" required>
+            <select class="form-select" name="course_id" id="course_id" required>
               <option value="" selected disabled>Select Course</option>
               <?php $__currentLoopData = $courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <option value="<?php echo e($course->id); ?>"><?php echo e($course->name); ?></option>
               <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </select>
+          </div>
+
+          <!-- Quantity -->
+          <div class="input-group mb-3">
+            <span class="input-group-text">Course Name</span>
+            <input type="text" class="form-control" name="course_title_in_certificate" id="course_title_in_certificate" placeholder="Course Title in Certificate" required>
+          </div>
+
+          <!-- Quantity -->
+          <div class="input-group mb-3">
+            <span class="input-group-text">Company Name</span>
+            <input type="text" class="form-control" name="company_name_in_certificate" value="<?php echo e($job->company_name_in_work_order); ?>" required>
           </div>
 
           <!-- Quantity -->
@@ -75,4 +87,16 @@
     </div>
   </form>
 </div>
-<?php /**PATH D:\xampp\htdocs\aits\resources\views/job/modals/new_training.blade.php ENDPATH**/ ?>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const courseSelect = document.getElementById('course_id');
+    const titleInput = document.getElementById('course_title_in_certificate');
+
+    courseSelect.addEventListener('change', function () {
+        const selectedOption = courseSelect.options[courseSelect.selectedIndex];
+        titleInput.value = selectedOption.text;
+    });
+});
+</script><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/modals/new_training.blade.php ENDPATH**/ ?>
