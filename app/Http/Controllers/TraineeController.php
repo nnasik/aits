@@ -196,7 +196,7 @@ public function syncLivePhoto(Request $request)
     $trainee->live_photo = $source->live_photo;
     $trainee->save();
 
-    return redirect()->back()->with('success', 'Certificate created successfully!');
+    return redirect()->back()->with('success', 'Photo Sync success!');
 }
 
 
