@@ -33,11 +33,28 @@
 
                             <?php if(isset($trainee->live_photo)): ?>
                             <img src="<?php echo e('/storage/'.$trainee->live_photo); ?>" alt="Live Photo" height="100">
+                            <?php else: ?>
+                            <form method="POST" action="<?php echo e(route('trainees.sync-live-photo')); ?>">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="trainee_id" value="<?php echo e($trainee->id); ?>">
+                                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-arrow-repeat"></i></button>
+                            </form>
                             <?php endif; ?>
                             <?php echo e($trainee->candidate_name_in_certificate); ?>
 
+
+
                         </td>
-                        <td><?php echo e($trainee->eid_no ?? $trainee->passport); ?><br>
+                        <td>
+                            <?php if(isset($trainee->eid_no)): ?>
+                                Emirates ID : <?php echo e($trainee->eid_no); ?>
+
+                            <?php endif; ?>
+                            <?php if(isset($trainee->passport_no)): ?>
+                                Passport No : <?php echo e($trainee->passport_no); ?>
+
+                            <?php endif; ?>
+                            <br>
                             <?php if(isset($trainee->traineeRequest->eid_front_pic)): ?>
                             <a href="<?php echo e('/storage/'.$trainee->traineeRequest->eid_front_pic); ?>" target="_blank">
                                 <span>📄 EID Front</span>
@@ -110,4 +127,5 @@
         </div>
         <!-- /.card-body -->
     </div>
-</div><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/view/trainee_table.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/job/view/trainee_table.blade.php ENDPATH**/ ?>

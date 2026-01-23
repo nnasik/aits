@@ -155,4 +155,49 @@ class TraineeController extends Controller
     return redirect()->back()->with('success', 'Signature imported successfully.');
 }
 
+public function syncLivePhoto(Request $request)
+{
+    $validated = $request->validate([
+        'trainee_id' => ['required', 'integer', 'exists:trainees,id'],
+    ]);
+
+    $trainee = Trainee::findOrFail($validated['trainee_id']);
+
+    // Only proceed if the trainee has either eid_no or passport_no
+    if (empty($trainee->eid_no) && empty($trainee->passport_no)) {
+        return redirect()->back()->with('error', 'Cannot sync live photo without Emirates ID or Passport number.');
+    }
+
+    // If live photo already exists
+    if ($trainee->live_photo) {
+        return redirect()->back()->with('success', 'Live photo already exists.');
+    }
+
+    // Find a source trainee with matching eid_no or passport_no
+    $source = Trainee::query()
+        ->where('id', '!=', $trainee->id)
+        ->whereNotNull('live_photo')
+        ->where(function ($q) use ($trainee) {
+            if ($trainee->eid_no) {
+                $q->where('eid_no', $trainee->eid_no);
+            }
+            if ($trainee->passport_no) {
+                $q->orWhere('passport_no', $trainee->passport_no);
+            }
+        })
+        ->latest('id')
+        ->first();
+
+    if (! $source) {
+        return redirect()->back()->with('error', 'No matching live photo found.');
+    }
+
+    // Copy the live photo
+    $trainee->live_photo = $source->live_photo;
+    $trainee->save();
+
+    return redirect()->back()->with('success', 'Certificate created successfully!');
+}
+
+
 }

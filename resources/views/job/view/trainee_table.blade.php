@@ -33,10 +33,25 @@
 
                             @if(isset($trainee->live_photo))
                             <img src="{{ '/storage/'.$trainee->live_photo}}" alt="Live Photo" height="100">
+                            @else
+                            <form method="POST" action="{{ route('trainees.sync-live-photo') }}">
+                                @csrf
+                                <input type="hidden" name="trainee_id" value="{{ $trainee->id }}">
+                                <button type="submit" class="btn btn-outline-primary"><i class="bi bi-arrow-repeat"></i></button>
+                            </form>
                             @endif
                             {{$trainee->candidate_name_in_certificate}}
+
+
                         </td>
-                        <td>{{$trainee->eid_no ?? $trainee->passport}}<br>
+                        <td>
+                            @if(isset($trainee->eid_no))
+                                Emirates ID : {{$trainee->eid_no}}
+                            @endif
+                            @if(isset($trainee->passport_no))
+                                Passport No : {{$trainee->passport_no}}
+                            @endif
+                            <br>
                             @if(isset($trainee->traineeRequest->eid_front_pic))
                             <a href="{{ '/storage/'.$trainee->traineeRequest->eid_front_pic }}" target="_blank">
                                 <span>📄 EID Front</span>

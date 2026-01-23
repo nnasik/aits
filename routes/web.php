@@ -86,6 +86,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/trainees/delete-signature', [TraineeController::class, 'deleteSignature'])->name('trainee.signature.delete');
     Route::post('/import-signature', [TraineeController::class, 'importSignature'])->name('trainee.signature.import');
 
+    Route::post('/trainees/sync-live-photo', [TraineeController::class, 'syncLivePhoto'])->name('trainees.sync-live-photo');
+
     // Certificate 
     Route::resource('certificate', CertificateController::class)->only(['index','store','show','edit']);
     Route::get('/certificates/waiting',[CertificateController::class,'waiting'])->name('certificate.waiting');
