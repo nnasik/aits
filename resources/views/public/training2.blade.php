@@ -12,15 +12,19 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        #signatureCanvas {
-            background-color: #fff8b0;
-            border: 2px solid #ccc;
-            width: 100%;
-            height: 400px;
-            touch-action: none;
-        }
-    </style>
+    <!-- CSS EDIT -->
+<style>
+    #signatureCanvas {
+        background-color: #fff8b0;
+        border: 2px solid #ccc;
+        width: 400px;
+        height: 200px;
+        touch-action: none;
+        display: block;
+        margin: 0 auto;
+    }
+</style>
+
 </head>
 <body>
 
@@ -201,8 +205,8 @@ function openSignatureModal(traineeId, name){
         ctx = canvas.getContext('2d');
         ctx.clearRect(0,0,canvas.width,canvas.height);
 
-        canvas.width = canvas.offsetWidth;
-        canvas.height = 400;
+        canvas.width  = 400;
+        canvas.height = 200;
 
         ctx.lineWidth = 4;
         ctx.lineCap = 'round';
