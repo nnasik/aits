@@ -50,6 +50,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Job
     Route::resource('job', JobController::class)->only(['index','store','show','edit']);
     // Additional Job Routes
+    Route::get('/jobs/new_requests', [JobController::class, 'new_requests'])->name('job.new_requests');
     Route::get('/job/training/{id}', [JobController::class, 'training'])->name('job.traning.show');
     Route::get('/job/workpermit/{id}/pdf', [JobController::class, 'workOrderPDF'])->name('job.pdf');
     Route::post('/job/update-status', [JobController::class, 'updateStatus'])

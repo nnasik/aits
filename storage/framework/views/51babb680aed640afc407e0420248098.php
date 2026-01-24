@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <!--begin::App Content Header-->
 <div class="app-content-header">
@@ -9,11 +7,11 @@
     <!--begin::Row-->
     <div class="row">
       <div class="col-sm-6">
-        <h3 class="mb-0">Jobs Dashboard</h3>
+        <h3 class="mb-0">New Requests</h3>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-end">
-          <li class="breadcrumb-item">Jobs (All)</li>
+          <li class="breadcrumb-item">New Job Requests (All)</li>
           
         </ol>
       </div>
@@ -28,19 +26,16 @@
   <!--begin::Container-->
   <div class="container-fluid">
 
-    {{--@include('job.index.counts')--}}
+    
+    
 
-<!--begin::Row-->
-    <div class="row mx-0">
+    <div class="row">
       <div class="col-6">
-        <h3 class="mb-0">Jobs</h3>
+        <h3 class="mb-0"></h3>
       </div>
-      <!-- <div class="col-6">
-        <button type="button" class="btn btn-success float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          <i class="bi bi-plus-lg"></i> Job
-        </button>
-      </div> -->
-</div>
+    </div>
+
+    <?php echo $__env->make('job.index.table_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 <script>
     /**
@@ -59,12 +54,12 @@
         new bootstrap.Modal(document.getElementById('updateWorkOrderModal')).show();
     }
 </script>
-
-    @include('job.index.table')
     <!--end::Row-->
     <!--end::Container-->
   </div>
   <!--end::App Content-->
-  @include('job.modals.change_status')
-  @include('job.modals.change_job_status')
-  @endsection()
+  <?php echo $__env->make('job.modals.accept_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('job.modals.change_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('job.modals.change_job_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php $__env->stopSection(); ?>
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/new_req.blade.php ENDPATH**/ ?>

@@ -17,11 +17,13 @@
                     @foreach($job_requests as $request)
                     <tr>
                         <td>{{$request->id}}</td>
-                        <td>{{$request->company->name}}
+                        <td>Request By : <b> {{$request->requester->name}}</b>
+                            <br>
+                            For : <b>{{$request->company->name}}</b>
                             <span class="text-muted">
                             @foreach($request->training_requests as $training_request)
                             <br>
-                              - {{$training_request->course_title_in_certificate}}
+                              - {{$training_request->course_title_in_certificate}} : {{$training_request->quantity}}
                             @endforeach
                             </span>
                         </td>

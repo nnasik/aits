@@ -73,6 +73,14 @@
     <ul class="nav nav-treeview">
 
       <li class="nav-item">
+        <a href="{{route('job.new_requests')}}" class="nav-link">
+          <div>  </div>
+          <i class="nav-icon bi bi-suitcase-lg"></i>
+          <p>New Requests</p>
+        </a>
+      </li>
+
+      <li class="nav-item">
         <a href="{{route('job.index')}}" class="nav-link">
           <div>  </div>
           <i class="nav-icon bi bi-suitcase-lg"></i>

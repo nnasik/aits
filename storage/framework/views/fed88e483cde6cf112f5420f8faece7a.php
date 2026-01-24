@@ -17,12 +17,13 @@
                     <?php $__currentLoopData = $job_requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <td><?php echo e($request->id); ?></td>
-                        <td><?php echo e($request->company->name); ?>
-
+                        <td>Request By : <b> <?php echo e($request->requester->name); ?></b>
+                            <br>
+                            For : <b><?php echo e($request->company->name); ?></b>
                             <span class="text-muted">
                             <?php $__currentLoopData = $request->training_requests; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $training_request): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <br>
-                              - <?php echo e($training_request->course_title_in_certificate); ?>
+                              - <?php echo e($training_request->course_title_in_certificate); ?> : <?php echo e($training_request->quantity); ?>
 
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                             </span>

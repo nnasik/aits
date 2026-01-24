@@ -27,15 +27,6 @@
   <div class="container-fluid">
 
     
-    
-
-    <div class="row">
-      <div class="col-6">
-        <h3 class="mb-0">New Requests</h3>
-      </div>
-    </div>
-
-    <?php echo $__env->make('job.index.table_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
 
 <!--begin::Row-->
     <div class="row mx-0">
@@ -72,10 +63,7 @@
     <!--end::Container-->
   </div>
   <!--end::App Content-->
-  <?php echo $__env->make('job.modals.new_job', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-  <?php echo $__env->make('job.modals.accept_request', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   <?php echo $__env->make('job.modals.change_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   <?php echo $__env->make('job.modals.change_job_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
-  <?php echo $__env->make('job.modals.add_files', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   <?php $__env->stopSection(); ?>
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/index.blade.php ENDPATH**/ ?>

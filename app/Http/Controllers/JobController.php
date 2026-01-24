@@ -19,10 +19,13 @@ class JobController extends Controller
 {
     public function index(){
         $data['jobs'] = WorkOrder::orderBy('id','desc')->paginate(10);
-        $data['companies'] = Company::all();
-        $data['users'] = User::all();
-        $data['job_requests'] = JobRequest::where('request_status','Requested')->get()->reverse();
         return view('job.index')->with($data);
+    }
+
+    public function new_requests(){
+        $data['job_requests'] = JobRequest::where('request_status','Requested')->get()->reverse();
+        $data['users'] = User::all();
+        return view('job.new_req')->with($data);
     }
 
     public function store(Request $request){
