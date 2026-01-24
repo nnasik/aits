@@ -17,11 +17,10 @@
     #signatureCanvas {
         background-color: #fff8b0;
         border: 2px solid #ccc;
-        width: 400px;
-        height: 200px;
+        width: 100%;
+        aspect-ratio: 2 / 1;
         touch-action: none;
         display: block;
-        margin: 0 auto;
     }
 </style>
 
@@ -202,9 +201,17 @@ function openSignatureModal(traineeId, name){
 
     modalEl.addEventListener('shown.bs.modal', function(){
         canvas = document.getElementById('signatureCanvas');
+
+        canvas.style.width = '100%';
+        canvas.style.height = 'auto';
+
+        
         ctx = canvas.getContext('2d');
         ctx.clearRect(0,0,canvas.width,canvas.height);
 
+        
+
+        /* Actual image resolution */
         canvas.width  = 400;
         canvas.height = 200;
 
