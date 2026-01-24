@@ -25,11 +25,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Public training link (hash protected)
-Route::get('/public/training/{hash}', [PublicTrainingController::class, 'showTraining'])
-    ->name('public.training.show');
-
-// Public training link (hash protected)
-Route::get('/public/training2/{hash}', [PublicTrainingController::class, 'showTraining2'])
+Route::get('/public/training/{hash}', [PublicTrainingController::class, 'showTraining2'])
     ->name('public.training.show');
 
 // Save signature (pivot ID)

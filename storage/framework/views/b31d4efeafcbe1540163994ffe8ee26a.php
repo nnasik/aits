@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        @if($training->job)AITS{{ $training->job->id }} - @endif
-        Attendance of {{ $training->course_title_in_certificate }}
+        <?php if($training->job): ?>AITS<?php echo e($training->job->id); ?> - <?php endif; ?>
+        Attendance of <?php echo e($training->course_title_in_certificate); ?>
+
     </title>
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -27,56 +28,57 @@
 
 <div class="container my-4">
 
-    {{-- ================= HEADER (UNCHANGED) ================= --}}
+    
     <div class="card mb-4">
         <div class="card-body text-center">
-            <img src="{{asset('assets/images/logo.png')}}" height="80">
+            <img src="<?php echo e(asset('assets/images/logo.png')); ?>" height="80">
             <h5 class="mt-2">American International Training Services LLC</h5>
             <p class="mb-1 small">
-                {{ $training->course_title_in_certificate }} |
-                {{ $training->scheduled_date }} |
-                {{ $training->company_name_in_certificate }}
+                <?php echo e($training->course_title_in_certificate); ?> |
+                <?php echo e($training->scheduled_date); ?> |
+                <?php echo e($training->company_name_in_certificate); ?>
+
             </p>
         </div>
     </div>
 
-    {{-- ================= TRAINING DETAILS ================= --}}
+    
 
-    {{-- DESKTOP --}}
+    
     <div class="d-none d-md-block">
         <table class="table table-bordered mt-3" style="font-size:1.1em">
             <tr>
                 <td width="30%">AITS Job</td>
                 <td>
-                    @if($training->job)
-                        <b>{{ $training->job->id }}</b>
-                    @endif
+                    <?php if($training->job): ?>
+                        <b><?php echo e($training->job->id); ?></b>
+                    <?php endif; ?>
                 </td>
             </tr>
             <tr>
                 <td>Training</td>
                 <td>
-                    {{ $training->course->name }} as
-                    <b>{{ $training->course_title_in_certificate }}</b>
+                    <?php echo e($training->course->name); ?> as
+                    <b><?php echo e($training->course_title_in_certificate); ?></b>
                 </td>
             </tr>
             <tr>
                 <td>Date</td>
-                <td><b>{{ $training->scheduled_date }}</b></td>
+                <td><b><?php echo e($training->scheduled_date); ?></b></td>
             </tr>
             <tr>
                 <td>Company</td>
                 <td>
-                    @if($training->job)
-                        {{ $training->job->company->name }} as
-                        <b>{{ $training->company_name_in_certificate }}</b>
-                    @endif
+                    <?php if($training->job): ?>
+                        <?php echo e($training->job->company->name); ?> as
+                        <b><?php echo e($training->company_name_in_certificate); ?></b>
+                    <?php endif; ?>
                 </td>
             </tr>
         </table>
     </div>
 
-    {{-- MOBILE --}}
+    
     <div class="d-block d-md-none">
         <div class="card mb-3">
             <div class="card-body">
@@ -84,9 +86,10 @@
                 <div class="mb-3">
                     <span class="text-muted small">AITS Job</span><br>
                     <strong>
-                        @if($training->job)
-                            {{ $training->job->id }}
-                        @endif
+                        <?php if($training->job): ?>
+                            <?php echo e($training->job->id); ?>
+
+                        <?php endif; ?>
                     </strong>
                 </div>
 
@@ -94,34 +97,34 @@
 
                 <div class="mb-3">
                     <span class="text-muted small">Training</span><br>
-                    {{ $training->course->name }} as<br>
-                    <strong>{{ $training->course_title_in_certificate }}</strong>
+                    <?php echo e($training->course->name); ?> as<br>
+                    <strong><?php echo e($training->course_title_in_certificate); ?></strong>
                 </div>
 
                 <hr>
 
                 <div class="mb-3">
                     <span class="text-muted small">Date</span><br>
-                    <strong>{{ $training->scheduled_date }}</strong>
+                    <strong><?php echo e($training->scheduled_date); ?></strong>
                 </div>
 
                 <hr>
 
                 <div>
                     <span class="text-muted small">Company</span><br>
-                    @if($training->job)
-                        {{ $training->job->company->name }} as<br>
-                        <strong>{{ $training->company_name_in_certificate }}</strong>
-                    @endif
+                    <?php if($training->job): ?>
+                        <?php echo e($training->job->company->name); ?> as<br>
+                        <strong><?php echo e($training->company_name_in_certificate); ?></strong>
+                    <?php endif; ?>
                 </div>
 
             </div>
         </div>
     </div>
 
-    {{-- ================= TRAINEES ================= --}}
+    
 
-    {{-- DESKTOP TABLE --}}
+    
     <div class="d-none d-md-block">
         <table class="table table-bordered">
             <thead class="table-light">
@@ -133,102 +136,102 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($training->trainees as $index => $trainee)
+                <?php $__currentLoopData = $training->trainees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $trainee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                 <tr>
-                    <td>{{ $index + 1 }}</td>
+                    <td><?php echo e($index + 1); ?></td>
                     <td>
-                        <b>{{ $trainee->candidate_name_in_certificate }}</b><br>
-                        EID: {{ $trainee->eid_no }}<br>
-                        <span class="text-muted">{{ $trainee->company_name_in_certificate }}</span>
+                        <b><?php echo e($trainee->candidate_name_in_certificate); ?></b><br>
+                        EID: <?php echo e($trainee->eid_no); ?><br>
+                        <span class="text-muted"><?php echo e($trainee->company_name_in_certificate); ?></span>
                     </td>
                     <td>
-                        @if($trainee->live_photo)
-                            <img src="{{ asset('storage/'.$trainee->live_photo) }}" height="120">
-                        @else
-                            <form action="{{ route('public.trainee.photo') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="training_hash" value="{{ $training->hash }}">
-                                <input type="hidden" name="trainee_id" value="{{ $trainee->id }}">
+                        <?php if($trainee->live_photo): ?>
+                            <img src="<?php echo e(asset('storage/'.$trainee->live_photo)); ?>" height="120">
+                        <?php else: ?>
+                            <form action="<?php echo e(route('public.trainee.photo')); ?>" method="POST" enctype="multipart/form-data">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="training_hash" value="<?php echo e($training->hash); ?>">
+                                <input type="hidden" name="trainee_id" value="<?php echo e($trainee->id); ?>">
                                 <input type="file" name="photo" hidden
                                        onchange="this.form.submit()"
-                                       id="photoInput{{ $trainee->id }}">
+                                       id="photoInput<?php echo e($trainee->id); ?>">
                                 <button type="button" class="btn btn-sm btn-primary"
-                                        onclick="document.getElementById('photoInput{{ $trainee->id }}').click();">
+                                        onclick="document.getElementById('photoInput<?php echo e($trainee->id); ?>').click();">
                                     Add Photo
                                 </button>
                             </form>
-                        @endif
+                        <?php endif; ?>
                     </td>
                     <td>
-                        @if($trainee->signature)
-                            <img src="{{ asset('storage/'.$trainee->signature) }}" height="80">
-                        @else
+                        <?php if($trainee->signature): ?>
+                            <img src="<?php echo e(asset('storage/'.$trainee->signature)); ?>" height="80">
+                        <?php else: ?>
                             <button class="btn btn-sm btn-success"
-                                    onclick="openSignatureModal('{{ $trainee->id }}','{{ $trainee->candidate_name_in_certificate }}')">
+                                    onclick="openSignatureModal('<?php echo e($trainee->id); ?>','<?php echo e($trainee->candidate_name_in_certificate); ?>')">
                                 Add Sign
                             </button>
-                        @endif
+                        <?php endif; ?>
                     </td>
                 </tr>
-                @endforeach
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </tbody>
         </table>
     </div>
 
-    {{-- MOBILE CARDS --}}
+    
     <div class="d-block d-md-none">
-        @foreach($training->trainees as $index => $trainee)
+        <?php $__currentLoopData = $training->trainees; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $index => $trainee): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <div class="card mb-3 shadow-sm">
             <div class="card-body">
 
-                <span class="badge bg-secondary mb-2">#{{ $index + 1 }}</span>
+                <span class="badge bg-secondary mb-2">#<?php echo e($index + 1); ?></span>
 
-                <p>Name : <b>{{ $trainee->candidate_name_in_certificate }}</b></p>
-                <p>EID : <b>{{ $trainee->eid_no }}</b></p>
-                <p>Company : <b>{{ $trainee->company_name_in_certificate }}</b></p>
+                <p>Name : <b><?php echo e($trainee->candidate_name_in_certificate); ?></b></p>
+                <p>EID : <b><?php echo e($trainee->eid_no); ?></b></p>
+                <p>Company : <b><?php echo e($trainee->company_name_in_certificate); ?></b></p>
 
                 <div class="row g-2">
                     <div class="col-6">
-                        @if($trainee->live_photo)
-                            <img src="{{ asset('storage/'.$trainee->live_photo) }}"
+                        <?php if($trainee->live_photo): ?>
+                            <img src="<?php echo e(asset('storage/'.$trainee->live_photo)); ?>"
                                  class="img-fluid rounded border">
-                        @else
-                            <form action="{{ route('public.trainee.photo') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="training_hash" value="{{ $training->hash }}">
-                                <input type="hidden" name="trainee_id" value="{{ $trainee->id }}">
+                        <?php else: ?>
+                            <form action="<?php echo e(route('public.trainee.photo')); ?>" method="POST" enctype="multipart/form-data">
+                                <?php echo csrf_field(); ?>
+                                <input type="hidden" name="training_hash" value="<?php echo e($training->hash); ?>">
+                                <input type="hidden" name="trainee_id" value="<?php echo e($trainee->id); ?>">
                                 <input type="file" name="photo" hidden
                                        onchange="this.form.submit()"
-                                       id="photoInputMobile{{ $trainee->id }}">
+                                       id="photoInputMobile<?php echo e($trainee->id); ?>">
                                 <button type="button"
                                         class="btn btn-outline-primary w-100"
-                                        onclick="document.getElementById('photoInputMobile{{ $trainee->id }}').click();">
+                                        onclick="document.getElementById('photoInputMobile<?php echo e($trainee->id); ?>').click();">
                                     Add Photo
                                 </button>
                             </form>
-                        @endif
+                        <?php endif; ?>
                     </div>
                     <div class="col-6">
-                        @if($trainee->signature)
-                            <img src="{{ asset('storage/'.$trainee->signature) }}"
+                        <?php if($trainee->signature): ?>
+                            <img src="<?php echo e(asset('storage/'.$trainee->signature)); ?>"
                                  class="img-fluid rounded border">
-                        @else
+                        <?php else: ?>
                             <button class="btn btn-outline-success w-100"
-                                    onclick="openSignatureModal('{{ $trainee->id }}','{{ $trainee->candidate_name_in_certificate }}')">
+                                    onclick="openSignatureModal('<?php echo e($trainee->id); ?>','<?php echo e($trainee->candidate_name_in_certificate); ?>')">
                                 Add Signature
                             </button>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
 
             </div>
         </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
 
 </div>
 
-{{-- ================= SIGNATURE MODAL + JS (UNCHANGED) ================= --}}
+
 <div class="modal fade" id="signatureModal" tabindex="-1">
     <div class="modal-dialog modal-fullscreen-sm-down">
         <div class="modal-content">
@@ -248,11 +251,11 @@
     </div>
 </div>
 
-<form id="sigForm" method="POST" action="{{ route('public.trainee.signature') }}" hidden>
-    @csrf
+<form id="sigForm" method="POST" action="<?php echo e(route('public.trainee.signature')); ?>" hidden>
+    <?php echo csrf_field(); ?>
     <input type="hidden" name="signature" id="signatureInput">
     <input type="hidden" name="trainee_id" id="signatureTraineeId">
-    <input type="hidden" name="training_hash" value="{{ $training->hash }}">
+    <input type="hidden" name="training_hash" value="<?php echo e($training->hash); ?>">
 </form>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -317,3 +320,4 @@ document.getElementById('saveBtn').addEventListener('click', ()=>{
 
 </body>
 </html>
+<?php /**PATH D:\xampp\htdocs\aits\resources\views/public/training2.blade.php ENDPATH**/ ?>
