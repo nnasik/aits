@@ -12,11 +12,16 @@ class PublicTrainingController extends Controller
     /**
      * Show training with trainee list (public link, hash protected)
      */
-    public function showTraining($trainingHash)
-    {
+    public function showTraining($trainingHash){
         // Eager load trainees using Eloquent relationship
         $training = Training::with('trainees')->where('hash', $trainingHash)->firstOrFail();
         return view('public.training', compact('training'));
+    }
+
+    public function showTraining2($trainingHash){
+        // Eager load trainees using Eloquent relationship
+        $training = Training::with('trainees')->where('hash', $trainingHash)->firstOrFail();
+        return view('public.training2', compact('training'));
     }
 
     /**
