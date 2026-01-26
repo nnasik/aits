@@ -23,7 +23,7 @@
           <!-- Job No (work_orders.id) -->
           <div class="mb-3">
             <label for="job_no" class="form-label">Job No</label>
-            <input type="text" name="job_no" id="job_no" class="form-control" placeholder="Enter Job No" required>
+            <input type="text" name="job_no" id="job_no" class="form-control" placeholder="Enter Job No" value="{{$next_job_no}}" required>
           </div>
 
           <!-- Dropdown for authorized_by (users) -->

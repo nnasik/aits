@@ -23,6 +23,7 @@ class JobController extends Controller
     }
 
     public function new_requests(){
+        $data['next_job_no'] = WorkOrder::max('id') + 1;
         $data['job_requests'] = JobRequest::where('request_status','Requested')->get()->reverse();
         $data['users'] = User::all();
         return view('job.new_req')->with($data);
