@@ -16,7 +16,6 @@
           <script>
               function setJobRequestId(jobRequestId, jobNo = '') {
                   document.getElementById('job_request_id').value = jobRequestId;
-                  document.getElementById('job_no').value = jobNo || ''; // prefill if available
               }
           </script>
 
