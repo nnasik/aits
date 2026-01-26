@@ -48,9 +48,6 @@
      * @param {Object} workOrder - The work order object containing id and current statuses
      */
     function openUpdateWorkOrderModal(workOrder) {
-        // Set hidden input
-        document.getElementById('work_order_id').value = workOrder.id;
-
         // Set dropdown values
         document.getElementById('training_status').value = workOrder.training_status ?? 'Waiting';
         document.getElementById('certificate_status').value = workOrder.certificate_status ?? 'Waiting';
