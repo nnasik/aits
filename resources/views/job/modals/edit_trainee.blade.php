@@ -22,12 +22,12 @@
 
           <div class="col-md-6">
             <label class="form-label">Company Name</label>
-            <input type="text" class="form-control bg-light" id="company_name_in_certificate" readonly>
+            <input type="text" class="form-control bg-light" id="company_name_in_certificate">
           </div>
 
           <div class="col-md-6">
             <label class="form-label">Course Name</label>
-            <input type="text" class="form-control bg-light" id="course_name_in_certificate" readonly>
+            <input type="text" class="form-control bg-light" id="course_name_in_certificate">
           </div>
 
           <div class="col-md-6">
