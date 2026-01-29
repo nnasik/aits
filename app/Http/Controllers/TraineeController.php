@@ -22,6 +22,7 @@ class TraineeController extends Controller
         $request->validate([
             'trainee_id' => 'required|exists:trainees,id',
             'candidate_name_in_certificate' => 'required|string|max:255',
+            'company_name_in_certificate' => 'required|string|max:255',
             'live_photo' => 'file|mimes:jpg,jpeg,png,pdf|max:2048', 
             // only image or pdf, max 2MB
             'eid_no'      => 'nullable|string|max:255',
@@ -43,6 +44,7 @@ class TraineeController extends Controller
         // update with request data
         $trainee->update([
             'candidate_name_in_certificate' => $request->candidate_name_in_certificate,
+            'company_name_in_certificate' => $request->company_name_in_certificate,
             'live_photo'                    => $livePhotoPath,
             'eid_no'                        => $request->eid_no,
             'date'                          => $request->date,
