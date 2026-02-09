@@ -48,8 +48,8 @@ class TrainingController extends Controller
         
             $validated = $request->validate([
                 'course_id'=> 'required|exists:training_courses,id',
-                'work_order_id'=> 'required|exists:work_orders,id',
-                'company_name_in_certificate'=> 'required',
+                // 'work_order_id'=> 'required|exists:work_orders,id',
+                // 'company_name_in_certificate'=> 'required',
                 'qty'             => 'required|integer|min:1',
                 'scheduled_date'  => 'nullable|date',
                 'training_mode'   => 'nullable|string|max:255',
@@ -61,10 +61,10 @@ class TrainingController extends Controller
             $work_oder = WorkOrder::findOrFail($validated['work_order_id']);
 
             $training = new Training([
-                'work_order_id' => $validated['work_order_id'],
+                // 'work_order_id' => $validated['work_order_id'],
                 'training_course_id' => $validated['course_id'],
                 'course_title_in_certificate' => $validated['course_title_in_certificate'],
-                'company_name_in_certificate' => $validated['company_name_in_certificate'],
+                // 'company_name_in_certificate' => $validated['company_name_in_certificate'],
                 'quantity'           => $validated['qty'],
                 'scheduled_date'     => $validated['scheduled_date'] ?? null,
                 'training_mode'      => $validated['training_mode'] ?? null,
@@ -81,7 +81,7 @@ class TrainingController extends Controller
 
             for ($i=0; $i < $training->quantity; $i++) { 
                 $training->trainees()->create([
-                    'company_name_in_certificate' => $training->company_name_in_certificate,
+                    // 'company_name_in_certificate' => $training->company_name_in_certificate,
                     'course_name_in_certificate' => $training->course_title_in_certificate,
                     'date' => $training->scheduled_date,
                 ]);
@@ -97,7 +97,7 @@ class TrainingController extends Controller
             'job_id' => 'required|exists:work_orders,id',
             'training_id' => 'required', // assuming this carries the training ID
         ]);
-
+        
         // Get values
         $jobId = $request->input('job_id');
         $trainingId = $request->input('training_id');
@@ -112,11 +112,6 @@ class TrainingController extends Controller
         $training->save();
 
         return back()->with('success', 'Training linked to job successfully.');
-    }
-
-    public function destroy(Training $training){
-        $training->delete();
-        return redirect()->back()->with('success', 'Training deleted successfully.');
     }
 
     public function unlinkJob(Request $request)
