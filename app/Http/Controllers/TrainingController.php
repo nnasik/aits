@@ -58,7 +58,7 @@ class TrainingController extends Controller
                 'remarks'          => 'nullable|string|max:255',
             ]);
 
-            $work_oder = WorkOrder::findOrFail($validated['work_order_id']);
+            //$work_oder = WorkOrder::findOrFail($validated['work_order_id']);
 
             $training = new Training([
                 // 'work_order_id' => $validated['work_order_id'],
@@ -97,7 +97,7 @@ class TrainingController extends Controller
             'job_id' => 'required|exists:work_orders,id',
             'training_id' => 'required', // assuming this carries the training ID
         ]);
-        
+
         // Get values
         $jobId = $request->input('job_id');
         $trainingId = $request->input('training_id');

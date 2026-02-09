@@ -16,14 +16,13 @@
           <script>
               function setJobRequestId(jobRequestId, jobNo = '') {
                   document.getElementById('job_request_id').value = jobRequestId;
-                  document.getElementById('job_no').value = jobNo || ''; // prefill if available
               }
           </script>
 
           <!-- Job No (work_orders.id) -->
           <div class="mb-3">
             <label for="job_no" class="form-label">Job No</label>
-            <input type="text" name="job_no" id="job_no" class="form-control" placeholder="Enter Job No" required>
+            <input type="text" name="job_no" id="job_no" class="form-control" placeholder="Enter Job No" value="<?php echo e($next_job_no); ?>" required>
           </div>
 
           <!-- Dropdown for authorized_by (users) -->
@@ -46,5 +45,4 @@
       </form>
     </div>
   </div>
-</div>
-<?php /**PATH D:\xampp\htdocs\aits\resources\views/job/modals/accept_request.blade.php ENDPATH**/ ?>
+</div><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/modals/accept_request.blade.php ENDPATH**/ ?>

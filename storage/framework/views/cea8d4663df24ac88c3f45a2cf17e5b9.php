@@ -16,7 +16,7 @@
                         <!-- Training Course (required, searchable dropdown) -->
                         <div class="col-md-12">
                             <label class="form-label">Training Course <span class="text-danger">*</span></label>
-                            <select name="training_course_id" class="form-select select2" required>
+                            <select name="course_id" class="form-select select2" required>
                                 
                                 <option value="">Select Training Course</option>
                                 <?php $__currentLoopData = $trainingCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -80,7 +80,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const trainingCourseSelect = document.querySelector('select[name="training_course_id"]');
+    const trainingCourseSelect = document.querySelector('select[name="course_id"]');
     const courseTitleInput = document.querySelector('input[name="course_title_in_certificate"]');
 
     trainingCourseSelect.addEventListener('change', function() {
