@@ -139,7 +139,6 @@ class CertificateController extends Controller
 
     public function card($id){
         
-
         $certificate_record = Certificate::findOrFail($id);
         $card_pdf = new FPDF();
         $card_pdf = $this->cardPDF($card_pdf, $certificate_record);
@@ -290,7 +289,7 @@ class CertificateController extends Controller
 
         // Stamp
         if (isset($user_settings['certificate_stamp_option']) &&  $user_settings['certificate_stamp_option']==1) {
-             $pdf->Image(public_path('assets/images/digital/digital_stamp-min.png'), 150,120, 35, 35);
+             $pdf->Image(public_path('assets/images/digital/digital_stamp-min.png'), 160,120, 35, 35);
         }
        
         // QR Code Option
