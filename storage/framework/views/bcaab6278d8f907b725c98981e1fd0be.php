@@ -27,7 +27,22 @@
   <div class="container-fluid">
 
     
-
+    <div class="row my-3 px-1">
+      <div class="col-md-12">
+          <form action="<?php echo e(route('job.index')); ?>">
+            <?php echo csrf_field(); ?>
+            <div class="input-group">
+              <input type="search" class="form-control form-control-lg" placeholder="Job No | Company Name"
+                name="search" <?php if(isset($search)): ?> value="<?php echo e($search); ?>" <?php endif; ?>>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-dark btn-lg btn-default">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+    </div>
 <!--begin::Row-->
     <div class="row mx-0">
       <div class="col-6">

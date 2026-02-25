@@ -169,7 +169,9 @@
                 </tbody>
             </table>
             <div class="d-flex justify-content-center mt-3">
-                {{ $jobs->links() }}
+                @if ($jobs->hasPages())
+                    {{ $jobs->links() }}
+                @endif
             </div>
         </div>
         <!-- /.card-body -->

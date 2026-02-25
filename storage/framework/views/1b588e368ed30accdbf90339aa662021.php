@@ -171,8 +171,10 @@
                 </tbody>
             </table>
             <div class="d-flex justify-content-center mt-3">
-                <?php echo e($jobs->links()); ?>
+                <?php if($jobs->hasPages()): ?>
+                    <?php echo e($jobs->links()); ?>
 
+                <?php endif; ?>
             </div>
         </div>
         <!-- /.card-body -->

@@ -17,8 +17,14 @@ use Str;
 
 class JobController extends Controller
 {
-    public function index(){
-        $data['jobs'] = WorkOrder::orderBy('id','desc')->paginate(10);
+    public function index(Request $request){
+        if (isset($request->search)) {
+            $data['search'] = $request->search;
+            $data['jobs'] = WorkOrder::where('company_name_in_work_order','LIKE',"%{$request->search}%")->orWhere('id','LIKE',"%{$request->search}%")->orderBy('id','desc')->paginate(1000);
+        }
+        else{
+            $data['jobs'] = WorkOrder::orderBy('id','desc')->paginate(10);
+        }
         return view('job.index')->with($data);
     }
 

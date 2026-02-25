@@ -29,7 +29,22 @@
   <div class="container-fluid">
 
     {{--@include('job.index.counts')--}}
-
+    <div class="row my-3 px-1">
+      <div class="col-md-12">
+          <form action="{{route('job.index')}}">
+            @csrf
+            <div class="input-group">
+              <input type="search" class="form-control form-control-lg" placeholder="Job No | Company Name"
+                name="search" @if(isset($search)) value="{{$search}}" @endif>
+              <div class="input-group-append">
+                <button type="submit" class="btn btn-outline-dark btn-lg btn-default">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+    </div>
 <!--begin::Row-->
     <div class="row mx-0">
       <div class="col-6">
