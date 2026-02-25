@@ -275,8 +275,14 @@ class JobController extends Controller
         return redirect()->back()->with('success', 'Work order status updated successfully.');
     }
 
-    public function index_acc(){
-        $data['jobs']=WorkOrder::orderBy('id','DESC')->paginate(10);
+    public function index_acc(Request $request){
+        if (isset($request->search)) {
+            $data['search'] = $request->search;
+            $data['jobs'] = WorkOrder::where('company_name_in_work_order','LIKE',"%{$request->search}%")->orWhere('id','LIKE',"%{$request->search}%")->orderBy('id','desc')->paginate(1000);
+        }
+        else{
+            $data['jobs'] = WorkOrder::orderBy('id','desc')->paginate(10);
+        }
         return view('job_acc.index')->with($data);
     }
 

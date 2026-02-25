@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <!--begin::App Content Header-->
 <div class="app-content-header">
@@ -29,11 +27,11 @@
   <div class="container-fluid">
     <div class="row my-3 px-2">
       <div class="col-md-12">
-          <form action="{{route('job-acc.index')}}">
-            @csrf
+          <form action="<?php echo e(route('job-acc.index')); ?>">
+            <?php echo csrf_field(); ?>
             <div class="input-group">
               <input type="search" class="form-control form-control-lg" placeholder="Job No | Company Name"
-                name="search" @if(isset($search)) value="{{$search}}" @endif>
+                name="search" <?php if(isset($search)): ?> value="<?php echo e($search); ?>" <?php endif; ?>>
               <div class="input-group-append">
                 <button type="submit" class="btn btn-outline-dark btn-lg btn-default">
                   <i class="fa fa-search"></i>
@@ -43,12 +41,14 @@
           </form>
         </div>
     </div>
-    @include('job_acc.index.table')
+    <?php echo $__env->make('job_acc.index.table', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
     <!--end::Row-->
     <!--end::Container-->
   </div>
   <!--end::App Content-->
-  @include('job_acc.modal.change_status')
-  @include('job.modals.add_files')
+  <?php echo $__env->make('job_acc.modal.change_status', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+  <?php echo $__env->make('job.modals.add_files', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
   </div>
-  @endsection()
+  <?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH D:\xampp\htdocs\aits\resources\views/job_acc/index.blade.php ENDPATH**/ ?>
