@@ -18,6 +18,10 @@ use Str;
 class JobController extends Controller
 {
     public function index(Request $request){
+        $data['jobs_not_closed']=WorkOrder::where('training_status','Completed')->where('certificate_status','Completed')->where('invoice_status','Completed')->where('delivery_note_status','Completed')->where('status','Open')->count();
+        $data['jobs_open']=WorkOrder::where('status','Open')->count();
+        $data['jobs_pending']=WorkOrder::where('training_status','Waiting')->where('certificate_status','Waiting')->count();
+        $data['request_waiting']= JobRequest::where('request_status','Requested')->count();
         if (isset($request->search)) {
             $data['search'] = $request->search;
             $data['jobs'] = WorkOrder::where('company_name_in_work_order','LIKE',"%{$request->search}%")->orWhere('id','LIKE',"%{$request->search}%")->orderBy('id','desc')->paginate(1000);

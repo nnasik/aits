@@ -25,7 +25,9 @@
 <div class="app-content">
   <!--begin::Container-->
   <div class="container-fluid">
-
+    <div class="row">
+      <?php echo $__env->make('job.index.counts', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+    </div>
     
     <div class="row my-3 px-1">
       <div class="col-md-12">

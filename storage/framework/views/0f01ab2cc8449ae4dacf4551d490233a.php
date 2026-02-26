@@ -2,9 +2,9 @@
     <!--begin::Col-->
     <div class="col-lg-3 col-6">
         <!--begin::Small Box Widget 1-->
-        <div class="small-box @if($jobs_not_closed>0) text-bg-danger @else text-bg-secondary @endif">
+        <div class="small-box <?php if($jobs_not_closed>0): ?> text-bg-danger <?php else: ?> text-bg-secondary <?php endif; ?>">
             <div class="inner">
-                <h3>{{$jobs_not_closed}}</h3>
+                <h3><?php echo e($jobs_not_closed); ?></h3>
 
                 <p>Jobs Not Closed</p>
             </div>
@@ -22,9 +22,9 @@
     <!--end::Col-->
     <div class="col-lg-3 col-6">
         <!--begin::Small Box Widget 2-->
-        <div class="small-box @if($jobs_open>0) text-bg-warning @else text-bg-secondary @endif ">
+        <div class="small-box <?php if($jobs_open>0): ?> text-bg-warning <?php else: ?> text-bg-secondary <?php endif; ?> ">
             <div class="inner">
-                <h3>{{$jobs_open}}</h3>
+                <h3><?php echo e($jobs_open); ?></h3>
 
                 <p>Jobs Open</p>
             </div>
@@ -42,9 +42,9 @@
     <!--end::Col-->
     <div class="col-lg-3 col-6">
         <!--begin::Small Box Widget 3-->
-        <div class="small-box  @if($jobs_pending>0) text-bg-primary @else text-bg-secondary @endif">
+        <div class="small-box  <?php if($jobs_pending>0): ?> text-bg-primary <?php else: ?> text-bg-secondary <?php endif; ?>">
             <div class="inner">
-                <h3>{{$jobs_pending}}</h3>
+                <h3><?php echo e($jobs_pending); ?></h3>
 
                 <p>Pending Jobs</p>
             </div>
@@ -69,9 +69,9 @@
     <!--end::Col-->
     <div class="col-lg-3 col-6">
         <!--begin::Small Box Widget 4-->
-        <div class="small-box @if($request_waiting>0) text-bg-info @else text-bg-secondary @endif ">
+        <div class="small-box <?php if($request_waiting>0): ?> text-bg-info <?php else: ?> text-bg-secondary <?php endif; ?> ">
             <div class="inner">
-                <h3>{{$request_waiting}}</h3>
+                <h3><?php echo e($request_waiting); ?></h3>
 
                 <p>Waiting Request</p>
             </div>
@@ -89,4 +89,4 @@
         <!--end::Small Box Widget 4-->
     </div>
     <!--end::Col-->
-</div>
+</div><?php /**PATH D:\xampp\htdocs\aits\resources\views/job/index/counts.blade.php ENDPATH**/ ?>

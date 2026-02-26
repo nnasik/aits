@@ -27,8 +27,10 @@
 <div class="app-content">
   <!--begin::Container-->
   <div class="container-fluid">
-
-    {{--@include('job.index.counts')--}}
+    <div class="row">
+      @include('job.index.counts')
+    </div>
+    
     <div class="row my-3 px-1">
       <div class="col-md-12">
           <form action="{{route('job.index')}}">
