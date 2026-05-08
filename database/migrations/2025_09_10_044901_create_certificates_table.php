@@ -21,9 +21,11 @@ return new class extends Migration{
             $table->string('candidate_name_in_certificate');
             $table->string('company_name_in_certificate');
             $table->string('company_location');
+
             $table->string('text_1')->nullable();
             $table->string('text_2')->nullable();
             $table->string('text_3')->nullable();
+            
             $table->string('course_name_in_certificate');
             $table->string('eid_no')->nullable();
             $table->string('passport_no')->nullable();

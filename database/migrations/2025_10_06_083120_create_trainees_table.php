@@ -17,17 +17,26 @@ return new class extends Migration
             $table->foreignId('trainee_request_id')->constrained(
                 table:'trainee_requests',
             )->nullable();
+            $table->enum('type',['Company','Individual','Other']);
             $table->string('candidate_name_in_certificate')->nullable();
+            $table->string('gender')->nullable();
             $table->string('company_name_in_certificate')->nullable();
             $table->string('course_name_in_certificate')->nullable();
+            $table->string('designation')->nullable();
+            $table->date('dob')->nullable();
             $table->string('live_photo')->nullable();
             $table->string('eid_no')->nullable();
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
+            $table->enum('mode_of_training',['In-Class','On-Site','Online','Hybrid'])->nullable();
+            $table->string('location')->nullable();
             $table->date('date')->nullable();
             $table->string('passport_no')->nullable();
             $table->string('dl_no')->nullable();
             $table->date('dl_issued')->nullable();
             $table->date('dl_expiry')->nullable();
             $table->string('signature')->nullable();
+            $table->string('remarks')->nullable();
             $table->bool('attendance_confirmed')->nullable();
             $table->foreignId('attendance_confirmed_by')->constrained(
                 table:'users',
