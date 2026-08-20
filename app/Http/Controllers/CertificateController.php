@@ -283,12 +283,12 @@ class CertificateController extends Controller
 
         // Signature Option
         if (isset($user_settings['certificate_signature_option']) && $user_settings['certificate_signature_option']==1) {
-             $pdf->Image(public_path('assets/images/digital/digital_signature_1-min.png'), 140, 135, 22, 18);
+             $pdf->Image(public_path('assets/images/digital/digital_signature_1-min.png'), 130, 135, 22, 18);
         }
 
         // Signature Option 2
         if (isset($user_settings['certificate_signature_option']) && $user_settings['certificate_signature_option']==2) {
-             $pdf->Image(public_path('assets/images/digital/digital_signature_2-min.png'), 130, 135, 40, 18);
+             $pdf->Image(public_path('assets/images/digital/digital_signature_2-min.png'), 140, 135, 40, 18);
         }
         
         // Stamp
