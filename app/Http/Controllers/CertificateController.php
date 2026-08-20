@@ -267,7 +267,7 @@ class CertificateController extends Controller
         //$pdf->setXY(0,165);
         $pdf->SetFont('Times','',14);
         $pdf->Cell(05,20, "",0,0,'L');
-        $pdf->Cell(255,10, "Trainer : _______________________",0,0,'C');
+        $pdf->Cell(255,10, "Academic Director : _______________________",0,0,'C');
         $pdf->Cell(05,20, "",0,1,'L');
 
         // Picture Border
@@ -288,7 +288,7 @@ class CertificateController extends Controller
 
         // Signature Option 2
         if (isset($user_settings['certificate_signature_option']) && $user_settings['certificate_signature_option']==2) {
-             $pdf->Image(public_path('assets/images/digital/digital_signature_2-min.png'), 120,135, 40, 18);
+             $pdf->Image(public_path('assets/images/digital/digital_signature_2-min.png'), 140,135, 40, 18);
         }
         
 
